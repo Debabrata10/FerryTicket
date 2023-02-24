@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aquamarine"
+    android:orientation="vertical"
+    tools:context=".ui.FerryListActivity"
+    tools:ignore="HardCodedText">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/src_ghat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="GHAT1"
+                android:textColor="@color/dark_blue"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toTopOf="@+id/today_ll"
+                app:layout_constraintEnd_toStartOf="@+id/today_ll"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1" />
+
+            <TextView
+                android:id="@+id/departure_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="Departure: 12:00PM"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/src_ghat"
+                app:layout_constraintTop_toBottomOf="@+id/today_ll"
+                app:layout_constraintVertical_bias="0" />
+
+            <LinearLayout
+                android:id="@+id/today_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="---"
+                    android:textColor="@color/dark_blue" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="24 DEC, 2022"
+                    android:textColor="@color/dark_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="---"
+                    android:textColor="@color/dark_blue" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dest_ghat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="GHAT2"
+                android:textColor="@color/dark_blue"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/src_ghat"
+                app:layout_constraintStart_toEndOf="@+id/today_ll"
+                app:layout_constraintTop_toTopOf="@+id/src_ghat" />
+
+            <TextView
+                android:id="@+id/arrival_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="Arrival: 4:00PM"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/departure_time"
+                app:layout_constraintStart_toStartOf="@+id/dest_ghat"
+                app:layout_constraintTop_toTopOf="@+id/departure_time" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FERRY LIST:"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="0dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:id="@+id/ferry_list_recycler_view"/>
+</LinearLayout>

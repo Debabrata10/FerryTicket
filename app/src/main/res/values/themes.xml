@@ -1,0 +1,40 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.FerryTicket" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue_grotto</item>
+        <item name="colorPrimaryVariant">@color/aquamarine</item>
+        <item name="colorOnPrimary">@color/dark_blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/blue_grotto</item>
+        <item name="colorSecondaryVariant">@color/aquamarine</item>
+        <item name="colorOnSecondary">@color/dark_blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.FerryTicket.ActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue_grotto</item>
+        <item name="colorPrimaryVariant">@color/aquamarine</item>
+        <item name="colorOnPrimary">@color/dark_blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/blue_grotto</item>
+        <item name="colorSecondaryVariant">@color/aquamarine</item>
+        <item name="colorOnSecondary">@color/dark_blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:buttonTint">@color/dark_blue</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="Theme.ZooTicket.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.ZooTicket.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
