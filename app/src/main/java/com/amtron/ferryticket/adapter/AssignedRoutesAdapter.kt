@@ -50,6 +50,5 @@ class AssignedRoutesAdapter(
 		val srcDest: LinearLayout = itemView.findViewById(R.id.src_dest_ll)
 		val srcGhat: TextView = itemView.findViewById(R.id.src)
 		val destGhat: TextView = itemView.findViewById(R.id.dest)
-		val timing: TextView = itemView.findViewById(R.id.timing)
 	}
 }

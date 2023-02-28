@@ -25,15 +25,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
                     android:layout_weight="0.2"
-                    android:contentDescription="ferry_icon"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_baseline_directions_boat_filled_24" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:contentDescription="ferry_icon"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_baseline_directions_boat_filled_24" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Availability"
+                        android:textColor="@color/blue_grotto" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -89,7 +104,7 @@
                             android:fontFamily="@font/roboto_condensed_bold"
                             android:text="GHAT1"
                             android:textColor="@color/dark_blue"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -100,26 +115,18 @@
                             android:text="-->"
                             android:textColor="@color/dark_blue"
                             android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/dest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_condensed_bold"
-                            android:text="GHAT2"
-                            android:textColor="@color/dark_blue"
-                            android:textSize="20sp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/dest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="GHAT2"
+                        android:textColor="@color/blue_grotto"
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="Availability"
-                android:textColor="@color/blue_grotto" />
 
             <LinearLayout
                 android:layout_width="match_parent"

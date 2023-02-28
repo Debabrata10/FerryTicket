@@ -7,7 +7,7 @@
     android:background="@color/aquamarine"
     android:orientation="vertical"
     tools:context=".ui.HomeActivity"
-    tools:ignore="HardCodedText">
+    tools:ignore="HardCodedText, UseCompoundDrawables">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -164,28 +164,52 @@
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="10dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/srcDestRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:fadeScrollbars="false"
                 android:padding="10dp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_max="255dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
 
-            <TextView
-                android:id="@+id/no_routes_text"
+            <LinearLayout
+                android:id="@+id/no_routes_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="No Routes" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/srcDestRecyclerView"
+                app:layout_constraintVertical_bias="0">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="no_tickets_icon"
+                    android:src="@mipmap/ic_cross_foreground" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="17dp"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:gravity="center_vertical"
+                    android:text="NO ASSIGNED ROUTES"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
@@ -206,18 +230,38 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:visibility="gone"
-        android:layout_weight="0.125" />
+        android:layout_weight="0.125"
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/no_recent_ferry_text"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/no_recent_ferry_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:fontFamily="@font/roboto_condensed_bold"
-        android:text="NO RECENT FERRY"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="no_tickets_icon"
+                android:src="@mipmap/ic_boat_foreground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="17dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center_vertical"
+                android:text="NO RECENTLY SELECTED FERRY"
+                android:textColor="@color/dark_blue"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:layout_width="wrap_content"
@@ -228,15 +272,35 @@
         android:textColor="@color/white"
         android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/no_recent_tickets_text"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/no_recent_tickets_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:fontFamily="@font/roboto_condensed_bold"
-        android:text="NO RECENT TICKETS:"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="no_tickets_icon"
+                android:src="@mipmap/ic_failed_tickets_foreground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="17dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center_vertical"
+                android:text="NO RECENT TICKETS"
+                android:textColor="@color/dark_blue"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentTicketsRecyclerView"
@@ -248,5 +312,5 @@
         android:layout_weight="0.1"
         android:fadeScrollbars="false"
         android:scrollbars="horizontal"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

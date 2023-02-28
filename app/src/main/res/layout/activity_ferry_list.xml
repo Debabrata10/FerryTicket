@@ -19,34 +19,35 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/src_ghat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="GHAT1"
                 android:textColor="@color/dark_blue"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/today_ll"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1" />
+                app:layout_constraintVertical_bias="0" />
 
             <LinearLayout
                 android:id="@+id/today_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                app:layout_constraintVertical_bias="0"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintEnd_toEndOf="@+id/src_ghat"
+                app:layout_constraintStart_toStartOf="@+id/src_ghat"
+                app:layout_constraintTop_toBottomOf="@+id/src_ghat">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -74,14 +75,17 @@
                 android:id="@+id/dest_ghat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="GHAT2"
+                app:layout_constraintVertical_bias="0"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/dark_blue"
                 android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="@+id/src_ghat"
-                app:layout_constraintStart_toEndOf="@+id/today_ll"
-                app:layout_constraintTop_toTopOf="@+id/src_ghat" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/today_ll"
+                app:layout_constraintStart_toStartOf="@+id/today_ll"
+                app:layout_constraintTop_toBottomOf="@+id/today_ll" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

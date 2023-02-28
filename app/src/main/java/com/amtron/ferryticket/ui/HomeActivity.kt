@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -175,14 +174,14 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 										srcDestLayoutManager
 									sourceDestinationRecyclerView.isNestedScrollingEnabled = false
 									binding.srcDestRecyclerView.visibility = View.VISIBLE
-									binding.noRoutesText.visibility = View.GONE
+									binding.noRoutesCard.visibility = View.GONE
 								} else {
 									binding.srcDestRecyclerView.visibility = View.GONE
-									binding.noRoutesText.visibility = View.VISIBLE
+									binding.noRoutesCard.visibility = View.VISIBLE
 								}
 							} catch (e: Exception) {
 								binding.srcDestRecyclerView.visibility = View.GONE
-								binding.noRoutesText.visibility = View.VISIBLE
+								binding.noRoutesCard.visibility = View.VISIBLE
 							}
 							try {
 								val latestTicketsJson = obj.get("latest_tickets") as JSONArray
@@ -198,14 +197,14 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 										recentTicketsLayoutManager
 									recentTicketsRecyclerView.isNestedScrollingEnabled = false
 									binding.recentTicketsRecyclerView.visibility = View.VISIBLE
-									binding.noRecentTicketsText.visibility = View.GONE
+									binding.noRecentTicketsCard.visibility = View.GONE
 								} else {
 									binding.recentTicketsRecyclerView.visibility = View.GONE
-									binding.noRecentTicketsText.visibility = View.VISIBLE
+									binding.noRecentTicketsCard.visibility = View.VISIBLE
 								}
 							} catch (e: Exception) {
 								binding.recentTicketsRecyclerView.visibility = View.GONE
-								binding.noRecentTicketsText.visibility = View.VISIBLE
+								binding.noRecentTicketsCard.visibility = View.VISIBLE
 							}
 							try {
 								val recentFerryJson = obj.get("recent_ferry") as String
@@ -215,14 +214,14 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 										object : TypeToken<Ferry>() {}.type
 									)
 									binding.recentFerry.ferryCard.visibility = View.VISIBLE
-									binding.noRecentFerryText.visibility = View.GONE
+									binding.noRecentFerryCard.visibility = View.GONE
 								} else {
 									binding.recentFerry.ferryCard.visibility = View.GONE
-									binding.noRecentFerryText.visibility = View.VISIBLE
+									binding.noRecentFerryCard.visibility = View.VISIBLE
 								}
 							} catch (e: Exception) {
 								binding.recentFerry.ferryCard.visibility = View.GONE
-								binding.noRecentFerryText.visibility = View.VISIBLE
+								binding.noRecentFerryCard.visibility = View.VISIBLE
 							}
 						} else {
 							NotificationHelper().getErrorAlert(

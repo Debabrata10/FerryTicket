@@ -11,7 +11,6 @@ import com.amtron.ferryticket.adapter.FerryServiceAdapter
 import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
 import com.amtron.ferryticket.databinding.ActivityFerryListBinding
 import com.amtron.ferryticket.helper.DateHelper
-import com.amtron.ferryticket.model.Ferry
 import com.amtron.ferryticket.model.FerryService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -28,7 +27,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding = ActivityFerryListBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		 val bundleString = intent.extras
+		val bundleString = intent.extras
 		try {
 			val ferryServicesString = bundleString!!.getString("ferryServices", "")
 			val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
@@ -44,7 +43,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 			binding.date.text = DateHelper().getTodayOrTomorrow("today", "dd MMM, yyyy")
 			binding.srcGhat.text = bundleString.getString("sourceGhat", "")
-			binding.srcGhat.text = bundleString.getString("destinationGhat", "")
+			binding.destGhat.text = bundleString.getString("destinationGhat", "")
 		} catch (e: Exception) {
 			Log.d("msg", "nothing found")
 		}
