@@ -5,8 +5,8 @@
     android:id="@+id/ferry_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
     android:layout_marginBottom="5dp"
+    app:cardCornerRadius="10dp"
     tools:ignore="HardCodedText, UseCompoundDrawables">
 
     <LinearLayout
@@ -64,10 +64,10 @@
                             android:id="@+id/ferry_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:fontFamily="@font/roboto_condensed_bold"
                             android:gravity="bottom"
                             android:text="100"
-                            android:layout_marginStart="10dp"
                             android:textColor="@color/dark_blue"
                             android:textSize="22sp"
                             tools:ignore="NestedWeights" />
@@ -94,10 +94,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_condensed_bold"
-                            android:text="-->"
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/roboto_condensed_bold"
+                            android:text="-->"
                             android:textColor="@color/dark_blue"
                             android:textSize="20sp" />
 
@@ -323,9 +323,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_access_time_filled_24"
-                android:contentDescription="interval"
                 android:layout_marginTop="10dp"
+                android:contentDescription="interval"
+                android:src="@drawable/ic_baseline_access_time_filled_24"
                 app:tint="@color/white" />
 
             <TextView

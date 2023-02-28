@@ -1,5 +1,5 @@
 package com.amtron.ferryticket.adapter
 
 interface OnRecyclerViewItemClickListener {
-    fun onItemClickListener(position: Int, type: String)
+	fun onItemClickListener(position: Int, type: String)
 }

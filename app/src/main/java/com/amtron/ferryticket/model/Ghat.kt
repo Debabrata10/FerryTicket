@@ -1,8 +1,8 @@
 package com.amtron.ferryticket.model
 
 data class Ghat(
-    val id: Int? = null,
-    val ghat_name: String? = "",
-    val district_id: String? = "",
-    val source: Int? = null
+	val id: Int,
+	val ghat_name: String,
+	val short_ghat_name: String,
+	val source: Int
 )

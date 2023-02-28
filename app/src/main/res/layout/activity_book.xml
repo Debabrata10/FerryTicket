@@ -56,15 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp">
+        android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/open_add_passenger_card"
             android:layout_width="170dp"
             android:layout_height="70dp"
-            android:layout_marginEnd="10dp"
             app:cardCornerRadius="10dp">
 
             <LinearLayout
@@ -111,8 +108,7 @@
                         <TextView
                             android:id="@+id/passenger_count"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -122,7 +118,7 @@
             android:id="@+id/open_add_goods_card"
             android:layout_width="170dp"
             android:layout_height="70dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             app:cardCornerRadius="10dp">
 
             <LinearLayout
@@ -141,7 +137,7 @@
                     app:tint="@color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -169,17 +165,47 @@
                         <TextView
                             android:id="@+id/goods_count"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/view_booking_summary_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/blue_grotto"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="bookings_icon"
+                    android:src="@drawable/baseline_library_books_24"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="VIEW SUMMARY"
+                    android:textColor="@color/white" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/add_passenger_card"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -213,22 +239,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="2.5dp"
                     android:layout_weight="0.7"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/rbAdult"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:checked="true"
-                        android:text="Adult" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/rbChild"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="Child" />
-                </RadioGroup>
+                    android:gravity="center"
+                    android:orientation="horizontal" />
             </LinearLayout>
 
             <LinearLayout
@@ -313,29 +325,7 @@
                         android:layout_marginEnd="2.5dp"
                         android:layout_weight="0.5"
                         android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/rbMale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:checked="true"
-                            android:text="Male" />
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/rbFemale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Female" />
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/rbOthers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="Others" />
-                    </RadioGroup>
+                        android:orientation="horizontal" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -425,7 +415,6 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:visibility="gone"
         android:id="@+id/add_vehicle_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -466,7 +455,6 @@
                         android:id="@+id/rbBicycle"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:text="Bicycle" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -498,11 +486,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:visibility="gone"
                     android:id="@+id/textInputLayout5"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
@@ -513,6 +500,7 @@
                     android:layout_weight="0.6"
                     android:hint="Vehicle Number"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

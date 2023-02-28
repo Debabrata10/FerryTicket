@@ -19,9 +19,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:layout_height="wrap_content">
+            android:paddingBottom="30dp">
 
             <TextView
                 android:id="@+id/src_ghat"
@@ -32,22 +32,10 @@
                 android:text="GHAT1"
                 android:textColor="@color/dark_blue"
                 android:textSize="17sp"
-                app:layout_constraintBottom_toTopOf="@+id/today_ll"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/today_ll"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1" />
-
-            <TextView
-                android:id="@+id/departure_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="Departure: 12:00PM"
-                android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/src_ghat"
-                app:layout_constraintTop_toBottomOf="@+id/today_ll"
-                app:layout_constraintVertical_bias="0" />
 
             <LinearLayout
                 android:id="@+id/today_ll"
@@ -95,36 +83,26 @@
                 app:layout_constraintStart_toEndOf="@+id/today_ll"
                 app:layout_constraintTop_toTopOf="@+id/src_ghat" />
 
-            <TextView
-                android:id="@+id/arrival_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="Arrival: 4:00PM"
-                android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="@+id/departure_time"
-                app:layout_constraintStart_toStartOf="@+id/dest_ghat"
-                app:layout_constraintTop_toTopOf="@+id/departure_time" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto_condensed_bold"
         android:text="FERRY LIST:"
         android:textColor="@color/white"
-        android:fontFamily="@font/roboto_condensed_bold"
-        android:textSize="20sp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="0dp"/>
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ferry_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:fadeScrollbars="false"
-        android:scrollbars="vertical"
-        android:id="@+id/ferry_list_recycler_view"/>
+        android:scrollbars="vertical" />
 </LinearLayout>

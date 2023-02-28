@@ -11,11 +11,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="15dp"
-        android:layout_weight="0.05"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -46,9 +45,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_weight="0.08"
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
@@ -81,7 +79,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="25"
                     android:textAlignment="center"
                     android:textColor="@color/dark_blue"
                     android:textSize="35sp"
@@ -161,11 +158,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_weight="0.21"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -174,6 +170,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/srcDestRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -182,6 +179,12 @@
                 android:fadeScrollbars="false"
                 android:padding="10dp"
                 android:scrollbars="vertical" />
+
+            <TextView
+                android:id="@+id/no_routes_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="No Routes" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -203,7 +206,18 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
+        android:visibility="gone"
         android:layout_weight="0.125" />
+
+    <TextView
+        android:id="@+id/no_recent_ferry_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:text="NO RECENT FERRY"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -211,6 +225,16 @@
         android:layout_marginStart="17dp"
         android:fontFamily="@font/roboto_condensed_bold"
         android:text="RECENT TICKETS:"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/no_recent_tickets_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:text="NO RECENT TICKETS:"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
@@ -223,5 +247,6 @@
         android:layout_marginEnd="10dp"
         android:layout_weight="0.1"
         android:fadeScrollbars="false"
-        android:scrollbars="horizontal" />
+        android:scrollbars="horizontal"
+        android:visibility="gone"/>
 </LinearLayout>

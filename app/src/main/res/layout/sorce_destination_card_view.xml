@@ -19,8 +19,35 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="2.5dp"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:contentDescription="time_icon"
+                android:src="@drawable/ic_baseline_access_time_filled_24" />
+
+            <TextView
+                android:id="@+id/timing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center"
+                android:text="2:00PM - 4.00PM" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_weight="0.5"
+            android:background="@color/blue_btn_bg_color"
             android:gravity="center"
             android:orientation="vertical"
             tools:ignore="NestedWeights">
@@ -53,32 +80,6 @@
                 android:gravity="center"
                 android:text="GHAT2"
                 android:textColor="@color/dark_blue" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="2.5dp"
-            android:layout_weight="0.25"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:contentDescription="time_icon"
-                android:src="@drawable/ic_baseline_access_time_filled_24" />
-
-            <TextView
-                android:id="@+id/timing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center"
-                android:text="2:00PM - 4.00PM" />
         </LinearLayout>
 
         <LinearLayout
