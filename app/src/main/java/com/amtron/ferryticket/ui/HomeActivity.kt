@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.AssignedRoutesAdapter
 import com.amtron.ferryticket.adapter.OnAssignedRoutesRecyclerViewItemClickListener
@@ -49,6 +53,7 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 	private lateinit var recentTicketsRecyclerView: RecyclerView
 	private lateinit var assignedRoutesAdapter: AssignedRoutesAdapter
 	private lateinit var recentTicketAdapter: RecentTicketAdapter
+	private lateinit var dialog: SweetAlertDialog
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +65,6 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 		editor = sharedPreferences.edit()
 
 		getMasterData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
-
-		getHomeData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
 
 		recentTicketsLayoutManager =
 			LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -101,6 +104,11 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 	}
 
 	private fun getMasterData(token: String) {
+		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.titleText = "Getting Master Data..."
+		dialog.setCancelable(false)
+		dialog.show()
 		val api = RetrofitHelper.getInstance().create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getMasterData(token)
@@ -114,19 +122,24 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 						val helper = ResponseHelper()
 						helper.ResponseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
+							dialog.titleText = "Master Data Fetched"
 							val masterData: MasterData = Gson().fromJson(
 								helper.getDataAsString(),
 								object : TypeToken<MasterData>() {}.type
 							)
 							editor.putString("masterData", Gson().toJson(masterData))
 							editor.apply()
+
+							getHomeData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
 						} else {
+							dialog.dismiss()
 							NotificationHelper().getErrorAlert(
 								this@HomeActivity,
 								helper.getErrorMsg()
 							)
 						}
 					} else {
+						dialog.dismiss()
 						NotificationHelper().getErrorAlert(
 							this@HomeActivity,
 							"Response Error Code" + response.message()
@@ -136,12 +149,14 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 
 				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
+					dialog.dismiss()
 				}
 			})
 		}
 	}
 
 	private fun getHomeData(token: String) {
+		dialog.titleText = "Getting routes and recents"
 		val api = RetrofitHelper.getInstance().create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getHomeData(token)
@@ -223,13 +238,20 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 								binding.recentFerry.ferryCard.visibility = View.GONE
 								binding.noRecentFerryCard.visibility = View.VISIBLE
 							}
+
+							dialog.titleText = "All data fetched successfully"
+							dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+							dialog.confirmText = "OK"
+							dialog.setConfirmClickListener { dialog.dismiss() }
 						} else {
+							dialog.dismiss()
 							NotificationHelper().getErrorAlert(
 								this@HomeActivity,
 								helper.getErrorMsg()
 							)
 						}
 					} else {
+						dialog.dismiss()
 						NotificationHelper().getErrorAlert(
 							this@HomeActivity,
 							"Response Error Code" + response.message()
@@ -238,6 +260,7 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 				}
 
 				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+					dialog.dismiss()
 					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
 				}
 			})
@@ -249,6 +272,11 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 	}
 
 	override fun onAssignedRoutesItemClickListener(position: Int, type: String) {
+		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.titleText = "Getting Services"
+		dialog.setCancelable(false)
+		dialog.show()
 		val bundle = Bundle()
 		val i = Intent(this@HomeActivity, FerryListActivity::class.java)
 		val ferry: AssignedRoutes = Gson().fromJson(
@@ -271,6 +299,7 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 						val helper = ResponseHelper()
 						helper.ResponseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
+							dialog.dismiss()
 							val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
 								helper.getDataAsString(),
 								object : TypeToken<List<FerryService>>() {}.type
@@ -281,12 +310,14 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 							i.putExtras(bundle)
 							startActivity(i)
 						} else {
+							dialog.dismiss()
 							NotificationHelper().getErrorAlert(
 								this@HomeActivity,
 								helper.getErrorMsg()
 							)
 						}
 					} else {
+						dialog.dismiss()
 						NotificationHelper().getErrorAlert(
 							this@HomeActivity,
 							"Response Error Code" + response.message()
@@ -295,6 +326,7 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 				}
 
 				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+					dialog.dismiss()
 					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
 				}
 			})

@@ -40,14 +40,14 @@
                 android:id="@+id/today_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                app:layout_constraintVertical_bias="0"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/src_ghat"
                 app:layout_constraintStart_toStartOf="@+id/src_ghat"
-                app:layout_constraintTop_toBottomOf="@+id/src_ghat">
+                app:layout_constraintTop_toBottomOf="@+id/src_ghat"
+                app:layout_constraintVertical_bias="0">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,17 +75,17 @@
                 android:id="@+id/dest_ghat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="GHAT2"
-                app:layout_constraintVertical_bias="0"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="GHAT2"
                 android:textColor="@color/dark_blue"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/today_ll"
                 app:layout_constraintStart_toStartOf="@+id/today_ll"
-                app:layout_constraintTop_toBottomOf="@+id/today_ll" />
+                app:layout_constraintTop_toBottomOf="@+id/today_ll"
+                app:layout_constraintVertical_bias="0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

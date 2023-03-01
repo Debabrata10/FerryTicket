@@ -41,13 +41,22 @@ interface Client {
 	@GET("get-ticket-item-rates")
 	fun getPriceDetails(): Call<JsonObject>
 
-	//GET FERRIES API
+	//GET FERRY SERVICES API
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("ferry-service")
 	fun getFerries(
 		@Header("Authorization") bearer: String,
 		@Field("route_id") routeId: Int
+	): Call<JsonObject>
+
+	//GET SERVICE API
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("ferry-service/get-service")
+	fun getService(
+		@Header("Authorization") bearer: String,
+		@Field("id") ferryServiceId: Int
 	): Call<JsonObject>
 
 	//SCAN API
