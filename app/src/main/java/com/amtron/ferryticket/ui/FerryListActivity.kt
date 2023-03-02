@@ -18,7 +18,6 @@ import com.amtron.ferryticket.helper.DateHelper
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
-import com.amtron.ferryticket.model.AssignedRoutes
 import com.amtron.ferryticket.model.FerryService
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
@@ -123,7 +122,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							)
 						}
 					} else {
-							dialog.dismiss()
+						dialog.dismiss()
 						NotificationHelper().getErrorAlert(
 							this@FerryListActivity,
 							"Response Error Code" + response.message()
@@ -132,7 +131,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				}
 
 				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-							dialog.dismiss()
+					dialog.dismiss()
 					NotificationHelper().getErrorAlert(this@FerryListActivity, "Server Error")
 				}
 			})

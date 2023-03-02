@@ -8,10 +8,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -130,7 +128,11 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 							editor.putString("masterData", Gson().toJson(masterData))
 							editor.apply()
 
-							getHomeData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
+							getHomeData(
+								Util().getJwtToken(
+									sharedPreferences.getString("user", "").toString()
+								)
+							)
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(

@@ -79,10 +79,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/dark_blue"
                     android:textSize="35sp"
-                    android:text="0"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
