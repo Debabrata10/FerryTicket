@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.model.Ticket
 import com.google.android.material.card.MaterialCardView
+import com.google.gson.Gson
 
 class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
 	RecyclerView.Adapter<RecentTicketAdapter.ViewHolder>() {
@@ -32,8 +33,9 @@ class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
 		holder.ticketNumber.text = ticket.ticket_no
 		holder.name.text = ticket.passenger_name
 		holder.date.text = ticket.ferry_date
+		holder.price.text = "₹${ticket.total_amt}"
 		holder.ticket.setOnClickListener {
-
+			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticket))
 		}
 	}
 
@@ -46,5 +48,6 @@ class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
 		val ticketNumber: TextView = itemView.findViewById(R.id.ticket_number)
 		val name: TextView = itemView.findViewById(R.id.name)
 		val date: TextView = itemView.findViewById(R.id.date)
+		val price: TextView = itemView.findViewById(R.id.price)
 	}
 }

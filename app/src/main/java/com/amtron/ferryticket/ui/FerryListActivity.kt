@@ -80,7 +80,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 	override fun onItemClickListener(position: Int, type: String) {
 		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		dialog.titleText = "Loading..."
 		dialog.setCancelable(false)
 		dialog.show()

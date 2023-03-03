@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ticket"
-    android:layout_width="370dp"
+    android:layout_width="380dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp"
+    android:layout_marginEnd="10dp"
     app:cardCornerRadius="10dp"
     tools:ignore="HardCodedText">
 
@@ -14,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -57,57 +54,84 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
             android:layout_weight="0.7"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:layout_marginStart="2dp"
+                android:layout_weight="0.8"
+                android:orientation="vertical"
+                android:padding="10dp"
+                tools:ignore="NestedWeights">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="person_name"
-                    android:src="@drawable/ic_baseline_person_24" />
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="person_name"
+                        android:src="@drawable/ic_baseline_person_24" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Debabrata Sarma"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="Debabrata Sarma"
-                    android:textColor="@color/dark_blue"
-                    android:textSize="17sp" />
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="person_name"
+                        android:src="@drawable/ic_baseline_newspaper_24" />
+
+                    <TextView
+                        android:id="@+id/ticket_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="IWT20125698"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="person_name"
-                    android:src="@drawable/ic_baseline_newspaper_24" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/ticket_number"
+                    android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="IWT20125698"
+                    android:text="100"
                     android:textColor="@color/dark_blue"
-                    android:textSize="16sp" />
+                    android:textSize="17sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

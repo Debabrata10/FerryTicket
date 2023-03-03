@@ -103,7 +103,7 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 
 	private fun getMasterData(token: String) {
 		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		dialog.titleText = "Getting Master Data..."
 		dialog.setCancelable(false)
 		dialog.show()
@@ -232,6 +232,21 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 									)
 									binding.recentFerry.ferryCard.visibility = View.VISIBLE
 									binding.noRecentFerryCard.visibility = View.GONE
+									binding.recentFerry.ferryName.text = recentFerry.ferry_name
+									binding.recentFerry.ferryNumber.text = recentFerry.ferry_no
+									binding.recentFerry.departureTime.text = recentFerry.departure
+									binding.recentFerry.arrivalTime.text = recentFerry.arrival
+									binding.recentFerry.src.text = recentFerry.source_ghat
+									binding.recentFerry.dest.text = recentFerry.destination_ghat
+									binding.recentFerry.availablePerson.text = recentFerry.seat_capacity
+									binding.recentFerry.availableCycle.text = recentFerry.bicycle_capacity
+									binding.recentFerry.availableMotorcycle.text = recentFerry.bicycle_capacity
+									binding.recentFerry.availableLmv.text = recentFerry.four_wheeler_lmv_capacity
+									binding.recentFerry.availableHmv.text = recentFerry.four_wheeler_hmv_capacity
+									binding.recentFerry.availableGoods.text = recentFerry.others_capacity.toString()
+									binding.recentFerry.ferryCard.setOnClickListener {
+										getFerryService(recentFerry.id)
+									}
 								} else {
 									binding.recentFerry.ferryCard.visibility = View.GONE
 									binding.noRecentFerryCard.visibility = View.VISIBLE
@@ -269,13 +284,69 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 		}
 	}
 
+	private fun getFerryService(id: Int) {
+		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+		dialog.titleText = "Loading..."
+		dialog.setCancelable(false)
+		dialog.show()
+		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		GlobalScope.launch {
+			val call: Call<JsonObject> = api.getService(
+				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+				id
+			)
+			call.enqueue(object : Callback<JsonObject> {
+				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
+				override fun onResponse(
+					call: Call<JsonObject>,
+					response: Response<JsonObject>
+				) {
+					if (response.isSuccessful) {
+						val helper = ResponseHelper()
+						helper.ResponseHelper(response.body())
+						if (helper.isStatusSuccessful()) {
+							dialog.dismiss()
+							val ferryService: FerryService = Gson().fromJson(
+								helper.getDataAsString(),
+								object : TypeToken<FerryService>() {}.type
+							)
+							editor.putString("service", Gson().toJson(ferryService))
+							editor.apply()
+							startActivity(
+								Intent(this@HomeActivity, BookActivity::class.java)
+							)
+						} else {
+							dialog.dismiss()
+							NotificationHelper().getErrorAlert(
+								this@HomeActivity,
+								helper.getErrorMsg()
+							)
+						}
+					} else {
+						dialog.dismiss()
+						NotificationHelper().getErrorAlert(
+							this@HomeActivity,
+							"Response Error Code" + response.message()
+						)
+					}
+				}
+
+				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+					dialog.dismiss()
+					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
+				}
+			})
+		}
+	}
+
 	override fun onRecentTicketsItemClickListener(position: Int, type: String) {
-		TODO("Not yet implemented")
+		
 	}
 
 	override fun onAssignedRoutesItemClickListener(position: Int, type: String) {
 		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		dialog.titleText = "Getting Services"
 		dialog.setCancelable(false)
 		dialog.show()
