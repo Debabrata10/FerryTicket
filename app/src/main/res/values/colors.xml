@@ -5,4 +5,6 @@
     <color name="dark_blue">#040430</color>
     <color name="blue">#09509A</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="teal">#56A8AF</color>
+    <color name="red">#EA3C12</color>
 </resources>

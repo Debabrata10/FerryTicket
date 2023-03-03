@@ -1,19 +1,30 @@
 package com.amtron.ferryticket.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
+import com.amtron.ferryticket.adapter.FerryServiceAdapter
+import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
+import com.amtron.ferryticket.adapter.SummaryAdapter
 import com.amtron.ferryticket.databinding.ActivityBookBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.model.*
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -25,7 +36,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @DelicateCoroutinesApi
-class BookActivity : AppCompatActivity() {
+class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private lateinit var sharedPreferences: SharedPreferences
 	private lateinit var editor: SharedPreferences.Editor
 	private lateinit var binding: ActivityBookBinding
@@ -42,6 +53,8 @@ class BookActivity : AppCompatActivity() {
 	private lateinit var vehicleList: ArrayList<Vehicle>
 	private lateinit var othersList: ArrayList<Others>
 	private lateinit var passengerTypeList: ArrayList<PassengerType>
+	private lateinit var allDataList: ArrayList<Any>
+	private lateinit var adapter: SummaryAdapter
 	private var selectedVehicleType: VehicleType? = null
 	private var selectedGoodsType: OtherType? = null
 	private var masterDataString: String = ""
@@ -49,12 +62,14 @@ class BookActivity : AppCompatActivity() {
 	private var isAddPassengerCardVisible: Boolean = false
 	private var isAddVehicleCardVisible: Boolean = false
 	private var isAddGoodsCardVisible: Boolean = false
+	private var isSummaryVisible: Boolean = false
 	private var totalPassengerCount: Int = 0
 	private var totalVehiclesCount: Int = 0
 	private var totalGoodsCount: Int = 0
 	private var genderIdCount = 0
 	private var passengerTypeIdCount = 0
 
+	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityBookBinding.inflate(layoutInflater)
@@ -62,6 +77,10 @@ class BookActivity : AppCompatActivity() {
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
+
+		binding.refresh.setOnClickListener {
+			getUpdatedAvailabilities()
+		}
 
 		val vehicleTypeList = ArrayList<VehicleType>()
 		val vehicleTypeNameList = ArrayList<String>()
@@ -71,6 +90,7 @@ class BookActivity : AppCompatActivity() {
 		passengerList = ArrayList()
 		vehicleList = ArrayList()
 		othersList = ArrayList()
+		allDataList = ArrayList()
 
 		genderRG = binding.rgGender
 		passengerTypeRG = binding.rgPassengerType
@@ -180,6 +200,11 @@ class BookActivity : AppCompatActivity() {
 				binding.addGoodsCard.visibility = View.GONE
 				isAddVehicleCardVisible = false
 				binding.addVehicleCard.visibility = View.GONE
+				isSummaryVisible = false
+				binding.viewSummaryText.visibility = View.GONE
+				binding.proceedBtn.visibility = View.GONE
+				binding.summaryListRecyclerView.visibility = View.GONE
+				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddPassengerCardVisible = true
 				binding.addPassengerCard.visibility = View.VISIBLE
 				binding.addPassenger.setOnClickListener {
@@ -241,6 +266,11 @@ class BookActivity : AppCompatActivity() {
 				binding.addPassengerCard.visibility = View.GONE
 				isAddGoodsCardVisible = false
 				binding.addGoodsCard.visibility = View.GONE
+				isSummaryVisible = false
+				binding.viewSummaryText.visibility = View.GONE
+				binding.proceedBtn.visibility = View.GONE
+				binding.summaryListRecyclerView.visibility = View.GONE
+				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddVehicleCardVisible = true
 				binding.addVehicleCard.visibility = View.VISIBLE
 				binding.addVehicle.setOnClickListener {
@@ -248,6 +278,7 @@ class BookActivity : AppCompatActivity() {
 						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT).show()
 					} else {
 						vehicle = Vehicle(selectedVehicleType!!, binding.vehicleNumber.text.toString())
+						Log.d("vehicle", vehicle.toString())
 						addVehicle(vehicle)
 					}
 				}
@@ -270,6 +301,11 @@ class BookActivity : AppCompatActivity() {
 				binding.addPassengerCard.visibility = View.GONE
 				isAddVehicleCardVisible = false
 				binding.addVehicleCard.visibility = View.GONE
+				isSummaryVisible = false
+				binding.viewSummaryText.visibility = View.GONE
+				binding.proceedBtn.visibility = View.GONE
+				binding.summaryListRecyclerView.visibility = View.GONE
+				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddGoodsCardVisible = true
 				binding.addGoodsCard.visibility = View.VISIBLE
 				binding.addGoods.setOnClickListener {
@@ -308,7 +344,44 @@ class BookActivity : AppCompatActivity() {
 		}
 
 		binding.viewBookingSummaryBtn.setOnClickListener {
-//			openBookingSummaryBottomSheet()
+			if (isSummaryVisible){
+				binding.summaryListRecyclerView.visibility = View.GONE
+				isSummaryVisible = false
+				binding.proceedBtn.visibility = View.GONE
+				binding.viewSummaryText.visibility = View.GONE
+				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
+			} else {
+				if (allDataList.isEmpty()) {
+					NotificationHelper().getWarningAlert(this, "No data found yet")
+				} else {
+					isAddPassengerCardVisible = false
+					isAddVehicleCardVisible = false
+					isAddGoodsCardVisible = false
+					resetPassenger()
+					resetGoods()
+					resetVehicle()
+					binding.addPassengerCard.visibility = View.GONE
+					binding.addVehicleCard.visibility = View.GONE
+					binding.addGoodsCard.visibility = View.GONE
+					binding.viewSummaryText.visibility = View.VISIBLE
+					binding.proceedBtn.visibility = View.VISIBLE
+					adapter = SummaryAdapter(allDataList, this)
+					adapter.setOnItemClickListener(this)
+					binding.summaryListRecyclerView.visibility = View.VISIBLE
+					isSummaryVisible = true
+					binding.viewBookingSummaryBtn.text = "CLOSE SUMMARY"
+					val recyclerView = binding.summaryListRecyclerView
+					recyclerView.adapter = adapter
+					recyclerView.layoutManager = LinearLayoutManager(this)
+					recyclerView.isNestedScrollingEnabled = false
+					binding.proceedBtn.setOnClickListener {
+						val booking = Booking(passengerList, vehicleList, othersList)
+//					saveBooking(booking)
+					}
+
+//				openBookingSummaryBottomSheet()
+				}
+			}
 		}
 
 		binding.scan.setOnClickListener {
@@ -316,7 +389,16 @@ class BookActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun getUpdatedAvailabilities() {
+		TODO("Not yet implemented")
+	}
+
+	private fun saveBooking(booking: Booking) {
+
+	}
+
 	private fun addOthers(others: Others) {
+		allDataList.add(others)
 		resetGoods()
 		totalGoodsCount += 1
 		othersList.add(others)
@@ -324,6 +406,7 @@ class BookActivity : AppCompatActivity() {
 	}
 
 	private fun addVehicle(vehicle: Vehicle) {
+		allDataList.add(vehicle)
 		resetVehicle()
 		totalVehiclesCount += 1
 		vehicleList.add(vehicle)
@@ -331,6 +414,7 @@ class BookActivity : AppCompatActivity() {
 	}
 
 	private fun addPassenger(passenger: PassengerDetails) {
+		allDataList.add(passenger)
 		resetPassenger()
 		totalPassengerCount += 1
 		passengerList.add(passenger)
@@ -393,5 +477,72 @@ class BookActivity : AppCompatActivity() {
 		binding.othersTypeDropdown.setText(
 			binding.othersTypeDropdown.adapter.getItem(0).toString(), false
 		)
+	}
+
+	@SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+	override fun onItemClickListener(position: Int, type: String) {
+		val alert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+		alert.titleText = "CONFIRM"
+		alert.contentText = "Are you sure you want to delete?"
+		alert.setCancelable(false)
+		alert.confirmText = "YES"
+		alert.cancelText = "NO"
+		alert.setCancelClickListener { alert.dismiss() }
+		alert.setConfirmClickListener {
+			if (allDataList[position] is PassengerDetails) {
+				if (totalPassengerCount == 1) {
+					alert.titleText = "WARNING"
+					alert.contentText = "This is the last passenger. Deleting will delete all data. Delete?"
+					alert.setConfirmClickListener {
+						totalPassengerCount = 0
+						totalVehiclesCount = 0
+						totalGoodsCount = 0
+						binding.passengerCount.text = totalPassengerCount.toString()
+						binding.vehiclesCount.text = totalPassengerCount.toString()
+						binding.goodsCount.text = totalPassengerCount.toString()
+						alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+						allDataList.clear()
+						Log.d("size", passengerList.size.toString())
+						adapter.notifyDataSetChanged()
+						alert.dismissWithAnimation()
+						binding.viewSummaryText.visibility = View.GONE
+						binding.proceedBtn.visibility = View.GONE
+						binding.summaryListRecyclerView.visibility = View.GONE
+						binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
+					}
+					alert.setCancelClickListener {
+						alert.dismiss()
+					}
+				} else {
+					totalPassengerCount -= 1
+					binding.passengerCount.text = totalPassengerCount.toString()
+					allDataList.removeAt(position)
+					adapter.notifyDataSetChanged()
+					Log.d("size", passengerList.size.toString())
+					alert.dismissWithAnimation()
+				}
+			} else {
+				if (allDataList[position] is Vehicle) {
+					totalVehiclesCount -= 1
+					binding.vehiclesCount.text = totalPassengerCount.toString()
+				} else if (allDataList[position] is Others) {
+					totalGoodsCount -= 1
+					binding.goodsCount.text = totalPassengerCount.toString()
+				}
+				allDataList.removeAt(position)
+				adapter.notifyDataSetChanged()
+				Log.d("size", passengerList.size.toString())
+				alert.dismissWithAnimation()
+			}
+		}
+		alert.show()
+	}
+
+	override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+		if (currentFocus != null) {
+			val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+			imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+		}
+		return super.dispatchTouchEvent(ev)
 	}
 }
