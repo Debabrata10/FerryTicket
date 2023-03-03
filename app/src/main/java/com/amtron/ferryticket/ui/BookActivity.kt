@@ -2,7 +2,9 @@ package com.amtron.ferryticket.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -20,6 +22,8 @@ import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
 import com.amtron.ferryticket.adapter.SummaryAdapter
 import com.amtron.ferryticket.databinding.ActivityBookBinding
 import com.amtron.ferryticket.helper.NotificationHelper
+import com.amtron.ferryticket.helper.ResponseHelper
+import com.amtron.ferryticket.helper.Util
 import com.amtron.ferryticket.model.*
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
@@ -31,6 +35,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +64,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private var selectedGoodsType: OtherType? = null
 	private var masterDataString: String = ""
 	private var serviceString: String = ""
+	private var scanResult: String = ""
 	private var isAddPassengerCardVisible: Boolean = false
 	private var isAddVehicleCardVisible: Boolean = false
 	private var isAddGoodsCardVisible: Boolean = false
@@ -78,8 +84,30 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
 
+		val bundleString = intent.extras
+		try {
+			try {
+				scanResult = bundleString!!.getString("scanResult", "").toString()
+			} catch (e: Exception) {
+				Log.d("scan result", "is empty")
+			}
+		} catch (e: Exception) {
+			Log.d("extras", "is empty")
+		}
+
+		if (scanResult != "") {
+			Log.d("scan result", scanResult)
+			//Paste data into cards
+		}
+
 		binding.refresh.setOnClickListener {
 			getUpdatedAvailabilities()
+		}
+
+		binding.scan.setOnClickListener {
+			startActivity(
+				Intent(this, ScannerActivity::class.java)
+			)
 		}
 
 		val vehicleTypeList = ArrayList<VehicleType>()
@@ -383,14 +411,54 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				}
 			}
 		}
-
-		binding.scan.setOnClickListener {
-			openScanner()
-		}
 	}
 
 	private fun getUpdatedAvailabilities() {
-		TODO("Not yet implemented")
+		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.titleText = "Getting Availabilities..."
+		dialog.setCancelable(false)
+		dialog.show()
+		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		GlobalScope.launch {
+			val call: Call<JsonObject> = api.getService(
+				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+				ferryService.id
+			)
+			call.enqueue(object : Callback<JsonObject> {
+				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
+				override fun onResponse(
+					call: Call<JsonObject>,
+					response: Response<JsonObject>
+				) {
+					if (response.isSuccessful) {
+						val helper = ResponseHelper()
+						helper.ResponseHelper(response.body())
+						if (helper.isStatusSuccessful()) {
+							dialog.dismissWithAnimation()
+							val obj = JSONObject(helper.getDataAsString())
+							binding.ferry.availablePerson.text = (obj.get("passenger_capacity") as Int).toString()
+							binding.ferry.availableCycle.text = (obj.get("bicycle_capacity") as Int).toString()
+							binding.ferry.availableMotorcycle.text = (obj.get("two_wheeler_capacity") as Int).toString()
+							binding.ferry.availableLmv.text = (obj.get("four_wheeler") as Int).toString()
+							binding.ferry.availableGoods.text = (obj.get("others_capacity") as Int).toString()
+							binding.ferry.availableHmv.text = (obj.get("hmv_capacity") as Int).toString()
+						}
+					} else {
+						dialog.dismiss()
+						NotificationHelper().getErrorAlert(
+							this@BookActivity,
+							"Response Error Code" + response.message()
+						)
+					}
+				}
+
+				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+					dialog.dismiss()
+					NotificationHelper().getErrorAlert(this@BookActivity, "Server Error")
+				}
+			})
+		}
 	}
 
 	private fun saveBooking(booking: Booking) {
