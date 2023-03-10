@@ -1,11 +1,11 @@
 package com.amtron.ferryticket.model
 
 data class PassengerDetails(
-	val name: String,
-	val phone_number: String,
+	val passenger_name: String,
+	val mobile_no: String,
 	val age: String,
-	val gender: Gender,
-	val p_type: PassengerType,
+	val is_ph: Int,
 	val address: String,
-	val isDisable: Int
+	val passenger_type: PassengerType,
+	val gender: Gender
 )

@@ -1,6 +1,6 @@
 package com.amtron.ferryticket.model
 
 data class Vehicle(
-	val v_type: VehicleType,
-	val vehicle_number: String? = ""
+	val vehicle_type: VehicleType,
+	var reg_no: String = ""
 )

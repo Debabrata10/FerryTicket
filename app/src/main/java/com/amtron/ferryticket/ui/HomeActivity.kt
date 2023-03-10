@@ -17,8 +17,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.AssignedRoutesAdapter
 import com.amtron.ferryticket.adapter.OnAssignedRoutesRecyclerViewItemClickListener
-import com.amtron.ferryticket.adapter.OnRecentTicketsRecyclerViewItemClickListener
-import com.amtron.ferryticket.adapter.RecentTicketAdapter
+import com.amtron.ferryticket.adapter.OnTicketsRecyclerViewItemClickListener
+import com.amtron.ferryticket.adapter.TicketAdapter
 import com.amtron.ferryticket.databinding.ActivityHomeBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
@@ -40,18 +40,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @DelicateCoroutinesApi
-class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickListener,
+class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener,
 	OnAssignedRoutesRecyclerViewItemClickListener {
 	private lateinit var sharedPreferences: SharedPreferences
 	private lateinit var editor: Editor
 	private lateinit var binding: ActivityHomeBinding
-	private lateinit var recentTicketsLayoutManager: LinearLayoutManager
-	private lateinit var srcDestLayoutManager: LinearLayoutManager
 	private lateinit var sourceDestinationRecyclerView: RecyclerView
-	private lateinit var recentTicketsRecyclerView: RecyclerView
 	private lateinit var assignedRoutesAdapter: AssignedRoutesAdapter
-	private lateinit var recentTicketAdapter: RecentTicketAdapter
 	private lateinit var dialog: SweetAlertDialog
+	//For Tablet View
+//	private lateinit var recentTicketAdapter: TicketAdapter
+//	private lateinit var recentTicketsRecyclerView: RecyclerView
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +62,6 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 		editor = sharedPreferences.edit()
 
 		getMasterData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
-
-		recentTicketsLayoutManager =
-			LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-		srcDestLayoutManager = LinearLayoutManager(this)
 
 		binding.profileCard.setOnClickListener {
 			startActivity(
@@ -174,84 +169,94 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 						if (helper.isStatusSuccessful()) {
 							val obj = JSONObject(helper.getDataAsString())
 							binding.ticketsToday.text = (obj.get("todays_ticket") as Int).toString()
-							try {
-								val assignedRoutesJson = obj.get("assigned_routes") as JSONArray
-								if (assignedRoutesJson.length() > 0) {
-									val assignedRoutesList: ArrayList<AssignedRoutes> =
-										Gson().fromJson(
-											assignedRoutesJson.toString(),
-											object : TypeToken<List<AssignedRoutes>>() {}.type
-										)
-									assignedRoutesAdapter =
-										AssignedRoutesAdapter(assignedRoutesList)
-									assignedRoutesAdapter.setOnItemClickListener(this@HomeActivity)
-									sourceDestinationRecyclerView = binding.srcDestRecyclerView
-									sourceDestinationRecyclerView.adapter = assignedRoutesAdapter
-									sourceDestinationRecyclerView.layoutManager =
-										srcDestLayoutManager
-									sourceDestinationRecyclerView.isNestedScrollingEnabled = false
-									binding.srcDestRecyclerView.visibility = View.VISIBLE
-									binding.noRoutesCard.visibility = View.GONE
-								} else {
-									binding.srcDestRecyclerView.visibility = View.GONE
-									binding.noRoutesCard.visibility = View.VISIBLE
-								}
-							} catch (e: Exception) {
+							val assignedRoutesJson = obj.get("assigned_routes") as JSONArray
+							if (assignedRoutesJson.length() > 0) {
+								val assignedRoutesList: ArrayList<AssignedRoutes> =
+									Gson().fromJson(
+										assignedRoutesJson.toString(),
+										object : TypeToken<List<AssignedRoutes>>() {}.type
+									)
+								assignedRoutesAdapter =
+									AssignedRoutesAdapter(assignedRoutesList)
+								assignedRoutesAdapter.setOnItemClickListener(this@HomeActivity)
+								sourceDestinationRecyclerView = binding.srcDestRecyclerView
+								sourceDestinationRecyclerView.adapter = assignedRoutesAdapter
+								sourceDestinationRecyclerView.layoutManager = LinearLayoutManager(this@HomeActivity)
+								sourceDestinationRecyclerView.isNestedScrollingEnabled = false
+								binding.srcDestRecyclerView.visibility = View.VISIBLE
+								binding.noRoutesCard.visibility = View.GONE
+							} else {
 								binding.srcDestRecyclerView.visibility = View.GONE
 								binding.noRoutesCard.visibility = View.VISIBLE
 							}
-							try {
-								val latestTicketsJson = obj.get("latest_tickets") as JSONArray
-								if (latestTicketsJson.length() > 0) {
-									val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
-										latestTicketsJson.toString(),
-										object : TypeToken<List<Ticket>>() {}.type
-									)
-									recentTicketAdapter = RecentTicketAdapter(latestTicketsList)
-									recentTicketsRecyclerView = binding.recentTicketsRecyclerView
-									recentTicketsRecyclerView.adapter = recentTicketAdapter
-									recentTicketsRecyclerView.layoutManager =
-										recentTicketsLayoutManager
-									recentTicketsRecyclerView.isNestedScrollingEnabled = false
-									binding.recentTicketsRecyclerView.visibility = View.VISIBLE
-									binding.noRecentTicketsCard.visibility = View.GONE
-								} else {
-									binding.recentTicketsRecyclerView.visibility = View.GONE
-									binding.noRecentTicketsCard.visibility = View.VISIBLE
-								}
-							} catch (e: Exception) {
+
+							val latestTicketsJson = obj.get("latest_tickets") as JSONArray
+
+							//Start for mobile view code
+							val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
+								latestTicketsJson.toString(),
+								object : TypeToken<List<Ticket>>() {}.type
+							)
+							binding.recentTickets.setOnClickListener {
+								val bundle = Bundle()
+								val i = Intent(this@HomeActivity, TicketListActivity::class.java)
+								bundle.putString("recent_tickets", Gson().toJson(latestTicketsList))
+								i.putExtras(bundle)
+								startActivity(i)
+							}
+							//End for mobile view code
+
+							//Start for tablet view code
+							/*if (latestTicketsJson.length() > 0) {
+								val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
+									latestTicketsJson.toString(),
+									object : TypeToken<List<Ticket>>() {}.type
+								)
+								recentTicketAdapter = TicketAdapter(latestTicketsList)
+								recentTicketsRecyclerView = binding.recentTicketsRecyclerView
+								recentTicketsRecyclerView.adapter = recentTicketAdapter
+								recentTicketsRecyclerView.layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+								recentTicketsRecyclerView.isNestedScrollingEnabled = false
+								binding.recentTicketsRecyclerView.visibility = View.VISIBLE
+								binding.noRecentTicketsCard.visibility = View.GONE
+							} else {
 								binding.recentTicketsRecyclerView.visibility = View.GONE
 								binding.noRecentTicketsCard.visibility = View.VISIBLE
-							}
-							try {
-								val recentFerryJson = obj.get("recent_ferry") as String
-								if (recentFerryJson.isNotEmpty()) {
-									val recentFerry: Ferry = Gson().fromJson(
-										recentFerryJson,
-										object : TypeToken<Ferry>() {}.type
-									)
-									binding.recentFerry.ferryCard.visibility = View.VISIBLE
-									binding.noRecentFerryCard.visibility = View.GONE
-									binding.recentFerry.ferryName.text = recentFerry.ferry_name
-									binding.recentFerry.ferryNumber.text = recentFerry.ferry_no
-									binding.recentFerry.departureTime.text = recentFerry.departure
-									binding.recentFerry.arrivalTime.text = recentFerry.arrival
-									binding.recentFerry.src.text = recentFerry.source_ghat
-									binding.recentFerry.dest.text = recentFerry.destination_ghat
-									binding.recentFerry.availablePerson.text = recentFerry.seat_capacity
-									binding.recentFerry.availableCycle.text = recentFerry.bicycle_capacity
-									binding.recentFerry.availableMotorcycle.text = recentFerry.bicycle_capacity
-									binding.recentFerry.availableLmv.text = recentFerry.four_wheeler_lmv_capacity
-									binding.recentFerry.availableHmv.text = recentFerry.four_wheeler_hmv_capacity
-									binding.recentFerry.availableGoods.text = recentFerry.others_capacity.toString()
-									binding.recentFerry.ferryCard.setOnClickListener {
-										getFerryService(recentFerry.id)
-									}
-								} else {
-									binding.recentFerry.ferryCard.visibility = View.GONE
-									binding.noRecentFerryCard.visibility = View.VISIBLE
+							}*/
+							//End for tablet view code
+
+							if (!JSONObject.NULL.equals(obj.get("recent_ferry"))) {
+								val recentFerryJson = obj.get("recent_ferry") as JSONObject
+								val recentFerry: Ferry = Gson().fromJson(
+									recentFerryJson.toString(),
+									object : TypeToken<Ferry>() {}.type
+								)
+								binding.recentFerry.ferryCard.visibility = View.VISIBLE
+								binding.noRecentFerryCard.visibility = View.GONE
+								binding.recentFerry.ferryName.text = recentFerry.ferry_name
+								binding.recentFerry.ferryNumber.text = recentFerry.ferry_no
+								binding.recentFerry.departureTime.text = recentFerry.departure
+								binding.recentFerry.arrivalTime.text = recentFerry.arrival
+								binding.recentFerry.src.text = recentFerry.source_ghat
+								binding.recentFerry.dest.text = recentFerry.destination_ghat
+								binding.recentFerry.availablePerson.text =
+									recentFerry.seat_capacity
+								binding.recentFerry.availableCycle.text =
+									recentFerry.bicycle_capacity
+								binding.recentFerry.availableMotorcycle.text =
+									recentFerry.bicycle_capacity
+								binding.recentFerry.availableLmv.text =
+									recentFerry.four_wheeler_lmv_capacity
+								binding.recentFerry.availableHmv.text =
+									recentFerry.four_wheeler_hmv_capacity
+								binding.recentFerry.availableGoods.text =
+									recentFerry.others_capacity.toString()
+								binding.recentFerry.ferryCard.setOnClickListener {
+									getFerryService(recentFerry.id)
 								}
-							} catch (e: Exception) {
+								binding.recentFerry.ferryCard.visibility = View.VISIBLE
+								binding.noRecentFerryCard.visibility = View.GONE
+							} else {
 								binding.recentFerry.ferryCard.visibility = View.GONE
 								binding.noRecentFerryCard.visibility = View.VISIBLE
 							}
@@ -340,8 +345,35 @@ class HomeActivity : AppCompatActivity(), OnRecentTicketsRecyclerViewItemClickLi
 		}
 	}
 
+	@SuppressLint("SetTextI18n")
 	override fun onRecentTicketsItemClickListener(position: Int, type: String) {
-		
+		val ticket: Ticket = Gson().fromJson(
+			type,
+			object : TypeToken<Ticket>() {}.type
+		)
+		val bundle = Bundle()
+		val i = Intent(this@HomeActivity, TicketActivity::class.java)
+		bundle.putString("ticket", Gson().toJson(ticket))
+		i.putExtras(bundle)
+		startActivity(i)
+
+		/*val printTicketBottomSheet = BottomSheetDialog(this@HomeActivity)
+		printTicketBottomSheet.setCancelable(false)
+		printTicketBottomSheet.setContentView(R.layout.exit_bottom_sheet_layout)
+		val title = printTicketBottomSheet.findViewById<TextView>(R.id.title)
+		val header = printTicketBottomSheet.findViewById<TextView>(R.id.header)
+		val success = printTicketBottomSheet.findViewById<Button>(R.id.success)
+		val cancel = printTicketBottomSheet.findViewById<Button>(R.id.cancel)
+		title?.visibility = View.GONE
+		header?.text = "PRINT TICKET?"
+		success?.text = "PRINT"
+		cancel?.text = "CANCEL"
+		printTicketBottomSheet.show()
+
+		success?.setOnClickListener {
+			finishAffinity()
+		}
+		cancel?.setOnClickListener { printTicketBottomSheet.dismiss() }*/
 	}
 
 	override fun onAssignedRoutesItemClickListener(position: Int, type: String) {

@@ -7,17 +7,13 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.amtron.ferryticket.R
-import com.amtron.ferryticket.adapter.FerryServiceAdapter
 import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
 import com.amtron.ferryticket.adapter.SummaryAdapter
 import com.amtron.ferryticket.databinding.ActivityBookBinding
@@ -27,8 +23,6 @@ import com.amtron.ferryticket.helper.Util
 import com.amtron.ferryticket.model.*
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -53,7 +47,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private lateinit var genderRG: RadioGroup
 	private lateinit var passengerTypeRG: RadioGroup
 	private lateinit var genderList: ArrayList<Gender>
-	private lateinit var bookingList: ArrayList<Booking>
 	private lateinit var passengerList: ArrayList<PassengerDetails>
 	private lateinit var vehicleList: ArrayList<Vehicle>
 	private lateinit var othersList: ArrayList<Others>
@@ -114,7 +107,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		val vehicleTypeNameList = ArrayList<String>()
 		val goodsTypeList = ArrayList<OtherType>()
 		val goodsTypeNameList = ArrayList<String>()
-		bookingList = ArrayList()
 		passengerList = ArrayList()
 		vehicleList = ArrayList()
 		othersList = ArrayList()
@@ -236,23 +228,36 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				isAddPassengerCardVisible = true
 				binding.addPassengerCard.visibility = View.VISIBLE
 				binding.addPassenger.setOnClickListener {
-					if (passengerTypeRG.checkedRadioButtonId == -1){
+					if (passengerTypeRG.checkedRadioButtonId == -1) {
 						Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show()
 					} else {
 						if (binding.name.text.isEmpty()) {
 							Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show()
 						} else {
 							if (binding.phone.text.isEmpty()) {
-								Toast.makeText(this, "Please enter phone number", Toast.LENGTH_SHORT).show()
+								Toast.makeText(
+									this,
+									"Please enter phone number",
+									Toast.LENGTH_SHORT
+								).show()
 							} else {
 								if (binding.age.text.isEmpty()) {
-									Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT).show()
+									Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT)
+										.show()
 								} else {
 									if (genderRG.checkedRadioButtonId == -1) {
-										Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show()
+										Toast.makeText(
+											this,
+											"Please select gender",
+											Toast.LENGTH_SHORT
+										).show()
 									} else {
 										if (binding.address.text.isEmpty()) {
-											Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT).show()
+											Toast.makeText(
+												this,
+												"Please enter age",
+												Toast.LENGTH_SHORT
+											).show()
 										} else {
 											var disableBool = 0
 											if (binding.disableCheckBox.isChecked) {
@@ -262,10 +267,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 												binding.name.text.toString(),
 												binding.phone.text.toString(),
 												binding.age.text.toString(),
-												genderList[genderRG.checkedRadioButtonId],
-												passengerTypeList[passengerTypeRG.checkedRadioButtonId],
+												disableBool,
 												binding.address.text.toString(),
-												disableBool
+												passengerTypeList[passengerTypeRG.checkedRadioButtonId],
+												genderList[genderRG.checkedRadioButtonId]
 											)
 											addPassenger(passenger)
 										}
@@ -303,9 +308,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.addVehicleCard.visibility = View.VISIBLE
 				binding.addVehicle.setOnClickListener {
 					if (selectedVehicleType == null) {
-						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT).show()
+						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT)
+							.show()
 					} else {
-						vehicle = Vehicle(selectedVehicleType!!, binding.vehicleNumber.text.toString())
+						vehicle =
+							Vehicle(selectedVehicleType!!, binding.vehicleNumber.text.toString())
 						Log.d("vehicle", vehicle.toString())
 						addVehicle(vehicle)
 					}
@@ -341,21 +348,22 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						Toast.makeText(this, "Please select goods type", Toast.LENGTH_SHORT).show()
 					} else {
 						if (binding.goodsName.text.isEmpty()) {
-							Toast.makeText(this, "Please enter goods name", Toast.LENGTH_SHORT).show()
+							Toast.makeText(this, "Please enter goods name", Toast.LENGTH_SHORT)
+								.show()
 						} else {
 							if (binding.goodsWeight.text.isEmpty()) {
-								Toast.makeText(this, "Please enter goods weight", Toast.LENGTH_SHORT).show()
+								Toast.makeText(
+									this,
+									"Please enter goods weight",
+									Toast.LENGTH_SHORT
+								).show()
 							} else {
-								if (binding.goodsQuantity.text.isEmpty()) {
-									Toast.makeText(this, "Please enter goods quantity", Toast.LENGTH_SHORT).show()
-								} else {
-									others = Others(selectedGoodsType!!,
-										binding.goodsName.text.toString(),
-										binding.goodsWeight.text.toString().toInt(),
-										binding.goodsQuantity.text.toString().toInt()
-									)
-									addOthers(others)
-								}
+								others = Others(
+									selectedGoodsType!!,
+									binding.goodsName.text.toString(),
+									binding.goodsWeight.text.toString().toInt()
+								)
+								addOthers(others)
 							}
 						}
 					}
@@ -372,7 +380,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		}
 
 		binding.viewBookingSummaryBtn.setOnClickListener {
-			if (isSummaryVisible){
+			if (isSummaryVisible) {
 				binding.summaryListRecyclerView.visibility = View.GONE
 				isSummaryVisible = false
 				binding.proceedBtn.visibility = View.GONE
@@ -403,19 +411,94 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					recyclerView.layoutManager = LinearLayoutManager(this)
 					recyclerView.isNestedScrollingEnabled = false
 					binding.proceedBtn.setOnClickListener {
-						val booking = Booking(passengerList, vehicleList, othersList)
-//					saveBooking(booking)
+						bookTicket(
+							ferryService.id,
+							Gson().toJson(passengerList),
+							Gson().toJson(vehicleList),
+							Gson().toJson(othersList)
+						)
+						/*Log.d("ferry service", ferryService.id.toString())
+						Log.d("passenger list", Gson().toJson(passengerList))
+						Log.d("vehicle list", Gson().toJson(vehicleList))
+						Log.d("others list", Gson().toJson(othersList))*/
+					}
+				}
+			}
+		}
+	}
+
+	private fun bookTicket(
+		ferryServiceId: Int,
+		passengerList: String,
+		vehicleList: String,
+		othersList: String
+	) {
+		if (!Util().isOnline(this)) {
+			val noInternetAlert = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+			noInternetAlert.titleText = "NO INTERNET"
+			noInternetAlert.contentText = "Please retry"
+			noInternetAlert.confirmText = "RETRY"
+			noInternetAlert.showCancelButton(false)
+			noInternetAlert.setConfirmClickListener {
+				bookTicket(ferryServiceId, passengerList, vehicleList, othersList)
+			}
+		} else {
+			val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+			dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+			dialog.titleText = "Booking Ticket..."
+			dialog.setCancelable(false)
+			dialog.show()
+			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			GlobalScope.launch {
+				val call: Call<JsonObject> = api.bookTicket(
+					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+					ferryServiceId,
+					passengerList,
+					vehicleList,
+					othersList
+				)
+				call.enqueue(object : Callback<JsonObject> {
+					@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
+					override fun onResponse(
+						call: Call<JsonObject>,
+						response: Response<JsonObject>
+					) {
+						if (response.isSuccessful) {
+							val helper = ResponseHelper()
+							helper.ResponseHelper(response.body())
+							if (helper.isStatusSuccessful()) {
+								dialog.dismissWithAnimation()
+								val ticket: Ticket = Gson().fromJson(
+									helper.getDataAsString(),
+									object : TypeToken<Ticket>() {}.type
+								)
+								val bundle = Bundle()
+								val i = Intent(this@BookActivity, Ticket::class.java)
+								bundle.putString("ticket", Gson().toJson(ticket))
+								i.putExtras(bundle)
+								startActivity(i)
+							}
+						} else {
+							dialog.dismiss()
+							NotificationHelper().getErrorAlert(
+								this@BookActivity,
+								"Response Error Code" + response.message()
+							)
+						}
 					}
 
-//				openBookingSummaryBottomSheet()
-				}
+					override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+						dialog.dismiss()
+						NotificationHelper().getErrorAlert(this@BookActivity, "Server Error")
+					}
+				})
 			}
 		}
 	}
 
 	private fun getUpdatedAvailabilities() {
 		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0");
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		dialog.titleText = "Getting Availabilities..."
 		dialog.setCancelable(false)
 		dialog.show()
@@ -437,12 +520,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						if (helper.isStatusSuccessful()) {
 							dialog.dismissWithAnimation()
 							val obj = JSONObject(helper.getDataAsString())
-							binding.ferry.availablePerson.text = (obj.get("passenger_capacity") as Int).toString()
-							binding.ferry.availableCycle.text = (obj.get("bicycle_capacity") as Int).toString()
-							binding.ferry.availableMotorcycle.text = (obj.get("two_wheeler_capacity") as Int).toString()
-							binding.ferry.availableLmv.text = (obj.get("four_wheeler") as Int).toString()
-							binding.ferry.availableGoods.text = (obj.get("others_capacity") as Int).toString()
-							binding.ferry.availableHmv.text = (obj.get("hmv_capacity") as Int).toString()
+							binding.ferry.availablePerson.text =
+								(obj.get("passenger_capacity") as Int).toString()
+							binding.ferry.availableCycle.text =
+								(obj.get("bicycle_capacity") as Int).toString()
+							binding.ferry.availableMotorcycle.text =
+								(obj.get("two_wheeler_capacity") as Int).toString()
+							binding.ferry.availableLmv.text =
+								(obj.get("four_wheeler") as Int).toString()
+							binding.ferry.availableGoods.text =
+								(obj.get("others_capacity") as Int).toString()
+							binding.ferry.availableHmv.text =
+								(obj.get("hmv_capacity") as Int).toString()
 						}
 					} else {
 						dialog.dismiss()
@@ -459,10 +548,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				}
 			})
 		}
-	}
-
-	private fun saveBooking(booking: Booking) {
-
 	}
 
 	private fun addOthers(others: Others) {
@@ -516,11 +601,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		}
 	}
 
-	private fun openBookingSummaryBottomSheet() {
-		val bookingSummaryBottomSheet = BottomSheetDialog(this)
-		bookingSummaryBottomSheet.setContentView(R.layout.booking_summary_layout)
-	}
-
 	private fun resetPassenger() {
 		binding.name.setText("")
 		binding.phone.setText("")
@@ -560,7 +640,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (allDataList[position] is PassengerDetails) {
 				if (totalPassengerCount == 1) {
 					alert.titleText = "WARNING"
-					alert.contentText = "This is the last passenger. Deleting will delete all data. Delete?"
+					alert.contentText =
+						"This is the last passenger. Deleting will delete all data. Delete?"
 					alert.setConfirmClickListener {
 						totalPassengerCount = 0
 						totalVehiclesCount = 0

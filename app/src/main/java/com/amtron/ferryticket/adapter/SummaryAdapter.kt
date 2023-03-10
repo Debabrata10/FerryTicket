@@ -3,7 +3,6 @@ package com.amtron.ferryticket.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.model.Others
 import com.amtron.ferryticket.model.PassengerDetails
 import com.amtron.ferryticket.model.Vehicle
-import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 
-class SummaryAdapter(private val summaryList: List<Any>, private val mContext: Context) : RecyclerView.Adapter<SummaryAdapter.ViewHolder>() {
+class SummaryAdapter(private val summaryList: List<Any>, private val mContext: Context) :
+	RecyclerView.Adapter<SummaryAdapter.ViewHolder>() {
 	private lateinit var mItemClickListener: OnRecyclerViewItemClickListener
 	private lateinit var any: Any
 
@@ -46,18 +44,19 @@ class SummaryAdapter(private val summaryList: List<Any>, private val mContext: C
 			holder.image.layoutParams.width = 50
 			holder.image.maxWidth = 50
 			holder.image.maxHeight = 50
-			holder.name.text = "NAME: ${(any as PassengerDetails).name} (${(any as PassengerDetails).gender.gender_name}, ${(any as PassengerDetails).age})"
-			holder.type.text = "PASSENGER TYPE: ${(any as PassengerDetails).p_type.type}"
-			holder.phone.text = "PHONE NUMBER: ${(any as PassengerDetails).phone_number}"
+			holder.name.text =
+				"NAME: ${(any as PassengerDetails).passenger_name} (${(any as PassengerDetails).gender.gender_name}, ${(any as PassengerDetails).age})"
+			holder.type.text = "PASSENGER TYPE: ${(any as PassengerDetails).passenger_type.type}"
+			holder.phone.text = "PHONE NUMBER: ${(any as PassengerDetails).mobile_no}"
 			holder.address.text = "ADDRESS: ${(any as PassengerDetails).address}"
 		} else if (any is Vehicle) {
 			holder.imageLayout.setBackgroundColor(Color.parseColor(("#09509A")))
 			holder.image.setBackgroundResource(R.drawable.ic_baseline_directions_car_24)
 			holder.image.layoutParams.height = 50
 			holder.image.layoutParams.width = 50
-			holder.name.text = "VEHICLE TYPE: ${(any as Vehicle).v_type.p_name}"
-			if ((any as Vehicle).vehicle_number != "") {
-				holder.type.text = "VEHICLE NUMBER: ${(any as Vehicle).vehicle_number}"
+			holder.name.text = "VEHICLE TYPE: ${(any as Vehicle).vehicle_type.p_name}"
+			if ((any as Vehicle).reg_no != "") {
+				holder.type.text = "VEHICLE NUMBER: ${(any as Vehicle).reg_no}"
 				holder.phone.visibility = View.GONE
 				holder.address.visibility = View.GONE
 			} else {
@@ -72,8 +71,7 @@ class SummaryAdapter(private val summaryList: List<Any>, private val mContext: C
 			holder.image.layoutParams.width = 50
 			holder.name.text = "GOODS NAME: ${(any as Others).other_name}"
 			holder.type.text = "GOODS TYPE: ${(any as Others).other_type.p_name}"
-			holder.phone.text = "QUANTITY: " + (any as Others).other_quantity
-			holder.address.text = "WEIGHT: " + (any as Others).other_weight + " Kg"
+			holder.phone.text = "QUANTITY: " + (any as Others).quantity
 		}
 		holder.cardDeleteBtn.setOnClickListener {
 			mItemClickListener.onItemClickListener(position, Gson().toJson(any))

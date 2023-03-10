@@ -65,4 +65,16 @@ interface Client {
 	fun getQR(
 		@Query("q") qr: String
 	): Call<JsonObject>
+
+	//BOOK TICKET API
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("book-ticket")
+	fun bookTicket(
+		@Header("Authorization") bearer: String,
+		@Field("ferry_service_id") ferryServiceId: Int,
+		@Field("passenger") passenger: String,
+		@Field("vehicle") vehicle: String,
+		@Field("others") others: String
+	): Call<JsonObject>
 }

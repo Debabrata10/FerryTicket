@@ -11,12 +11,12 @@ import com.amtron.ferryticket.model.Ticket
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 
-class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
-	RecyclerView.Adapter<RecentTicketAdapter.ViewHolder>() {
-	private lateinit var mItemClickListener: OnRecentTicketsRecyclerViewItemClickListener
+class TicketAdapter(private val ticketList: List<Ticket>) :
+	RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
+	private lateinit var mItemClickListener: OnTicketsRecyclerViewItemClickListener
 	private lateinit var ticket: Ticket
 
-	fun setOnItemClickListener(mItemClickListener: OnRecentTicketsRecyclerViewItemClickListener?) {
+	fun setOnItemClickListener(mItemClickListener: OnTicketsRecyclerViewItemClickListener?) {
 		this.mItemClickListener = mItemClickListener!!
 	}
 
@@ -28,10 +28,9 @@ class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
 
 	@SuppressLint("SetTextI18n")
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		ticket = recentTicketList[position]
+		ticket = ticketList[position]
 
 		holder.ticketNumber.text = ticket.ticket_no
-		holder.name.text = ticket.passenger_name
 		holder.date.text = ticket.ferry_date
 		holder.price.text = "₹${ticket.total_amt}"
 		holder.ticket.setOnClickListener {
@@ -40,13 +39,12 @@ class RecentTicketAdapter(private val recentTicketList: List<Ticket>) :
 	}
 
 	override fun getItemCount(): Int {
-		return recentTicketList.size
+		return ticketList.size
 	}
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		val ticket: MaterialCardView = itemView.findViewById(R.id.ticket)
 		val ticketNumber: TextView = itemView.findViewById(R.id.ticket_number)
-		val name: TextView = itemView.findViewById(R.id.name)
 		val date: TextView = itemView.findViewById(R.id.date)
 		val price: TextView = itemView.findViewById(R.id.price)
 	}

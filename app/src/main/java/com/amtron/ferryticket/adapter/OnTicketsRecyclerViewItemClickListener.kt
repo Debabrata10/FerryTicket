@@ -1,5 +1,5 @@
 package com.amtron.ferryticket.adapter
 
-interface OnRecentTicketsRecyclerViewItemClickListener {
+interface OnTicketsRecyclerViewItemClickListener {
 	fun onRecentTicketsItemClickListener(position: Int, type: String)
 }

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.PrintActivity"
+    tools:ignore="HardCodedText">
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/printDetailsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/printView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="awt_logo"
+                            android:src="@drawable/awt" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:gravity="center"
+                                android:text="INLAND WATER TRANSPORT"
+                                android:textColor="@color/dark_blue"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:gravity="center"
+                                android:text="govt of assam"
+                                android:textColor="@color/dark_blue" />
+
+                            <TextView
+                                android:id="@+id/ferryLocation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:gravity="center"
+                                android:text="DIV: SILCHAR"
+                                android:textColor="@color/dark_blue" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ferryName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:paddingStart="10dp"
+                                android:text="Name"
+                                android:textColor="@color/dark_blue" />
+
+                            <TextView
+                                android:id="@+id/ferryPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:paddingStart="10dp"
+                                android:text="Phone"
+                                android:textColor="@color/dark_blue" />
+
+                            <TextView
+                                android:id="@+id/ferryGender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:paddingStart="10dp"
+                                android:text="Gender"
+                                android:textColor="@color/dark_blue" />
+
+                            <TextView
+                                android:id="@+id/ghatName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:paddingStart="10dp"
+                                android:text="Ghat Name"
+                                android:textColor="@color/dark_blue" />
+
+                            <TextView
+                                android:id="@+id/ferryBoatName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="20dp"
+                                android:fontFamily="@font/roboto_condensed_bold"
+                                android:paddingStart="10dp"
+                                android:text="Ferry Name"
+                                android:textColor="@color/dark_blue" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/ferryQrCode"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/iwt_logo" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ferryPassNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="center"
+                        android:text="IWT6583220478"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/ferryAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="center"
+                        android:text="Amount: 100"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/ferryBalance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="center"
+                        android:text="Balance: 100"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/ferryIssuedDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:text="Issued Date"
+                        android:textColor="@color/dark_blue" />
+
+                    <LinearLayout
+                        android:id="@+id/extraData"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp" />
+
+                    <TextView
+                        android:id="@+id/ferryIssuedBy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="center"
+                        android:text="Issued By Dipankar"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+            </ScrollView>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/backPrint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="#00BFFF"
+                android:drawableStart="@drawable/ic_baseline_arrow_back_24"
+                android:padding="10dp"
+                android:text="Back" />
+
+            <Button
+                android:id="@+id/printData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="#00BFFF"
+                android:drawableStart="@drawable/ic_baseline_print_24"
+                android:padding="10dp"
+                android:text="Print" />
+        </LinearLayout>
+    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

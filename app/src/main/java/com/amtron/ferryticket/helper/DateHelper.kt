@@ -19,22 +19,28 @@ class DateHelper {
 	}
 
 	fun getTodayOrTomorrow(req: String, format: String): String {
-		val current = LocalDateTime.now()
+//		val current = LocalDateTime.now()
+		val date = Date()
+		val current = SimpleDateFormat(format, Locale.getDefault())
 		var output = ""
 		if (req == "today") {
 			if (format == "dd-MM-yyyy") {
-				val f = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+//				val f = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+				val f = current.format(date)
 				output = current.format(f)
 			} else if (format == "dd MMM, yyyy") {
-				val f = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+//				val f = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+				val f = current.format(date)
 				output = current.format(f)
 			}
 		} else if (req == "tomorrow") {
 			if (format == "dd-MM-yyyy") {
-				val f = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+//				val f = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+				val f = current.format(date)
 				output = current.format(f).plus(1)
 			} else if (format == "dd MMM, yyyy") {
-				val f = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+//				val f = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+				val f = current.format(date)
 				output = current.format(f).plus(1)
 			}
 		}

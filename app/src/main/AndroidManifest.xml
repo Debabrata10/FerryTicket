@@ -20,6 +20,18 @@
         android:theme="@style/Theme.FerryTicket"
         tools:targetApi="31">
         <activity
+            android:name=".ui.TicketListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.PrintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.PendingTicketsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.TicketActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ScannerActivity"
             android:exported="false" />
         <activity
