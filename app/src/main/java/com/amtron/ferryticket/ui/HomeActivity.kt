@@ -18,7 +18,6 @@ import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.AssignedRoutesAdapter
 import com.amtron.ferryticket.adapter.OnAssignedRoutesRecyclerViewItemClickListener
 import com.amtron.ferryticket.adapter.OnTicketsRecyclerViewItemClickListener
-import com.amtron.ferryticket.adapter.TicketAdapter
 import com.amtron.ferryticket.databinding.ActivityHomeBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
@@ -181,7 +180,8 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 								assignedRoutesAdapter.setOnItemClickListener(this@HomeActivity)
 								sourceDestinationRecyclerView = binding.srcDestRecyclerView
 								sourceDestinationRecyclerView.adapter = assignedRoutesAdapter
-								sourceDestinationRecyclerView.layoutManager = LinearLayoutManager(this@HomeActivity)
+								sourceDestinationRecyclerView.layoutManager =
+									LinearLayoutManager(this@HomeActivity)
 								sourceDestinationRecyclerView.isNestedScrollingEnabled = false
 								binding.srcDestRecyclerView.visibility = View.VISIBLE
 								binding.noRoutesCard.visibility = View.GONE
@@ -382,8 +382,6 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 		dialog.titleText = "Getting Services"
 		dialog.setCancelable(false)
 		dialog.show()
-		val bundle = Bundle()
-		val i = Intent(this@HomeActivity, FerryListActivity::class.java)
 		val ferry: AssignedRoutes = Gson().fromJson(
 			type,
 			object : TypeToken<AssignedRoutes>() {}.type
@@ -409,11 +407,11 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 								helper.getDataAsString(),
 								object : TypeToken<List<FerryService>>() {}.type
 							)
-							bundle.putString("sourceGhat", ferry.source_ghat_name)
-							bundle.putString("destinationGhat", ferry.destination_ghat_name)
-							bundle.putString("ferryServices", Gson().toJson(ferryServiceList))
-							i.putExtras(bundle)
-							startActivity(i)
+							editor.putString("sourceGhat", ferry.source_ghat_name)
+							editor.putString("destinationGhat", ferry.destination_ghat_name)
+							editor.putString("ferryServices", Gson().toJson(ferryServiceList))
+							editor.apply()
+							startActivity(Intent(this@HomeActivity, FerryListActivity::class.java))
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(

@@ -1,40 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:orientation="vertical"
-    tools:ignore="HardCodedText">
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="40dp" android:orientation="vertical" tools:ignore="HardCodedText">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        tools:ignore="UseCompoundDrawables">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="10dp" tools:ignore="UseCompoundDrawables">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+        <ImageView android:layout_width="30dp" android:layout_height="match_parent"
+            android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
             android:contentDescription="passenger_icon"
-            android:src="@drawable/ic_baseline_directions_car_24"
-            android:textSize="17sp" />
+            android:src="@drawable/ic_baseline_directions_car_24" android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/vehicle_type_name_registration"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:gravity="center_vertical"
-            android:text="FOUR WHEELER (Maruti Alto, AS01DQ9999)"
+        <TextView android:id="@+id/vehicle_type_name_registration"
+            android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:layout_marginStart="5dp" android:fontFamily="@font/roboto_condensed_bold"
+            android:gravity="center_vertical" android:text="FOUR WHEELER (Maruti Alto, AS01DQ9999)"
             android:textSize="17sp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
+    <View android:layout_width="match_parent" android:layout_height="2dp"
         android:background="@color/blue_grotto" />
 </LinearLayout>

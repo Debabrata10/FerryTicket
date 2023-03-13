@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,27 +45,21 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
+		val ferryServicesString = sharedPreferences.getString("ferryServices", "")
+		val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
+			ferryServicesString.toString(),
+			object : TypeToken<List<FerryService>>() {}.type
+		)
+		adapter = FerryServiceAdapter(ferryServiceList)
+		adapter.setOnItemClickListener(this)
+		recyclerView = binding.ferryListRecyclerView
+		recyclerView.adapter = adapter
+		recyclerView.layoutManager = LinearLayoutManager(this)
+		recyclerView.isNestedScrollingEnabled = false
 
-		val bundleString = intent.extras
-		try {
-			val ferryServicesString = bundleString!!.getString("ferryServices", "")
-			val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
-				ferryServicesString.toString(),
-				object : TypeToken<List<FerryService>>() {}.type
-			)
-			adapter = FerryServiceAdapter(ferryServiceList)
-			adapter.setOnItemClickListener(this)
-			recyclerView = binding.ferryListRecyclerView
-			recyclerView.adapter = adapter
-			recyclerView.layoutManager = LinearLayoutManager(this)
-			recyclerView.isNestedScrollingEnabled = false
-
-			binding.date.text = DateHelper().getTodayOrTomorrow("today", "dd MMM, yyyy")
-			binding.srcGhat.text = bundleString.getString("sourceGhat", "")
-			binding.destGhat.text = bundleString.getString("destinationGhat", "")
-		} catch (e: Exception) {
-			Log.d("msg", "nothing found")
-		}
+		binding.date.text = DateHelper().getToday("dd MMM, yyyy")
+		binding.srcGhat.text = sharedPreferences.getString("sourceGhat", "")
+		binding.destGhat.text = sharedPreferences.getString("destinationGhat", "")
 
 		onBackPressedDispatcher.addCallback(this) {
 			startActivity(
