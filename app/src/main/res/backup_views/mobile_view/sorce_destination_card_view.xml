@@ -1,84 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    app:cardCornerRadius="10dp"
-    tools:ignore="HardCodedText">
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp" app:cardCornerRadius="10dp" tools:ignore="HardCodedText">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:baselineAligned="false" android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:background="@color/blue_btn_bg_color"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="NestedWeights">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="0.8" android:background="@color/blue_btn_bg_color"
+            android:gravity="center" android:orientation="vertical" tools:ignore="NestedWeights">
 
-            <TextView
-                android:id="@+id/src"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center"
-                android:text="GHAT1"
-                android:textColor="@color/dark_blue" />
+            <TextView android:id="@+id/src" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_margin="10dp"
+                android:fontFamily="@font/roboto_condensed_bold" android:gravity="center"
+                android:text="GHAT1" android:textColor="@color/dark_blue" />
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/circular_button"
-                android:clickable="false"
+            <ImageButton android:layout_width="30dp" android:layout_height="30dp"
+                android:background="@drawable/circular_button" android:clickable="false"
                 android:contentDescription="to_from_direction"
-                android:src="@drawable/ic_baseline_arrow_downward_24"
-                app:cornerRadius="20dp" />
+                android:src="@drawable/ic_baseline_arrow_downward_24" app:cornerRadius="20dp" />
 
-            <TextView
-                android:id="@+id/dest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center"
-                android:text="GHAT2"
-                android:textColor="@color/dark_blue" />
+            <TextView android:id="@+id/dest" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_margin="10dp"
+                android:fontFamily="@font/roboto_condensed_bold" android:gravity="center"
+                android:text="GHAT2" android:textColor="@color/dark_blue" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/src_dest_ll"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/aquamarine"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+        <LinearLayout android:id="@+id/src_dest_ll" android:layout_width="0dp"
+            android:layout_height="match_parent" android:layout_weight="0.2"
+            android:background="@color/aquamarine" android:gravity="center"
+            android:orientation="vertical" tools:ignore="UseCompoundDrawables">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+            <ImageView android:layout_width="match_parent" android:layout_height="40dp"
                 android:contentDescription="time_icon"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
 
-            <TextView
-                android:id="@+id/select_ferry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center"
-                android:text="SEARCH FERRY" />
+            <TextView android:id="@+id/select_ferry" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp" android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center" android:text="SEARCH FERRY" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,270 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/aquamarine"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".ui.TicketActivity"
-    tools:ignore="HardCodedText">
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/aquamarine"
+    android:gravity="center_horizontal" android:orientation="vertical"
+    tools:context=".ui.TicketActivity" tools:ignore="HardCodedText">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_margin="10dp"
         app:cardCornerRadius="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical" android:padding="10dp">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:contentDescription="ticket_icon"
-                android:src="@drawable/awt" />
+            <ImageView android:layout_width="match_parent" android:layout_height="100dp"
+                android:contentDescription="ticket_icon" android:src="@drawable/awt" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7"
-                    android:gravity="center"
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+                    android:layout_weight="0.7" android:gravity="center"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.1"
-                            android:contentDescription="ticket_icon"
-                            android:src="@drawable/ticket_svg"
-                            android:textSize="17sp" />
+                        <ImageView android:layout_width="0dp" android:layout_height="match_parent"
+                            android:layout_weight="0.1" android:contentDescription="ticket_icon"
+                            android:src="@drawable/ticket_svg" android:textSize="17sp" />
 
-                        <TextView
-                            android:id="@+id/ticket_no"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="0.9"
-                            android:fontFamily="@font/roboto"
-                            android:gravity="center_vertical"
-                            android:text="IWT201220365"
-                            android:textColor="@color/dark_blue"
-                            android:textSize="24sp"
+                        <TextView android:id="@+id/ticket_no" android:layout_width="0dp"
+                            android:layout_height="match_parent" android:layout_marginStart="15dp"
+                            android:layout_weight="0.9" android:fontFamily="@font/roboto"
+                            android:gravity="center_vertical" android:text="IWT201220365"
+                            android:textColor="@color/dark_blue" android:textSize="24sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
-                        android:orientation="horizontal">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="30dp"
+                        android:layout_marginTop="7dp" android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="match_parent"
+                        <ImageView android:layout_width="25dp" android:layout_height="match_parent"
                             android:contentDescription="date_icon"
                             android:src="@drawable/ic_baseline_calendar_month_24"
                             android:textSize="17sp" />
 
-                        <TextView
-                            android:id="@+id/ticket_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
+                        <TextView android:id="@+id/ticket_date" android:layout_width="wrap_content"
+                            android:layout_height="match_parent" android:layout_marginStart="15dp"
                             android:fontFamily="@font/roboto_condensed_bold"
-                            android:gravity="center_vertical"
-                            android:text="25 Feb, 2023"
+                            android:gravity="center_vertical" android:text="25 Feb, 2023"
                             android:textSize="17sp" />
 
-                        <ImageView
-                            android:id="@+id/isTwoWayImg"
-                            android:layout_width="25dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
+                        <ImageView android:id="@+id/isTwoWayImg" android:layout_width="25dp"
+                            android:layout_height="match_parent" android:layout_marginStart="10dp"
                             android:contentDescription="passenger_icon"
                             android:src="@drawable/baseline_compare_arrows_24"
                             android:textSize="17sp" />
 
-                        <TextView
-                            android:id="@+id/isTwoWayText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
+                        <TextView android:id="@+id/isTwoWayText" android:layout_width="wrap_content"
+                            android:layout_height="match_parent" android:layout_marginStart="15dp"
                             android:fontFamily="@font/roboto_condensed_bold"
-                            android:gravity="center_vertical"
-                            android:text="Two Way Ticket"
+                            android:gravity="center_vertical" android:text="Two Way Ticket"
                             android:textSize="17sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    tools:ignore="UseCompoundDrawables">
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+                    android:layout_weight="0.3" android:gravity="center"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:contentDescription="rupee_icon"
-                        android:src="@drawable/rupee_svg" />
+                    <ImageView android:layout_width="match_parent" android:layout_height="50dp"
+                        android:contentDescription="rupee_icon" android:src="@drawable/rupee_svg" />
 
-                    <TextView
-                        android:id="@+id/price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="100.00"
-                        android:textAlignment="center"
-                        android:textColor="@color/dark_blue"
+                    <TextView android:id="@+id/price" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_marginTop="7dp"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="100.00"
+                        android:textAlignment="center" android:textColor="@color/dark_blue"
                         android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="10dp">
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp" app:cardCornerRadius="10dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/ticket_view_passenger_details_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp"
+            <LinearLayout android:id="@+id/ticket_view_passenger_details_LL"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_max="180dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHeight_max="180dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0">
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="PASSENGER DETAILS"
-                    android:textColor="@color/dark_blue"
+                    android:text="PASSENGER DETAILS" android:textColor="@color/dark_blue"
                     android:textSize="17sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ticket_view_passenger_details_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent" android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ticket_view_vehicle_details_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp"
+            <LinearLayout android:id="@+id/ticket_view_vehicle_details_LL"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_max="180dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHeight_max="180dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ticket_view_passenger_details_LL"
                 app:layout_constraintVertical_bias="0">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="VEHICLE DETAILS"
-                    android:textColor="@color/dark_blue"
-                    android:textSize="17sp" />
+                    android:fontFamily="@font/roboto_condensed_bold" android:text="VEHICLE DETAILS"
+                    android:textColor="@color/dark_blue" android:textSize="17sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ticket_view_vehicle_details_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent" android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ticket_view_other_details_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp"
+            <LinearLayout android:id="@+id/ticket_view_other_details_LL"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_max="180dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHeight_max="180dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ticket_view_vehicle_details_LL">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="OTHER DETAILS"
-                    android:textColor="@color/dark_blue"
-                    android:textSize="17sp" />
+                    android:fontFamily="@font/roboto_condensed_bold" android:text="OTHER DETAILS"
+                    android:textColor="@color/dark_blue" android:textSize="17sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ticket_view_other_details_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent" android:layout_height="wrap_content" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:orientation="horizontal" android:padding="10dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cash_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:backgroundTint="@color/dark_blue"
-            android:text="PAY CASH"
-            android:textColor="@color/white"
-            app:icon="@drawable/baseline_currency_rupee_24"
-            app:iconTint="@color/white" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/cash_pay"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp" android:backgroundTint="@color/dark_blue"
+            android:text="PAY CASH" android:textColor="@color/white"
+            app:icon="@drawable/baseline_currency_rupee_24" app:iconTint="@color/white" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/online_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="@color/dark_blue"
-            android:text="PAY ONLINE"
-            android:textColor="@color/white"
-            app:icon="@drawable/baseline_book_online_24"
-            app:iconTint="@color/white" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/online_pay"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" android:backgroundTint="@color/dark_blue"
+            android:text="PAY ONLINE" android:textColor="@color/white"
+            app:icon="@drawable/baseline_book_online_24" app:iconTint="@color/white" />
     </LinearLayout>
 </LinearLayout>

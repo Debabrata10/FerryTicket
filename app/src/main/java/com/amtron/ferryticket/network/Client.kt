@@ -61,9 +61,11 @@ interface Client {
 
 	//SCAN API
 	@Headers("Accept: application/json")
-	@GET("web")
+	@FormUrlEncoded
+	@POST("card-details")
 	fun getQR(
-		@Query("q") qr: String
+		@Header("Authorization") bearer: String,
+		@Field("card_id") card_id: Int
 	): Call<JsonObject>
 
 	//BOOK TICKET API
@@ -73,8 +75,8 @@ interface Client {
 	fun bookTicket(
 		@Header("Authorization") bearer: String,
 		@Field("ferry_service_id") ferryServiceId: Int,
-		@Field("passenger") passenger: String,
-		@Field("vehicle") vehicle: String,
-		@Field("others") others: String
+		@Field("passenger_data") passenger: String,
+		@Field("vehicle_data") vehicle: String,
+		@Field("other_data") others: String
 	): Call<JsonObject>
 }

@@ -27,9 +27,11 @@ import com.amtron.ferryticket.network.RetrofitHelper
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +42,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private lateinit var sharedPreferences: SharedPreferences
 	private lateinit var editor: SharedPreferences.Editor
 	private lateinit var binding: ActivityBookBinding
+	private var qrScanIntegrator: IntentIntegrator? = null
 	private lateinit var masterData: MasterData
 	private lateinit var ferryService: FerryService
 	private lateinit var passenger: PassengerDetails
@@ -58,7 +61,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private var selectedGoodsType: OtherType? = null
 	private var masterDataString: String = ""
 	private var serviceString: String = ""
-	private var scanResult: String = ""
 	private var isAddPassengerCardVisible: Boolean = false
 	private var isAddVehicleCardVisible: Boolean = false
 	private var isAddGoodsCardVisible: Boolean = false
@@ -78,30 +80,17 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
 
-		val bundleString = intent.extras
-		try {
-			try {
-				scanResult = bundleString!!.getString("scanResult", "").toString()
-			} catch (e: Exception) {
-				Log.d("scan result", "is empty")
-			}
-		} catch (e: Exception) {
-			Log.d("extras", "is empty")
-		}
-
-		if (scanResult != "") {
-			Log.d("scan result", scanResult)
-			//Paste data into cards
-		}
+		qrScanIntegrator = IntentIntegrator(this)
 
 		binding.refresh.setOnClickListener {
 			getUpdatedAvailabilities()
 		}
 
 		binding.scan.setOnClickListener {
-			startActivity(
+			/*startActivity(
 				Intent(this, ScannerActivity::class.java)
-			)
+			)*/
+			performAction()
 		}
 
 		val vehicleTypeList = ArrayList<VehicleType>()
@@ -451,11 +440,24 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					if (selectedVehicleType == null) {
 						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT)
 							.show()
+					} else if (selectedVehicleType!!.p_name != "Bicycle") {
+						if (binding.vehicleLayout.vehicleNumber.text.isEmpty()) {
+							Toast.makeText(this, "Please select vehicle number", Toast.LENGTH_SHORT)
+								.show()
+						} else {
+							vehicle =
+								Vehicle(
+									selectedVehicleType!!,
+									binding.vehicleLayout.vehicleNumber.text.toString()
+								)
+							Log.d("vehicle", vehicle.toString())
+							addVehicle(vehicle)
+						}
 					} else {
 						vehicle =
 							Vehicle(
 								selectedVehicleType!!,
-								binding.vehicleLayout.vehicleNumber.text.toString()
+								"NA"
 							)
 						Log.d("vehicle", vehicle.toString())
 						addVehicle(vehicle)
@@ -620,16 +622,20 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					recyclerView.layoutManager = LinearLayoutManager(this)
 					recyclerView.isNestedScrollingEnabled = false
 					binding.proceedBtn.setOnClickListener {
-						/*bookTicket(
-							ferryService.id,
-							Gson().toJson(passengerList),
-							Gson().toJson(vehicleList),
-							Gson().toJson(othersList)
-						)*/
-						Log.d("ferry service", ferryService.id.toString())
-						Log.d("passenger list", Gson().toJson(passengerList))
-						Log.d("vehicle list", Gson().toJson(vehicleList))
-						Log.d("others list", Gson().toJson(othersList))
+						if (passengerList.isEmpty()) {
+							NotificationHelper().getWarningAlert(this, "No passengers found")
+						} else {
+							bookTicket(
+								ferryService.id,
+								Gson().toJson(passengerList),
+								Gson().toJson(vehicleList),
+								Gson().toJson(othersList)
+							)
+							Log.d("ferry service", ferryService.id.toString())
+							Log.d("passenger list", Gson().toJson(passengerList))
+							Log.d("vehicle list", Gson().toJson(vehicleList))
+							Log.d("others list", Gson().toJson(othersList))
+						}
 					}
 				}
 			}
@@ -654,7 +660,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.bookingBaseLayout.visibility = View.VISIBLE //for mobile view
 //				binding.addGoodsCard.visibility = View.GONE //for tablet view
 				binding.otherLayout.addGoodsCard.visibility = View.GONE //for mobile view
-			}else if (isSummaryVisible) {
+			} else if (isSummaryVisible) {
 				isSummaryVisible = false
 				binding.proceedBtn.visibility = View.GONE
 				binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE //for mobile view
@@ -664,6 +670,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				startActivity(Intent(this@BookActivity, FerryListActivity::class.java))
 			}
 		}
+	}
+
+	private fun performAction() {
+		qrScanIntegrator?.initiateScan()
 	}
 
 	private fun bookTicket(
@@ -703,6 +713,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						response: Response<JsonObject>
 					) {
 						if (response.isSuccessful) {
+							dialog.dismissWithAnimation()
 							val helper = ResponseHelper()
 							helper.ResponseHelper(response.body())
 							if (helper.isStatusSuccessful()) {
@@ -711,11 +722,15 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									helper.getDataAsString(),
 									object : TypeToken<Ticket>() {}.type
 								)
-								val bundle = Bundle()
-								val i = Intent(this@BookActivity, Ticket::class.java)
-								bundle.putString("ticket", Gson().toJson(ticket))
-								i.putExtras(bundle)
-								startActivity(i)
+								editor.putString("ticket", Gson().toJson(ticket))
+								editor.apply()
+								startActivity(Intent(this@BookActivity, TicketActivity::class.java))
+							} else {
+								dialog.dismiss()
+								NotificationHelper().getErrorAlert(
+									this@BookActivity,
+									helper.getErrorMsg()
+								)
 							}
 						} else {
 							dialog.dismiss()
@@ -813,10 +828,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		resetPassenger()
 	}
 
-	private fun openScanner() {
-		val api = RetrofitHelper.getInstanceForScan().create(Client::class.java)
+	private fun getDataFromQr(data: String) {
+		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+		dialog.titleText = "Getting card details.."
+		dialog.setCancelable(false)
+		dialog.show()
+		val api = RetrofitHelper.getInstance().create(Client::class.java)
 		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getQR("card_details/1")
+			val call: Call<JsonObject> = api.getQR(
+				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+				data.toInt()
+			)
 			call.enqueue(object : Callback<JsonObject> {
 				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged")
 				override fun onResponse(
@@ -824,7 +847,39 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					response: Response<JsonObject>
 				) {
 					if (response.isSuccessful) {
-
+						val helper = ResponseHelper()
+						helper.ResponseHelper(response.body())
+						if (helper.isStatusSuccessful()) {
+							dialog.titleText = "Card details found.."
+							val obj = JSONObject(helper.getDataAsString())
+							val passengerJSONArrayList = obj.get("passenger") as JSONArray
+							if (passengerJSONArrayList.length() > 0) {
+								val passengerDetailsList: ArrayList<PassengerDetails> =
+									Gson().fromJson(
+										passengerJSONArrayList.toString(),
+										object : TypeToken<List<PassengerDetails>>() {}.type
+									)
+								dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
+								dialog.titleText = "Passengers found. Add them?"
+								dialog.confirmText = "ADD"
+								dialog.cancelText = "CANCEL"
+								dialog.setCancelClickListener {
+									dialog.dismissWithAnimation()
+								}
+								dialog.setConfirmClickListener {
+									for (p in passengerDetailsList) {
+										addPassenger(p)
+									}
+									dialog.dismissWithAnimation()
+								}
+							} else {
+								Toast.makeText(
+									this@BookActivity,
+									"No passengers found",
+									Toast.LENGTH_SHORT
+								).show()
+							}
+						}
 					} else {
 						NotificationHelper().getErrorAlert(
 							this@BookActivity,
@@ -873,6 +928,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		//for mobile view starts
 		binding.vehicleLayout.vehicleNumber.visibility = View.VISIBLE
 		binding.vehicleLayout.vehicleNumber.setText("")
+		selectedVehicleType = null
 		binding.vehicleLayout.vehicleTypeDropdown.setText(
 			binding.vehicleLayout.vehicleTypeDropdown.adapter.getItem(0).toString(), false
 		)
@@ -891,6 +947,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		//for mobile view starts
 		binding.otherLayout.goodsName.setText("")
 		binding.otherLayout.goodsQuantity.setText("")
+		selectedGoodsType = null
 		binding.otherLayout.othersTypeDropdown.setText(
 			binding.otherLayout.othersTypeDropdown.adapter.getItem(0).toString(), false
 		)
@@ -927,6 +984,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						binding.summarySection.visibility = View.GONE
 						binding.proceedBtn.visibility = View.GONE
 						binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
+						passengerList.removeAt(position)
 					}
 					alert.setCancelClickListener {
 						alert.dismiss()
@@ -935,6 +993,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					totalPassengerCount -= 1
 					binding.passengerCount.text = totalPassengerCount.toString()
 					allDataList.removeAt(position)
+					passengerList.removeAt(position)
 					adapter.notifyDataSetChanged()
 					Log.d("size", passengerList.size.toString())
 					alert.dismissWithAnimation()
@@ -942,18 +1001,34 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			} else {
 				if (allDataList[position] is Vehicle) {
 					totalVehiclesCount -= 1
-					binding.vehiclesCount.text = totalPassengerCount.toString()
+					binding.vehiclesCount.text = totalVehiclesCount.toString()
+					vehicleList.removeAt(position-1)
 				} else if (allDataList[position] is Others) {
 					totalGoodsCount -= 1
-					binding.goodsCount.text = totalPassengerCount.toString()
+					binding.goodsCount.text = totalGoodsCount.toString()
+					othersList.removeAt(position)
 				}
 				allDataList.removeAt(position)
 				adapter.notifyDataSetChanged()
-				Log.d("size", passengerList.size.toString())
 				alert.dismissWithAnimation()
 			}
 		}
 		alert.show()
+	}
+
+	@Deprecated("Deprecated in Java")
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+		if (result != null) {
+			// If QRCode has no data.
+			if (result.contents == null) {
+				Toast.makeText(this, "Result not found", Toast.LENGTH_LONG).show()
+			} else {
+				getDataFromQr(result.contents)
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data)
+		}
 	}
 
 	override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

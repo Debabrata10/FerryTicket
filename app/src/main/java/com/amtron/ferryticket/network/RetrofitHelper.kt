@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
 	private const val apiUrl = "https://asiwt.in/api/counter/"
-	private const val scanUrl = "https://tokapoisa.in/"
 	private var mClient: OkHttpClient? = null
 
 	private val client: OkHttpClient
@@ -34,13 +33,6 @@ object RetrofitHelper {
 	fun getInstance(): Retrofit {
 		return Retrofit.Builder()
 			.baseUrl(apiUrl)
-			.client(client)
-			.addConverterFactory(GsonConverterFactory.create()).build()
-	}
-
-	fun getInstanceForScan(): Retrofit {
-		return Retrofit.Builder()
-			.baseUrl(scanUrl)
 			.client(client)
 			.addConverterFactory(GsonConverterFactory.create()).build()
 	}

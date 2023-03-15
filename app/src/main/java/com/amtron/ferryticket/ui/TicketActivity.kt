@@ -1,13 +1,16 @@
 package com.amtron.ferryticket.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.OtherDetailsTicketViewAdapter
 import com.amtron.ferryticket.adapter.PassengerDetailsTicketViewAdapter
 import com.amtron.ferryticket.adapter.VehicleDetailsTicketViewAdapter
@@ -16,6 +19,7 @@ import com.amtron.ferryticket.model.Others
 import com.amtron.ferryticket.model.PassengerDetails
 import com.amtron.ferryticket.model.Ticket
 import com.amtron.ferryticket.model.Vehicle
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -33,23 +37,20 @@ class TicketActivity : AppCompatActivity() {
 	private lateinit var vehicleDetailsTicketViewAdapter: VehicleDetailsTicketViewAdapter
 	private lateinit var otherDetailsTicketViewAdapter: OtherDetailsTicketViewAdapter
 
+	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityTicketBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		val bundleString = intent.extras
-		try {
-			val ticketString = bundleString!!.getString("ticket", "").toString()
-			ticket = Gson().fromJson(
-				ticketString,
-				object : TypeToken<Ticket>() {}.type
-			)
-		} catch (e: Exception) {
-			startActivity(Intent(this, PendingTicketsActivity::class.java))
-		}
+		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
+		editor = sharedPreferences.edit()
 
-		Log.d("ticket", ticket.toString())
+		val ticketString = sharedPreferences.getString("ticket", "").toString()
+		ticket = Gson().fromJson(
+			ticketString,
+			object : TypeToken<Ticket>() {}.type
+		)
 
 		if (ticket.two_way == 0) {
 			binding.isTwoWayImg.visibility = View.GONE
@@ -107,8 +108,34 @@ class TicketActivity : AppCompatActivity() {
 		}
 
 		binding.cashPay.setOnClickListener {
+			val cashPaymentBottomSheet = BottomSheetDialog(this)
+			cashPaymentBottomSheet.setCancelable(false)
+			cashPaymentBottomSheet.setContentView(R.layout.exit_bottom_sheet_layout)
+			val title = cashPaymentBottomSheet.findViewById<TextView>(R.id.title)
+			val header = cashPaymentBottomSheet.findViewById<TextView>(R.id.header)
+			val success = cashPaymentBottomSheet.findViewById<Button>(R.id.success)
+			val cancel = cashPaymentBottomSheet.findViewById<Button>(R.id.cancel)
+			title?.text = "Press confirm after collecting cash"
+			header?.visibility = View.GONE
+			success?.text = "CONFIRM"
+			cancel?.text = "CANCEL"
+			cashPaymentBottomSheet.show()
 
+			success?.setOnClickListener {
+				startActivity(
+					Intent(this, TicketListActivity::class.java)
+				)
+			}
+			cancel?.setOnClickListener { cashPaymentBottomSheet.dismiss() }
 		}
+
+		/*binding.posPay.setOnClickListener {
+			val bundle = Bundle()
+			val i = Intent(this, PosActivity::class.java)
+			bundle.putString("price", ticket.total_amt.toString())
+			i.putExtras(bundle)
+			startActivity(i)
+		}*/
 
 		/*onBackPressedDispatcher.addCallback(this) {
 			startActivity(Intent(this@TicketActivity, HomeActivity::class.java))

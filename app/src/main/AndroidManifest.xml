@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FerryTicket"
         tools:targetApi="31">
+        <!--<activity
+            android:name=".PosActivity"
+            android:exported="false" />-->
         <activity
             android:name=".ui.TicketListActivity"
             android:exported="false" />
@@ -32,11 +35,9 @@
             android:name=".ui.TicketActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ScannerActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.BookActivity"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -79,6 +80,16 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name=".ui.MyProvider"
+            android:authorities=".MyProvider"
+            android:exported="false"
+            android:multiprocess="true" />
+
+        <uses-library
+            android:name="com.pos.device"
+            android:required="true" />
     </application>
 
 </manifest>

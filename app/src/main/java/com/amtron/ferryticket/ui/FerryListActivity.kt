@@ -45,7 +45,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
-		val ferryServicesString = sharedPreferences.getString("ferryServices", "")
+		val ferryServicesString = sharedPreferences.getString("ferryServices", "").toString()
 		val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
 			ferryServicesString.toString(),
 			object : TypeToken<List<FerryService>>() {}.type
@@ -58,8 +58,8 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		recyclerView.isNestedScrollingEnabled = false
 
 		binding.date.text = DateHelper().getToday("dd MMM, yyyy")
-		binding.srcGhat.text = sharedPreferences.getString("sourceGhat", "")
-		binding.destGhat.text = sharedPreferences.getString("destinationGhat", "")
+		binding.srcGhat.text = sharedPreferences.getString("sourceGhat", "").toString()
+		binding.destGhat.text = sharedPreferences.getString("destinationGhat", "").toString()
 
 		onBackPressedDispatcher.addCallback(this) {
 			startActivity(

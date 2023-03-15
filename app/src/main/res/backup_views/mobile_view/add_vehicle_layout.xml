@@ -1,82 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/add_vehicle_card"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/add_vehicle_card"
+    android:layout_width="match_parent" android:layout_height="match_parent"
     tools:ignore="HardCodedText">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout5"
+        <com.google.android.material.textfield.TextInputLayout android:id="@+id/textInputLayout5"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
             android:hint="Vehicle Type">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/vehicleTypeDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:inputType="none"
-                android:text="ADD VEHICLE TYPE"
-                android:textSize="14sp"
+                android:id="@+id/vehicleTypeDropdown" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:clickable="true"
+                android:gravity="center_vertical" android:inputType="none"
+                android:text="ADD VEHICLE TYPE" android:textSize="14sp"
                 tools:ignore="KeyboardInaccessibleWidget" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout6"
+        <com.google.android.material.textfield.TextInputLayout android:id="@+id/textInputLayout6"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:hint="Vehicle Number"
-            app:endIconMode="clear_text">
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
+            android:hint="Vehicle Number" app:endIconMode="clear_text">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/vehicleNumber"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:textSize="14sp"
-                tools:ignore="KeyboardInaccessibleWidget" />
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView android:id="@+id/vehicleNumber"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:clickable="true" android:gravity="center_vertical" android:inputType="text"
+                android:textSize="14sp" tools:ignore="KeyboardInaccessibleWidget" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:gravity="center"
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:baselineAligned="false" android:gravity="center"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/add_vehicle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2.5dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="ADD"
-                android:textColor="@color/white" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/add_vehicle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginEnd="2.5dp" android:fontFamily="@font/roboto_condensed_bold"
+                android:text="ADD" android:textColor="@color/white" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/close_add_vehicle_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2.5dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="CANCEL"
+                android:id="@+id/close_add_vehicle_card" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginStart="2.5dp"
+                android:fontFamily="@font/roboto_condensed_bold" android:text="CANCEL"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

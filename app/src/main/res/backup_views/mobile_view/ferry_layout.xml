@@ -1,278 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ferry_card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    app:cardCornerRadius="10dp"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/ferry_card"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp" app:cardCornerRadius="10dp"
     tools:ignore="HardCodedText, UseCompoundDrawables">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:baselineAligned="false" android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:orientation="vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="0.7" android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="vertical"
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:baselineAligned="false" android:orientation="vertical"
                 android:padding="5dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:orientation="horizontal">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+                    android:layout_weight="0.5" android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/ferry_name"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/ferry_name" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:gravity="bottom"
-                        android:text="ROPEX"
-                        android:textColor="@color/dark_blue"
-                        android:textSize="17sp"
-                        tools:ignore="NestedWeights" />
+                        android:fontFamily="@font/roboto_condensed_bold" android:gravity="bottom"
+                        android:text="ROPEX" android:textColor="@color/dark_blue"
+                        android:textSize="17sp" tools:ignore="NestedWeights" />
 
-                    <TextView
-                        android:id="@+id/ferry_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:gravity="bottom"
-                        android:text="100"
-                        android:textColor="@color/dark_blue"
-                        android:textSize="17sp"
-                        tools:ignore="NestedWeights" />
+                    <TextView android:id="@+id/ferry_number" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginStart="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold" android:gravity="bottom"
+                        android:text="100" android:textColor="@color/dark_blue"
+                        android:textSize="17sp" tools:ignore="NestedWeights" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0.5"
-                    android:fontFamily="@font/roboto_condensed_bold"
-                    android:gravity="top"
+                <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+                    android:layout_marginTop="5dp" android:layout_weight="0.5"
+                    android:fontFamily="@font/roboto_condensed_bold" android:gravity="top"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/src"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/src" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="GHAT1"
-                        android:textColor="@color/dark_blue"
-                        android:textSize="14sp" />
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="GHAT1"
+                        android:textColor="@color/dark_blue" android:textSize="14sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="-->"
-                        android:textColor="@color/dark_blue"
-                        android:textSize="20sp" />
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="-->"
+                        android:textColor="@color/dark_blue" android:textSize="20sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/dest"
-                    android:layout_width="wrap_content"
+                <TextView android:id="@+id/dest" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_condensed_bold"
-                    android:text="GHAT2"
-                    android:textColor="@color/blue_grotto"
-                    android:textSize="14sp" />
+                    android:fontFamily="@font/roboto_condensed_bold" android:text="GHAT2"
+                    android:textColor="@color/blue_grotto" android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:padding="10dp">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_person_icon"
                         android:src="@drawable/ic_baseline_person_24" />
 
-                    <TextView
-                        android:id="@+id/available_person"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/available_person" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:layout_marginStart="10dp"
+                    android:gravity="center" android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_bicycle_icon"
                         android:src="@drawable/ic_baseline_pedal_bike_24" />
 
-                    <TextView
-                        android:id="@+id/available_cycle"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/available_cycle" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:layout_marginStart="10dp"
+                    android:gravity="center" android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_two_wheeler_icon"
                         android:src="@drawable/ic_baseline_bike_scooter_24" />
 
-                    <TextView
-                        android:id="@+id/available_motorcycle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                    <TextView android:id="@+id/available_motorcycle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:layout_marginStart="10dp"
+                    android:gravity="center" android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_lmv_icon"
                         android:src="@drawable/ic_baseline_directions_car_24" />
 
-                    <TextView
-                        android:id="@+id/available_lmv"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/available_lmv" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:layout_marginStart="10dp"
+                    android:gravity="center" android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_hmv_icon"
                         android:src="@drawable/ic_baseline_directions_bus_24" />
 
-                    <TextView
-                        android:id="@+id/available_hmv"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/available_hmv" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:layout_marginStart="10dp"
+                    android:gravity="center" android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <ImageView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="available_goods_icon"
                         android:src="@drawable/ic_baseline_luggage_24" />
 
-                    <TextView
-                        android:id="@+id/available_goods"
-                        android:layout_width="wrap_content"
+                    <TextView android:id="@+id/available_goods" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="20"
+                        android:fontFamily="@font/roboto_condensed_bold" android:text="20"
                         android:textColor="@color/dark_blue" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/blue_grotto"
-            android:gravity="center"
-            android:orientation="vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="0.2" android:background="@color/blue_grotto"
+            android:gravity="center" android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/departure_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center_vertical"
-                android:text="12:00PM"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
+            <TextView android:id="@+id/departure_time" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_condensed_bold" android:gravity="center_vertical"
+                android:text="12:00PM" android:textColor="@color/white" android:textSize="17sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="interval"
-                android:src="@drawable/ic_baseline_access_time_filled_24"
-                app:tint="@color/white" />
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:contentDescription="interval"
+                android:src="@drawable/ic_baseline_access_time_filled_24" app:tint="@color/white" />
 
-            <TextView
-                android:id="@+id/arrival_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center_vertical"
-                android:text="4:00PM"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
+            <TextView android:id="@+id/arrival_time" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_condensed_bold" android:gravity="center_vertical"
+                android:text="4:00PM" android:textColor="@color/white" android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

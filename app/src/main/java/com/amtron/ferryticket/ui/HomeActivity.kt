@@ -68,6 +68,10 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 			)
 		}
 
+		binding.posSettings.setOnClickListener {
+			//dsvsdvdsvds
+		}
+
 		binding.recentFerry.ferryCard.setOnClickListener {
 			//send ferry
 			val i = Intent(this, BookActivity::class.java)
@@ -197,12 +201,15 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 								latestTicketsJson.toString(),
 								object : TypeToken<List<Ticket>>() {}.type
 							)
-							binding.recentTickets.setOnClickListener {
-								val bundle = Bundle()
-								val i = Intent(this@HomeActivity, TicketListActivity::class.java)
-								bundle.putString("recent_tickets", Gson().toJson(latestTicketsList))
-								i.putExtras(bundle)
-								startActivity(i)
+							binding.tickets.setOnClickListener {
+								editor.putString("recent_tickets", Gson().toJson(latestTicketsList))
+								editor.apply()
+								startActivity(
+									Intent(
+										this@HomeActivity,
+										TicketListActivity::class.java
+									)
+								)
 							}
 							//End for mobile view code
 
