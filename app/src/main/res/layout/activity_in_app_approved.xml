@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F7FF"
+    android:orientation="vertical"
+    tools:ignore="HardCodedText"
+    tools:context=".ui.InAppApprovedActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/awt"
+                android:contentDescription="app_logo"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="Directorate of Inland Water Transport"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="Ulubari, Guwahati 781007"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="Assam"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="**************************"
+                android:textAlignment="center"
+                android:textColor="@color/dark_blue"
+                android:textSize="17sp"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Date:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Time:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Ticket Number:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/ticketNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="RRN Number:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/txt_rrn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Source:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/src_ghat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Destination"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/dest_ghat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-------------------------------------"
+                    android:textAlignment="center"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="17sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Net Amount:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/net_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text=""
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/custServCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Servive Amount:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/service_charge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text=""
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-------------------------------------"
+                    android:textAlignment="center"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="17sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:text="Amount:"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:textColor="@color/dark_blue"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/txt_amount"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:text="INR 500.00"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:textColor="@color/dark_blue"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/print"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@color/aquamarine"
+            android:text="Print"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/goBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@color/aquamarine"
+            android:text="Go Back"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+</LinearLayout>

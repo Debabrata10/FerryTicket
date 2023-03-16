@@ -1,4 +1,3 @@
-/*
 package com.amtron.ferryticket.ui;
 
 import android.annotation.SuppressLint;
@@ -15,7 +14,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Printer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,11 +32,17 @@ import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityPosBinding;
 import com.amtron.ferryticket.model.Ticket;
 import com.google.gson.Gson;
+import com.pos.device.printer.PrintCanvas;
+import com.pos.device.printer.PrintTask;
+import com.pos.device.printer.Printer;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-public class PosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+import kotlinx.coroutines.DelicateCoroutinesApi;
+
+@DelicateCoroutinesApi public class PosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static String param_status = "false";
     public static String sim_status = "false";
     CursorLoader cursorLoader;
@@ -47,26 +51,20 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
     double amount;
     private Printer printer = null;
     private PrintTask printTask = null;
-    private SharedPreferences sharedPreference;
-    private SharedPreferences.Editor editor;
-    private Ticket ticket;
-    private ActivityPosBinding binding;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityPosBinding.inflate(getLayoutInflater());
+        com.amtron.ferryticket.databinding.ActivityPosBinding binding = ActivityPosBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
-        sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
-        editor = sharedPreference.edit();
+        SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
 
         getSupportLoaderManager().initLoader(1, null, this);
 
         String ticketString = sharedPreference.getString("ticket", "");
-        ticket = new Gson().fromJson(ticketString,Ticket.class);
+        Ticket ticket = new Gson().fromJson(ticketString, Ticket.class);
         amountString = String.valueOf(ticket.getTotal_amt());
         if (amountString.isEmpty()) {
             amount = 0.00;
@@ -114,8 +112,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
-    */
-/*public void functionNavigation(String txn_type) {
+    /*public void functionNavigation(String txn_type) {
         package_name = BuildConfig.APPLICATION_ID;
         String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
         Intent i = new Intent();
@@ -128,8 +125,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         i.putExtra("package", package_name);
         startActivityForResult(i,601);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-    }*//*
-
+    }*/
 
     // BQR payment api
     public void functionPaybyBqrorUpi(String amt, String txn_type) {
@@ -173,10 +169,6 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
                     if (data.hasExtra("result_code")) {
                         if (data.getBooleanExtra("result_code", false)) {
                             data.setClass(this, InAppApprovedActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("boarding", boarding.getBoardingPoint());
-                            b.putString("dropping", dropping.getBoardingPoint());
-                            data.putExtras(b);
                             startActivity(data);
                         } else {
                             Toast.makeText(getApplicationContext(), data.getStringExtra("message"), Toast.LENGTH_LONG).show();
@@ -188,10 +180,6 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
                     if (data.hasExtra("result_code")) {
                         if (data.getBooleanExtra("result_code", false)) {
                             data.setClass(this, InAppApprovedActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("boarding", boarding.getBoardingPoint());
-                            b.putString("dropping", dropping.getBoardingPoint());
-                            data.putExtras(b);
                             startActivity(data);
                         } else {
                             Toast.makeText(getApplicationContext(), data.getStringExtra("message"), Toast.LENGTH_LONG).show();
@@ -392,10 +380,10 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
 
     public void onClickAddName(View view) {
 
-        getContentResolver().delete(com.inapp.pay.MyProvider.CONTENT_URI, null, null);
+        getContentResolver().delete(com.amtron.ferryticket.ui.MyProvider.CONTENT_URI, null, null);
         ContentValues values = new ContentValues();
-        values.put(com.inapp.pay.MyProvider.amount, amountString);
-        values.put(com.inapp.pay.MyProvider.txn_type, "SALE");
+        values.put(com.amtron.ferryticket.ui.MyProvider.amount, amountString);
+        values.put(com.amtron.ferryticket.ui.MyProvider.txn_type, "SALE");
 
         Uri uri = getContentResolver().insert(MyProvider.CONTENT_URI, values);
         Toast.makeText(getBaseContext(), "New record inserted", Toast.LENGTH_LONG)
@@ -485,7 +473,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         PrintCanvas canvas = new PrintCanvas();
         Paint paint = new Paint();
         setFontStyle(paint, 2, false);
-        Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+        Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.awt);
         canvas.drawBitmap(Icon_smc, paint);
         setFontStyle(paint, 1, true);
         canvas.drawText("Transaction Amount : " + "Rs.100", paint);
@@ -573,4 +561,3 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         }
     }
 }
-*/

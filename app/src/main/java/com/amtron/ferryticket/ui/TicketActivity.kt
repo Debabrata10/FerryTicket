@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -129,16 +130,18 @@ class TicketActivity : AppCompatActivity() {
 			cancel?.setOnClickListener { cashPaymentBottomSheet.dismiss() }
 		}
 
-		/*binding.posPay.setOnClickListener {
+		binding.posPay.setOnClickListener {
 			val bundle = Bundle()
 			val i = Intent(this, PosActivity::class.java)
 			bundle.putString("price", ticket.total_amt.toString())
 			i.putExtras(bundle)
 			startActivity(i)
-		}*/
+		}
 
-		/*onBackPressedDispatcher.addCallback(this) {
-			startActivity(Intent(this@TicketActivity, HomeActivity::class.java))
-		}*/
+		onBackPressedDispatcher.addCallback(this) {
+			startActivity(
+				Intent(this@TicketActivity, TicketListActivity::class.java)
+			)
+		}
 	}
 }

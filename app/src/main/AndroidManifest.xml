@@ -19,9 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FerryTicket"
         tools:targetApi="31">
-        <!--<activity
-            android:name=".PosActivity"
-            android:exported="false" />-->
+        <activity
+            android:name=".ui.ProxyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.PosActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.TicketListActivity"
             android:exported="false" />
