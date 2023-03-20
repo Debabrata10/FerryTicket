@@ -31,7 +31,6 @@ import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -852,12 +851,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						if (helper.isStatusSuccessful()) {
 							dialog.titleText = "Card details found.."
 							val obj = JSONObject(helper.getDataAsString())
-							val passengerJSONArrayList = obj.get("passenger") as JSONArray
-							if (passengerJSONArrayList.length() > 0) {
-								val passengerDetailsList: ArrayList<PassengerDetails> =
+							val passengerJSONObject = obj.get("passenger") as JSONObject
+							if (passengerJSONObject.length() > 0) {
+								val passengerDetails: PassengerDetails =
 									Gson().fromJson(
-										passengerJSONArrayList.toString(),
-										object : TypeToken<List<PassengerDetails>>() {}.type
+										passengerJSONObject.toString(),
+										object : TypeToken<PassengerDetails>() {}.type
 									)
 								dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
 								dialog.titleText = "Passengers found. Add them?"
@@ -867,9 +866,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									dialog.dismissWithAnimation()
 								}
 								dialog.setConfirmClickListener {
-									for (p in passengerDetailsList) {
-										addPassenger(p)
-									}
+									addPassenger(passengerDetails)
 									dialog.dismissWithAnimation()
 								}
 							} else {
@@ -878,6 +875,23 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									"No passengers found",
 									Toast.LENGTH_SHORT
 								).show()
+							}
+
+							val cardJSONObject = obj.get("card_details") as JSONObject
+							val cardDetails: CardDetails? =
+								Gson().fromJson(
+									cardJSONObject.toString(),
+									object : TypeToken<CardDetails>() {}.type
+								)
+							if (cardDetails == null) {
+								Toast.makeText(
+									this@BookActivity,
+									"Card details not found",
+									Toast.LENGTH_SHORT
+								).show()
+							} else {
+								editor.putString("card_details", Gson().toJson(cardDetails))
+								editor.apply()
 							}
 						}
 					} else {
@@ -1002,7 +1016,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				if (allDataList[position] is Vehicle) {
 					totalVehiclesCount -= 1
 					binding.vehiclesCount.text = totalVehiclesCount.toString()
-					vehicleList.removeAt(position-1)
+					vehicleList.removeAt(position - 1)
 				} else if (allDataList[position] is Others) {
 					totalGoodsCount -= 1
 					binding.goodsCount.text = totalGoodsCount.toString()

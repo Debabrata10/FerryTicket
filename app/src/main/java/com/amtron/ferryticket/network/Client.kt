@@ -79,4 +79,24 @@ interface Client {
 		@Field("vehicle_data") vehicle: String,
 		@Field("other_data") others: String
 	): Call<JsonObject>
+
+	//Generate Wallet Order
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("wallet-order")
+	fun generateWalletOrder(
+		@Header("Authorization") bearer: String,
+		@Field("card_id") cardId: Int,
+		@Field("id") bookingId: Int
+	): Call<JsonObject>
+
+	//Confirm Wallet Order
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("wallet-order-confirm")
+	fun verifyOtp(
+		@Header("Authorization") bearer: String,
+		@Field("order_id") orderId: Int,
+		@Field("pin") otp: Int
+	): Call<JsonObject>
 }

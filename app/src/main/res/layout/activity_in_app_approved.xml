@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="#F2F7FF"
     android:orientation="vertical"
-    tools:ignore="HardCodedText"
-    tools:context=".ui.InAppApprovedActivity">
+    tools:context=".ui.InAppApprovedActivity"
+    tools:ignore="HardCodedText">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,8 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginTop="25dp"
-                android:src="@drawable/awt"
-                android:contentDescription="app_logo"/>
+                android:contentDescription="app_logo"
+                android:src="@drawable/awt" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -66,15 +66,15 @@
                 android:text="**************************"
                 android:textAlignment="center"
                 android:textColor="@color/dark_blue"
-                android:textSize="17sp"/>
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -243,7 +243,7 @@
                     android:text="-------------------------------------"
                     android:textAlignment="center"
                     android:textColor="@color/dark_blue"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -306,37 +306,37 @@
                     android:text="-------------------------------------"
                     android:textAlignment="center"
                     android:textColor="@color/dark_blue"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
                         android:text="Amount:"
                         android:textAlignment="center"
-                        android:textSize="20sp"
                         android:textColor="@color/dark_blue"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_amount"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
                         android:text="INR 500.00"
                         android:textAlignment="center"
-                        android:textSize="20sp"
                         android:textColor="@color/dark_blue"
-                        android:fontFamily="@font/roboto_condensed_bold"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

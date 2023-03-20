@@ -1,6 +1,6 @@
 package com.amtron.ferryticket.model
 
-data class CardDetails (
+data class CardDetails(
 	val id: String,
 	val card_id: String,
 	val card_no: String,

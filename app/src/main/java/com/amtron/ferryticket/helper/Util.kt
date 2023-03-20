@@ -7,6 +7,7 @@ import android.util.Log
 import com.amtron.ferryticket.model.User
 import com.google.gson.Gson
 
+//Check Internet
 class Util {
 	fun isOnline(context: Context): Boolean {
 		val connectivityManager =
@@ -28,8 +29,23 @@ class Util {
 		return false
 	}
 
+	//Get user token
 	fun getJwtToken(json: String?): String {
 		val user: User = Gson().fromJson(json, User::class.java)
 		return "Bearer " + user.token
 	}
+
+	//Check app version
+	/*fun checkVersion(json: String?, version: Int) : Boolean {
+		val user: User = Gson().fromJson(json, User::class.java)
+		if (user.)
+	}*/
+
+	/*companion object {
+		@JvmStatic
+		fun getJwtToken(json: String?): String {
+			val user: User = Gson().fromJson(json, User::class.java)
+			return "Bearer " + user.token
+		}
+	}*/
 }

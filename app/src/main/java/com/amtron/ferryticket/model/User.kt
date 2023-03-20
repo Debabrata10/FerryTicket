@@ -6,5 +6,6 @@ data class User(
 	val last_name: String,
 	val email: String,
 	val mobile: String,
-	val role: String
+	val role: String,
+	val card_details: CardDetails? = null
 )

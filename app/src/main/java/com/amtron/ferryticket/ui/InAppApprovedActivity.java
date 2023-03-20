@@ -19,21 +19,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityInAppApprovedBinding;
-import com.amtron.ferryticket.helper.ResponseHelper;
-import com.amtron.ferryticket.model.Booking;
 import com.amtron.ferryticket.model.Ticket;
-import com.amtron.ferryticket.network.Client;
-import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.pos.device.printer.PrintCanvas;
 import com.pos.device.printer.PrintTask;
 import com.pos.device.printer.Printer;
@@ -44,15 +35,11 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 import kotlinx.coroutines.DelicateCoroutinesApi;
-import okhttp3.Route;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @DelicateCoroutinesApi
 public class InAppApprovedActivity extends AppCompatActivity {
 
-//    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
+    //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
     Button printBtn, goBackBtn;
     String amount, in_app_date, in_app_time, invoice, rrn, card_no, card_type, auth_code;
     JSONArray posJSONArray;
@@ -60,6 +47,33 @@ public class InAppApprovedActivity extends AppCompatActivity {
     private PrintTask printTask = null;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
+
+    public static byte[] draw2PxPoint(Bitmap bitmap) {
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int square = height * width;
+
+        int[] pixels = new int[square];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        byte[] data = new byte[square >> 3];
+
+        int B = 0, b = 0;
+        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
+        for (int i = 0; i < square; i++) {
+            if (pixels[i] < -7829368) {//- 0x888888
+                data[B] |= bits[b];
+            }
+
+            if (b == 7) {
+                b = 0;
+                B++;
+            } else {
+                b++;
+            }
+        }
+        return data;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -166,33 +180,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
         }
 
         callServerSideForTicketConfirmation();
-    }
-
-    public static byte[] draw2PxPoint(Bitmap bitmap) {
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-        int square = height * width;
-
-        int[] pixels = new int[square];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-
-        byte[] data = new byte[square >> 3];
-
-        int B = 0, b = 0;
-        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
-        for (int i = 0; i < square; i++) {
-            if (pixels[i] < -7829368) {//- 0x888888
-                data[B] |= bits[b];
-            }
-
-            if (b == 7) {
-                b = 0;
-                B++;
-            } else {
-                b++;
-            }
-        }
-        return data;
     }
 
     private void setFontStyle(Paint paint, int size, boolean isBold) {

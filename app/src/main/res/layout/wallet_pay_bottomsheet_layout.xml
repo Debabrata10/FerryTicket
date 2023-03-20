@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:ignore="HardCodedText">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:text="PAY WITH WALLET"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:id="@+id/wallet_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!--<com.google.android.material.button.MaterialButton
+            android:id="@+id/operator_wallet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:text="OPERATOR WALLET (₹315)"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:background="@color/dark_blue"
+            android:id="@+id/passenger_wallet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:text="PASSENGER WALLET (₹315)"
+            android:textColor="@color/white"
+            android:textSize="11sp" />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/verify_wallet_pin_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter OTP"
+            android:orientation="horizontal"
+            app:endIconMode="password_toggle">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/pin"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:clickable="true"
+                android:contentDescription="password"
+                android:inputType="numberPassword"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</LinearLayout>

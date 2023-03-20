@@ -63,62 +63,52 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingTop="50dp">
+        android:paddingStart="10dp"
+        android:paddingTop="50dp"
+        android:paddingEnd="10dp">
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickPayCard"
-            android:text="Pay by Card" />
+            android:text="Pay by Card"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_bqr_upi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="@color/white"
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickPayByBqrorUpi"
-            android:text="Pay by BQR/UPI" />
-
-        <Button
-            android:id="@+id/wallet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:onClick="onClickPayCard"
-            android:text="Wallet" />
+            android:text="Pay by BQR/UPI"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_config"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickAdmin"
-            android:text="Configure" />
+            android:text="Configure"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_terminal_activation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickTerminalActivation"
-            android:text="Terminal Activation" />
+            android:text="Terminal Activation"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <!--<LinearLayout

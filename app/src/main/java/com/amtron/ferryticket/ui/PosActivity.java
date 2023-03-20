@@ -31,26 +31,56 @@ import com.amtron.ferryticket.BuildConfig;
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityPosBinding;
 import com.amtron.ferryticket.model.Ticket;
+import com.amtron.ferryticket.model.User;
 import com.google.gson.Gson;
 import com.pos.device.printer.PrintCanvas;
 import com.pos.device.printer.PrintTask;
 import com.pos.device.printer.Printer;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import kotlinx.coroutines.DelicateCoroutinesApi;
 
-@DelicateCoroutinesApi public class PosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+@DelicateCoroutinesApi
+public class PosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static String param_status = "false";
     public static String sim_status = "false";
     CursorLoader cursorLoader;
-    String package_name = "";
-    String amountString;
     double amount;
+    private User user;
+    private Ticket ticket;
+    private String amountString, package_name;
     private Printer printer = null;
     private PrintTask printTask = null;
+    private SharedPreferences.Editor editor;
+
+    public static byte[] draw2PxPoint(Bitmap bitmap) {
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int square = height * width;
+
+        int[] pixels = new int[square];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        byte[] data = new byte[square >> 3];
+
+        int B = 0, b = 0;
+        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
+        for (int i = 0; i < square; i++) {
+            if (pixels[i] < -7829368) {//- 0x888888
+                data[B] |= bits[b];
+            }
+
+            if (b == 7) {
+                b = 0;
+                B++;
+            } else {
+                b++;
+            }
+        }
+        return data;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -60,20 +90,35 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
         setContentView(binding.getRoot());
 
         SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        editor = sharedPreference.edit();
+        Gson gson = new Gson();
 
         getSupportLoaderManager().initLoader(1, null, this);
 
-        String ticketString = sharedPreference.getString("ticket", "");
-        Ticket ticket = new Gson().fromJson(ticketString, Ticket.class);
-        amountString = String.valueOf(ticket.getTotal_amt());
-        if (amountString.isEmpty()) {
-            amount = 0.00;
-        } else {
-            amount = Double.parseDouble(amountString);
+        try {
+            String userString = sharedPreference.getString("user", "");
+            user = gson.fromJson(userString, User.class);
+        } catch (Exception e) {
+            Log.d("exception error", "User not found");
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, TicketListActivity.class));
         }
-        binding.amt.setText("₹" + amount);
 
-
+        try {
+            String ticketString = sharedPreference.getString("ticket", "");
+            ticket = gson.fromJson(ticketString, Ticket.class);
+            amountString = String.valueOf(ticket.getTotal_amt());
+            if (amountString.isEmpty()) {
+                amount = 0.00;
+            } else {
+                amount = Double.parseDouble(amountString);
+            }
+            binding.amt.setText("₹" + amount);
+        } catch (Exception e) {
+            Log.d("exception error", "Ticket not found");
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, TicketListActivity.class));
+        }
         printer = com.pos.device.printer.Printer.getInstance();
         printTask = new PrintTask();
         printTask.setGray(130);
@@ -100,18 +145,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
-    public void functionNavigation(String txn_type) {
-        package_name = BuildConfig.APPLICATION_ID;
-        String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
-        Intent i = new Intent();
-        i.setAction(CUSTOM_ACTION);
-        i.putExtra("txn_type", txn_type);
-        i.putExtra("action", "inApp");
-        i.putExtra("package", package_name);
-        startActivity(i);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-    }
-
     /*public void functionNavigation(String txn_type) {
         package_name = BuildConfig.APPLICATION_ID;
         String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
@@ -126,6 +159,18 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
         startActivityForResult(i,601);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }*/
+
+    public void functionNavigation(String txn_type) {
+        package_name = BuildConfig.APPLICATION_ID;
+        String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
+        Intent i = new Intent();
+        i.setAction(CUSTOM_ACTION);
+        i.putExtra("txn_type", txn_type);
+        i.putExtra("action", "inApp");
+        i.putExtra("package", package_name);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
 
     // BQR payment api
     public void functionPaybyBqrorUpi(String amt, String txn_type) {
@@ -176,7 +221,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
                     } else {
                         Toast.makeText(getApplicationContext(), "Empty result", Toast.LENGTH_LONG).show();
                     }
-                } else if(requestCode == 601) {
+                } else if (requestCode == 601) {
                     if (data.hasExtra("result_code")) {
                         if (data.getBooleanExtra("result_code", false)) {
                             data.setClass(this, InAppApprovedActivity.class);
@@ -482,33 +527,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
 
     }
 
-    public static byte[] draw2PxPoint(Bitmap bitmap) {
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-        int square = height * width;
-
-        int[] pixels = new int[square];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-
-        byte[] data = new byte[square >> 3];
-
-        int B = 0, b = 0;
-        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
-        for (int i = 0; i < square; i++) {
-            if (pixels[i] < -7829368) {//- 0x888888
-                data[B] |= bits[b];
-            }
-
-            if (b == 7) {
-                b = 0;
-                B++;
-            } else {
-                b++;
-            }
-        }
-        return data;
-    }
-
     private int printData(PrintCanvas pCanvas) {
         final CountDownLatch latch = new CountDownLatch(1);
         int ret = printer.getStatus();
@@ -522,8 +540,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
                 Log.v("ResultControl", "onResult 3 : " + i);
                 if (i == -3) {
                     showDialoguePaper();
-                } else {
-
                 }
             });
 

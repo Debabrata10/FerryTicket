@@ -3,39 +3,41 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white">
+
     <TextView
         android:id="@+id/textDialog"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:textColor="@android:color/black"
-        android:textSize="17sp"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/declineButton"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:textSize="17sp"
+        android:layout_below="@+id/textDialog"
+        android:layout_alignEnd="@+id/textDialog"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@android:color/white"
         android:textColor="?colorPrimary"
-        android:layout_below="@+id/textDialog"
-        android:layout_alignEnd="@+id/textDialog"
-        android:layout_marginTop="10dp" />
+        android:textSize="17sp" />
+
     <TextView
         android:id="@+id/textview_no"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:visibility="visible"
-        android:textSize="17sp"
-        android:gravity="center_horizontal"
-        android:background="@android:color/white"
-        android:textColor="?colorPrimary"
         android:layout_alignTop="@+id/declineButton"
+        android:layout_marginEnd="40dp"
         android:layout_toStartOf="@+id/declineButton"
-        android:layout_marginEnd="40dp" />
+        android:background="@android:color/white"
+        android:gravity="center_horizontal"
+        android:textColor="?colorPrimary"
+        android:textSize="17sp"
+        android:visibility="visible" />
 </RelativeLayout>

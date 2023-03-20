@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,6 +68,15 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 			getRecentTickets(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
 				"recentTickets"
+			)
+		}
+
+		onBackPressedDispatcher.addCallback(this) {
+			startActivity(
+				Intent(
+					this@TicketListActivity,
+					HomeActivity::class.java
+				)
 			)
 		}
 

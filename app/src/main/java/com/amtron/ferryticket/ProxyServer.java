@@ -27,11 +27,16 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
 
     int proxyPort = 8080;
     String proxyHost = "192.168.153.200"; // Airtel
-//    String proxyHost = "192.168.99.7"; //Vodafone
-
+    //    String proxyHost = "192.168.99.7"; //Vodafone
+    Authenticator proxyAuthenticator = (route, response) -> {
+        String credential = Credentials.basic(username, password);
+        return response.request().newBuilder()
+                .header("Proxy-Authorization", credential)
+                .build();
+    };
     private ProgressDialog pDialogs;
 
-    public ProxyServer(Activity activity){
+    public ProxyServer(Activity activity) {
         pDialogs = new ProgressDialog(activity);
     }
 
@@ -85,16 +90,9 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
             if (pDialogs != null || pDialogs.isShowing()) {
                 pDialogs.dismiss();
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.d("tag", String.valueOf(e));
         }
         Log.d("msg", result);
     }
-
-    Authenticator proxyAuthenticator = (route, response) -> {
-        String credential = Credentials.basic(username, password);
-        return response.request().newBuilder()
-                .header("Proxy-Authorization", credential)
-                .build();
-    };
 }

@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardCodedText"
-    tools:context="com.amtron.ferryticket.ui.PosActivity" >
+    tools:context="com.amtron.ferryticket.ui.PosActivity"
+    tools:ignore="HardCodedText">
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Action Settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_print"
         android:orderInCategory="100"
         android:title="Sample Print"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

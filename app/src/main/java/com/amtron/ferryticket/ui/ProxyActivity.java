@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amtron.ferryticket.BuildConfig;
@@ -17,6 +18,7 @@ import java.util.Objects;
 public class ProxyActivity extends AppCompatActivity {
 
     TextView txt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +52,10 @@ public class ProxyActivity extends AppCompatActivity {
                 if (requestCode == 600) {
                     if (data.hasExtra("result_code")) {
                         boolean datas = data.getBooleanExtra("result_code", false);
-                        if (data.getBooleanExtra("result_code",false)) {
+                        if (data.getBooleanExtra("result_code", false)) {
                             String PROXY_IP = data.getStringExtra("PROXY_IP");
-                            String PROXY_PORT  = data.getStringExtra("PROXY_PORT");
-                            String proxy = "PROXY_IP : " +PROXY_IP+"\n"+"PROXY_PORT : " +PROXY_PORT;
+                            String PROXY_PORT = data.getStringExtra("PROXY_PORT");
+                            String proxy = "PROXY_IP : " + PROXY_IP + "\n" + "PROXY_PORT : " + PROXY_PORT;
                             txt.setText(proxy);
                         } else {
                             Toast.makeText(getApplicationContext(), data.getStringExtra("message"), Toast.LENGTH_LONG).show();
