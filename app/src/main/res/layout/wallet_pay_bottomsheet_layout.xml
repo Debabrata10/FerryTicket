@@ -60,7 +60,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter OTP"
+            android:hint="Enter PIN"
             android:orientation="horizontal"
             app:endIconMode="password_toggle">
 

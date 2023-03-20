@@ -94,9 +94,9 @@ interface Client {
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("wallet-order-confirm")
-	fun verifyOtp(
+	fun verifyPin(
 		@Header("Authorization") bearer: String,
-		@Field("order_id") orderId: Int,
+		@Field("id") orderId: Int,
 		@Field("pin") otp: Int
 	): Call<JsonObject>
 }

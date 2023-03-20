@@ -40,40 +40,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
 public class InAppApprovedActivity extends AppCompatActivity {
 
     //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
-    Button printBtn, goBackBtn;
     String amount, in_app_date, in_app_time, invoice, rrn, card_no, card_type, auth_code;
     JSONArray posJSONArray;
     private Printer printer = null;
     private PrintTask printTask = null;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
-
-    public static byte[] draw2PxPoint(Bitmap bitmap) {
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-        int square = height * width;
-
-        int[] pixels = new int[square];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-
-        byte[] data = new byte[square >> 3];
-
-        int B = 0, b = 0;
-        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
-        for (int i = 0; i < square; i++) {
-            if (pixels[i] < -7829368) {//- 0x888888
-                data[B] |= bits[b];
-            }
-
-            if (b == 7) {
-                b = 0;
-                B++;
-            } else {
-                b++;
-            }
-        }
-        return data;
-    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -87,43 +59,48 @@ public class InAppApprovedActivity extends AppCompatActivity {
         String ticketString = sharedPreference.getString("ticket", "");
         ticket = new Gson().fromJson(ticketString, Ticket.class);
 
+        String srcGhat = sharedPreference.getString("sourceGhat", "");
+        String destGhat = sharedPreference.getString("destinationGhat", "");
+
         printer = Printer.getInstance();
         printTask = new PrintTask();
         printTask.setGray(130);
 
         binding.txtDate.setText(ticket.getFerry_date());
         binding.ticketNo.setText(ticket.getTicket_no());
-        binding.srcGhat.setText("NIMATI");
-        binding.destGhat.setText("KAMALABARI");
+        binding.srcGhat.setText(srcGhat);
+        binding.destGhat.setText(destGhat);
         binding.netAmount.setText("₹" + ticket.getNet_amt());
         binding.serviceCharge.setText("₹" + ticket.getService_amt());
+        binding.txtAmount.setText("₹" + ticket.getTotal_amt());
 
-        printBtn.setOnClickListener(v -> {
+        binding.print.setOnClickListener(v -> {
             PrintCanvas canvas = new PrintCanvas();
             Paint paint = new Paint();
-            Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.awt);
+            Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.rect_awt);
 
             canvas.drawBitmap(Icon_smc, paint);
-            setFontStyle(paint, 2, false);
+            setFontStyle(paint, 1, false);
 
             canvas.drawText(" ", paint);
             setFontStyle(paint, 1, true);
-            canvas.drawText("\t Directorate of Inland Water Transport \n \t \t \t Ulubari, Guwahati 781007\n \t \t \t \t \t \t \t \t \t \t\tAssam", paint);
+            canvas.drawText("Directorate of Inland Water Transport \n \t \t \t Ulubari, Guwahati 781007\n \t \t \t \t \t \t \t \t \t \t\tAssam", paint);
             canvas.drawText(" ", paint);
             canvas.drawText(" ", paint);
             canvas.drawText("**************************", paint);
 
             canvas.drawText("Date: " + ticket.getFerry_date(), paint);
             canvas.drawText("Ticket No: " + ticket.getTicket_no(), paint);
-            canvas.drawText("RRN No: " + rrn, paint);
-            canvas.drawText("Boarding: " + "NIMATI", paint);
-            canvas.drawText("Dropping: " + "KAMALABARI", paint);
+            canvas.drawText("Card No: " + ticket.getTicket_no(), paint);
+            canvas.drawText("RRN/Order No: " + ticket.getOrder_number(), paint);
+            canvas.drawText("Boarding: " + srcGhat, paint);
+            canvas.drawText("Dropping: " + destGhat, paint);
             canvas.drawText("-------------------------------------", paint);
             canvas.drawText("Net Amout               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
             canvas.drawText("Servive Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
             setFontStyle(paint, 3, false);
             canvas.drawText(" ", paint);
-            canvas.drawText("TOTAL - INR " + ticket.getTotal_amt(), paint);
+            canvas.drawText("\t \t TOTAL - INR " + ticket.getTotal_amt(), paint);
             setFontStyle(paint, 2, false);
             canvas.drawText(" ", paint);
             canvas.drawText("Please keep this ticket safe.This is a one time copy only", paint);
@@ -136,7 +113,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             printData(canvas);
         });
 
-        goBackBtn.setOnClickListener(v -> {
+        binding.goBack.setOnClickListener(v -> {
             editor.remove("ticket");
             Intent intent = new Intent(this, BookActivity.class);
             startActivity(intent);
@@ -182,6 +159,33 @@ public class InAppApprovedActivity extends AppCompatActivity {
         callServerSideForTicketConfirmation();
     }
 
+    public static byte[] draw2PxPoint(Bitmap bitmap) {
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int square = height * width;
+
+        int[] pixels = new int[square];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        byte[] data = new byte[square >> 3];
+
+        int B = 0, b = 0;
+        byte[] bits = {(byte) 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
+        for (int i = 0; i < square; i++) {
+            if (pixels[i] < -7829368) {//- 0x888888
+                data[B] |= bits[b];
+            }
+
+            if (b == 7) {
+                b = 0;
+                B++;
+            } else {
+                b++;
+            }
+        }
+        return data;
+    }
+
     private void setFontStyle(Paint paint, int size, boolean isBold) {
         if (isBold) {
             Typeface MONOSPACE_BOLD = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD);
@@ -192,8 +196,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
         }
         switch (size) {
-            case 0:
-                break;
             case 1:
                 paint.setTextSize(16F);
                 break;

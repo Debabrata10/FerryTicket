@@ -235,7 +235,6 @@ class TicketActivity : AppCompatActivity() {
 	}
 
 	private fun payWithWallet(cardId: Int, ticketId: Int) {
-		Toast.makeText(this@TicketActivity, "Generating OTP", Toast.LENGTH_SHORT).show()
 		val client =
 			getInstance().create(
 				Client::class.java
@@ -256,17 +255,18 @@ class TicketActivity : AppCompatActivity() {
 					val helper = ResponseHelper()
 					helper.ResponseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
-						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)
+						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)!!.text
 						val walletButtonsLayout = walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
 						val verifyWalletPinLayout = walletPayBottomSheet.findViewById<LinearLayout>(R.id.verify_wallet_pin_ll)
 						try {
 							val obj = JSONObject(helper.getDataAsString())
-							val orderId = obj["ID"].toString()
+							val orderId = obj.get("ID") as String
 							val verifyButtonsLinearLayout = LinearLayout(this@TicketActivity)
 							val verifyButtonsLayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
 							verifyButtonsLinearLayout.gravity = Gravity.CENTER
 							verifyButtonsLinearLayout.layoutParams = verifyButtonsLayoutParams
 							val buttonsLayoutParams = LinearLayout.LayoutParams(400,ViewGroup.LayoutParams.WRAP_CONTENT)
+							buttonsLayoutParams.setMargins(5, 0, 5, 0)
 							val verifyPin = MaterialButton(this@TicketActivity)
 							val cancelPin = MaterialButton(this@TicketActivity)
 							verifyPin.text = "VERIFY"
@@ -327,14 +327,13 @@ class TicketActivity : AppCompatActivity() {
 	}
 
 	private fun verifyPin(token: String, orderId: String, pin: String) {
-		Log.d("pin", pin)
-		/*val client =
+		val client =
 			getInstance().create(
 				Client::class.java
 			)
 		val call =
 			client.verifyPin(
-				Util().getJwtToken(sharedPreferences.getString("user", "")),
+				token,
 				orderId.toInt(),
 				pin.toInt()
 			)
@@ -349,8 +348,10 @@ class TicketActivity : AppCompatActivity() {
 					if (helper.isStatusSuccessful()) {
 						val obj = JSONObject(helper.getDataAsString())
 						val walletOrderId = obj.get("ORDER_ID").toString()
-						val id = obj.get("REFF_NO").toString()
-						val id = obj.get("TXN_ID").toString()
+						ticket.order_number = walletOrderId
+						ticket.order_status = "SUCCESS"
+						editor.putString("ticket", Gson().toJson(ticket))
+						editor.apply()
 						startActivity(Intent(this@TicketActivity, InAppApprovedActivity::class.java))
 					} else {
 						NotificationHelper().getErrorAlert(
@@ -372,6 +373,6 @@ class TicketActivity : AppCompatActivity() {
 					"Server Error. Please try again."
 				)
 			}
-		})*/
+		})
 	}
 }
