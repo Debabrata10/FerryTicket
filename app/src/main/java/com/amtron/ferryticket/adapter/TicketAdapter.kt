@@ -46,6 +46,9 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		val ticket: MaterialCardView = itemView.findViewById(R.id.ticket)
 		val ticketNumber: TextView = itemView.findViewById(R.id.ticket_number)
 		val date: TextView = itemView.findViewById(R.id.date)
+		val departureTime: TextView = itemView.findViewById(R.id.departure_time)
+		val arrivalTime: TextView = itemView.findViewById(R.id.arrival_time)
+		val ferryName: TextView = itemView.findViewById(R.id.ferry_name)
 		val price: TextView = itemView.findViewById(R.id.price)
 	}
 }

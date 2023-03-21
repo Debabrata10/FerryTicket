@@ -23,8 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityInAppApprovedBinding;
+import com.amtron.ferryticket.model.FerryService;
 import com.amtron.ferryticket.model.Ticket;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pos.device.printer.PrintCanvas;
 import com.pos.device.printer.PrintTask;
 import com.pos.device.printer.Printer;
@@ -46,6 +48,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     private PrintTask printTask = null;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
+    private FerryService service;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -61,6 +64,14 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
         String srcGhat = sharedPreference.getString("sourceGhat", "");
         String destGhat = sharedPreference.getString("destinationGhat", "");
+        try {
+            String serviceString = sharedPreference.getString("service", "");
+            service = new Gson().fromJson(serviceString, FerryService.class);
+        } catch (Exception e) {
+            Log.d("service details", "not found");
+            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, TicketListActivity.class));
+        }
 
         printer = Printer.getInstance();
         printTask = new PrintTask();
@@ -90,6 +101,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             canvas.drawText("**************************", paint);
 
             canvas.drawText("Date: " + ticket.getFerry_date(), paint);
+            canvas.drawText("Timing: " + ticket.getFerry_date(), paint);
             canvas.drawText("Ticket No: " + ticket.getTicket_no(), paint);
             canvas.drawText("Card No: " + ticket.getTicket_no(), paint);
             canvas.drawText("RRN/Order No: " + ticket.getOrder_number(), paint);

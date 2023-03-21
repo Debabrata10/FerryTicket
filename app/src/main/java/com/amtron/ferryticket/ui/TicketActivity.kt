@@ -46,6 +46,7 @@ class TicketActivity : AppCompatActivity() {
 	private lateinit var editor: SharedPreferences.Editor
 	private lateinit var binding: ActivityTicketBinding
 	private lateinit var ticket: Ticket
+	private lateinit var service: FerryService
 	private lateinit var passengerDetailsRecyclerView: RecyclerView
 	private lateinit var vehicleRecyclerView: RecyclerView
 	private lateinit var otherRecyclerView: RecyclerView
@@ -67,12 +68,21 @@ class TicketActivity : AppCompatActivity() {
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
 
+		/*try {
+			val serviceString = sharedPreferences.getString("service", "").toString()
+			service = Gson().fromJson(serviceString, object : TypeToken<FerryService>() {}.type)
+		} catch (e: Exception) {
+			Log.d("service details", "not found")
+			Toast.makeText(this, "Service - Something went wrong!", Toast.LENGTH_SHORT).show()
+			startActivity(Intent(this, TicketListActivity::class.java))
+		}*/
+
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
 			ticket = Gson().fromJson(ticketString, object : TypeToken<Ticket>() {}.type)
 		} catch (e: Exception) {
 			Log.d("ticket details", "not found")
-			Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
+			Toast.makeText(this, "Ticket - Something went wrong!", Toast.LENGTH_SHORT).show()
 			startActivity(Intent(this, TicketListActivity::class.java))
 		}
 
@@ -114,7 +124,7 @@ class TicketActivity : AppCompatActivity() {
 			} else {
 				if (isUserWalletAvailable) {
 					operatorWalletButton.text =
-						"OPERATOR WALLET (₹390.00)"
+						"OPERATOR WALLET ₹${operatorWallet!!.wallet_amount}"
 					operatorWalletButton.textSize = 12F
 					operatorWalletButton.setTextColor(Color.parseColor("#ffffff"))
 					operatorWalletButton.layoutParams = layoutParams
@@ -127,7 +137,7 @@ class TicketActivity : AppCompatActivity() {
 				walletButtonsLayout!!.addView(operatorWalletButton)
 				if (isPassengerWalletAvailable) {
 					passengerWalletButton.text =
-						"PASSENGER WALLET (₹390.00)"
+						"PASSENGER WALLET ₹${passengerWallet!!.wallet_amount}"
 					passengerWalletButton.textSize = 12F
 					passengerWalletButton.setTextColor(Color.parseColor("#ffffff"))
 					passengerWalletButton.layoutParams = layoutParams
