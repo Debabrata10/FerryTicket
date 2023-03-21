@@ -13,7 +13,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.adapter.FerryServiceAdapter
 import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
 import com.amtron.ferryticket.databinding.ActivityFerryListBinding
-import com.amtron.ferryticket.helper.DateHelper
+import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
@@ -57,7 +57,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		recyclerView.layoutManager = LinearLayoutManager(this)
 		recyclerView.isNestedScrollingEnabled = false
 
-		binding.date.text = DateHelper().getToday("dd MMM, yyyy")
+		binding.date.text = DateAndTimeHelper().getToday("dd MMM, yyyy")
 		binding.srcGhat.text = sharedPreferences.getString("sourceGhat", "").toString()
 		binding.destGhat.text = sharedPreferences.getString("destinationGhat", "").toString()
 

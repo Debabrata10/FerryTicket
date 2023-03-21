@@ -21,6 +21,7 @@ import com.amtron.ferryticket.adapter.OtherDetailsTicketViewAdapter
 import com.amtron.ferryticket.adapter.PassengerDetailsTicketViewAdapter
 import com.amtron.ferryticket.adapter.VehicleDetailsTicketViewAdapter
 import com.amtron.ferryticket.databinding.ActivityTicketBinding
+import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
@@ -158,8 +159,9 @@ class TicketActivity : AppCompatActivity() {
 		}
 
 		binding.ticketNo.text = ticket.ticket_no
+		binding.ferryName.text = ticket.ferry.ferry_name
 		binding.price.text = ticket.total_amt.toString()
-		binding.ticketDate.text = ticket.ferry_date
+		binding.ticketDate.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 
 		val passengerDetailsList = ArrayList<PassengerDetails>()
 		passengerDetailsList.addAll(ticket.passenger)

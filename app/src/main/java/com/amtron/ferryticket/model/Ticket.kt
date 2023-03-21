@@ -7,6 +7,8 @@ data class Ticket(
 	val ferry_service_id: Int,
 	val two_way: Int,
 	val ferry_date: String,
+	val fs_departure_time: String,
+	val fs_reached_time: String,
 	val passengers: Int,
 	val bicycle_capacity: Int,
 	val two_wheeler: Int,
@@ -26,5 +28,6 @@ data class Ticket(
 	val is_lease: Int,
 	val passenger: List<PassengerDetails>,
 	val vehicle: List<Vehicle>,
-	val other: List<Others>
+	val other: List<Others>,
+	val ferry: Ferry
 )

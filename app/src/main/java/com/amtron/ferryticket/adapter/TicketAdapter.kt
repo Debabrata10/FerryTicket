@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
+import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.model.Ticket
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
@@ -30,9 +31,12 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		ticket = ticketList[position]
 
+		holder.ferryName.text = ticket.ferry.ferry_name
 		holder.ticketNumber.text = ticket.ticket_no
-		holder.date.text = ticket.ferry_date
-		holder.price.text = "₹${ticket.total_amt}"
+		holder.date.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
+		holder.price.text = ticket.total_amt.toString()
+		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
+		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
 		holder.ticket.setOnClickListener {
 			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticket))
 		}

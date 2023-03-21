@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateHelper {
+class DateAndTimeHelper {
 	@SuppressLint("SimpleDateFormat")
 	fun changeDateFormat(requiredFormat: String?, dateString: String?): String {
 		val result: String
@@ -57,6 +57,20 @@ class DateHelper {
 		} else if (format == "dd-MM-yyyy") {
 			val formatter = SimpleDateFormat("dd-MM-yyyy")
 			output = formatter.format(time)
+		}
+		return output
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	fun changeTimeFormat(inputTime: String): String {
+		val inputFormat = SimpleDateFormat("HH:mm:ss")
+		val outputFormat = SimpleDateFormat("hh:mm a")
+		val output = try {
+			val date = inputFormat.parse(inputTime)
+			val formattedDate = outputFormat.format(date!!)
+			formattedDate
+		} catch (e: Exception) {
+			inputTime
 		}
 		return output
 	}

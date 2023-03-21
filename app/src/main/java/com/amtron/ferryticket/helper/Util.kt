@@ -29,7 +29,7 @@ class Util {
 		return false
 	}
 
-	//Get user token
+	//Get user token`
 	fun getJwtToken(json: String?): String {
 		val user: User = Gson().fromJson(json, User::class.java)
 		return "Bearer " + user.token

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
+import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.model.FerryService
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
@@ -32,8 +33,8 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 
 		holder.ferryName.text = ferryService.ferry.ferry_name
 		holder.ferryNumber.text = ferryService.ferry.ferry_no
-		holder.departureTime.text = ferryService.departure_time
-		holder.arrivalTime.text = ferryService.reached_time
+		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
+		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
 		holder.source.text = ferryService.source.ghat_name
 		holder.destination.text = ferryService.destination.ghat_name
 		holder.availablePerson.text = ferryService.passenger_capacity.toString()

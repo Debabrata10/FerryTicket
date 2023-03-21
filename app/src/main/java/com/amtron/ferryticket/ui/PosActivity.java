@@ -86,7 +86,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        com.amtron.ferryticket.databinding.ActivityPosBinding binding = ActivityPosBinding.inflate(getLayoutInflater());
+        ActivityPosBinding binding = ActivityPosBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
