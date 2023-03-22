@@ -33,7 +33,8 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 
 		holder.ferryName.text = ferryService.ferry.ferry_name
 		holder.ferryNumber.text = ferryService.ferry.ferry_no
-		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
+		holder.departureTime.text =
+			DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
 		holder.source.text = ferryService.source.ghat_name
 		holder.destination.text = ferryService.destination.ghat_name

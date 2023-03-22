@@ -152,8 +152,94 @@
                         android:id="@+id/ticketNo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Service Name:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/service_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Service Timing:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/service_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="Card Number:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/cardNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -178,8 +264,10 @@
                         android:id="@+id/txt_rrn"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -204,8 +292,10 @@
                         android:id="@+id/src_ghat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -230,8 +320,10 @@
                         android:id="@+id/dest_ghat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -264,9 +356,11 @@
                         android:id="@+id/net_amount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
                         android:text=""
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -284,7 +378,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
-                        android:text="Servive Amount:"
+                        android:text="Service Amount:"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
 
@@ -292,9 +386,11 @@
                         android:id="@+id/service_charge"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/roboto_condensed_bold"
                         android:text=""
+                        android:textAlignment="textEnd"
                         android:textColor="@color/dark_blue"
                         android:textSize="17sp" />
                 </LinearLayout>

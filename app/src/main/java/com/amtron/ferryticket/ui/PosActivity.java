@@ -125,6 +125,21 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
+    /*public void functionNavigation(String txn_type) {
+        package_name = BuildConfig.APPLICATION_ID;
+        String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
+        Intent i = new Intent();
+        i.setAction(CUSTOM_ACTION);
+        i.putExtra("txn_type", txn_type);
+        i.putExtra("action", "inApp");
+        String invoice = amountString;
+        i.putExtra("invoice", invoice);
+        i.putExtra("receipt_print", "NO");
+        i.putExtra("package", package_name);
+        startActivityForResult(i,601);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }*/
+
     // Sale Transaction api
     public void functionPaybyCard(String amt, String txn_type) {
         amt = getConvertDoubleval(amt);
@@ -144,21 +159,6 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         startActivityForResult(i, 600);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
-
-    /*public void functionNavigation(String txn_type) {
-        package_name = BuildConfig.APPLICATION_ID;
-        String CUSTOM_ACTION = "com.example.menusample.YOUR_ACTION_MAIN";
-        Intent i = new Intent();
-        i.setAction(CUSTOM_ACTION);
-        i.putExtra("txn_type", txn_type);
-        i.putExtra("action", "inApp");
-        String invoice = amountString;
-        i.putExtra("invoice", invoice);
-        i.putExtra("receipt_print", "NO");
-        i.putExtra("package", package_name);
-        startActivityForResult(i,601);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-    }*/
 
     public void functionNavigation(String txn_type) {
         package_name = BuildConfig.APPLICATION_ID;
@@ -549,7 +549,6 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         }
         return ret;
     }
-
 
     @SuppressLint("SetTextI18n")
     public void showDialoguePaper() {

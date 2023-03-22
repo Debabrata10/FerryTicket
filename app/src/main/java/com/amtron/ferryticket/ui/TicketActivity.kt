@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.OtherDetailsTicketViewAdapter
 import com.amtron.ferryticket.adapter.PassengerDetailsTicketViewAdapter
@@ -54,9 +55,10 @@ class TicketActivity : AppCompatActivity() {
 	private lateinit var passengerDetailsTicketViewAdapter: PassengerDetailsTicketViewAdapter
 	private lateinit var vehicleDetailsTicketViewAdapter: VehicleDetailsTicketViewAdapter
 	private lateinit var otherDetailsTicketViewAdapter: OtherDetailsTicketViewAdapter
+	private lateinit var walletPayBottomSheet: BottomSheetDialog
+	lateinit var walletLoaderDialog: SweetAlertDialog
 	private var operatorWallet: CardDetails? = null
 	private var passengerWallet: CardDetails? = null
-	private lateinit var walletPayBottomSheet: BottomSheetDialog
 	private var isUserWalletAvailable: Boolean = false
 	private var isPassengerWalletAvailable: Boolean = false
 
@@ -68,15 +70,6 @@ class TicketActivity : AppCompatActivity() {
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
-
-		/*try {
-			val serviceString = sharedPreferences.getString("service", "").toString()
-			service = Gson().fromJson(serviceString, object : TypeToken<FerryService>() {}.type)
-		} catch (e: Exception) {
-			Log.d("service details", "not found")
-			Toast.makeText(this, "Service - Something went wrong!", Toast.LENGTH_SHORT).show()
-			startActivity(Intent(this, TicketListActivity::class.java))
-		}*/
 
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
@@ -112,7 +105,8 @@ class TicketActivity : AppCompatActivity() {
 		binding.walletPay.setOnClickListener {
 			walletPayBottomSheet = BottomSheetDialog(this)
 			walletPayBottomSheet.setContentView(R.layout.wallet_pay_bottomsheet_layout)
-			val walletButtonsLayout = walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
+			val walletButtonsLayout =
+				walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
 			val operatorWalletButton = MaterialButton(this@TicketActivity)
 			val passengerWalletButton = MaterialButton(this@TicketActivity)
 			val layoutParams = LinearLayout.LayoutParams(
@@ -130,7 +124,7 @@ class TicketActivity : AppCompatActivity() {
 					operatorWalletButton.setTextColor(Color.parseColor("#ffffff"))
 					operatorWalletButton.layoutParams = layoutParams
 					operatorWalletButton.setOnClickListener {
-						payWithWallet(operatorWallet!!.id.toInt(), ticket.id)
+						payWithWallet(operatorWallet!!.id.toInt(), ticket.id, operatorWallet!!)
 					}
 				} else {
 					operatorWalletButton.visibility = View.GONE
@@ -143,7 +137,7 @@ class TicketActivity : AppCompatActivity() {
 					passengerWalletButton.setTextColor(Color.parseColor("#ffffff"))
 					passengerWalletButton.layoutParams = layoutParams
 					passengerWalletButton.setOnClickListener {
-						payWithWallet(passengerWallet!!.id.toInt(), ticket.id)
+						payWithWallet(passengerWallet!!.id.toInt(), ticket.id, passengerWallet!!)
 					}
 				} else {
 					passengerWalletButton.visibility = View.GONE
@@ -161,7 +155,8 @@ class TicketActivity : AppCompatActivity() {
 		binding.ticketNo.text = ticket.ticket_no
 		binding.ferryName.text = ticket.ferry.ferry_name
 		binding.price.text = ticket.total_amt.toString()
-		binding.ticketDate.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
+		binding.ticketDate.text =
+			DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 
 		val passengerDetailsList = ArrayList<PassengerDetails>()
 		passengerDetailsList.addAll(ticket.passenger)
@@ -246,7 +241,11 @@ class TicketActivity : AppCompatActivity() {
 		}*/
 	}
 
-	private fun payWithWallet(cardId: Int, ticketId: Int) {
+	private fun payWithWallet(cardId: Int, ticketId: Int, wallet: CardDetails) {
+		walletLoaderDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		walletLoaderDialog.setCancelable(false)
+		walletLoaderDialog.titleText = "LOADING.."
+		walletLoaderDialog.show()
 		val client =
 			getInstance().create(
 				Client::class.java
@@ -267,21 +266,31 @@ class TicketActivity : AppCompatActivity() {
 					val helper = ResponseHelper()
 					helper.ResponseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
+						editor.putString("card_details", Gson().toJson(wallet))
+						editor.apply()
+						walletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+						walletLoaderDialog.dismiss()
 						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)!!.text
-						val walletButtonsLayout = walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
-						val verifyWalletPinLayout = walletPayBottomSheet.findViewById<LinearLayout>(R.id.verify_wallet_pin_ll)
+						val walletButtonsLayout =
+							walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
+						val verifyWalletPinLayout =
+							walletPayBottomSheet.findViewById<LinearLayout>(R.id.verify_wallet_pin_ll)
 						try {
 							val obj = JSONObject(helper.getDataAsString())
 							val orderId = obj.get("ID") as String
 							val verifyButtonsLinearLayout = LinearLayout(this@TicketActivity)
-							val verifyButtonsLayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+							val verifyButtonsLayoutParams = LinearLayout.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT
+							)
 							verifyButtonsLinearLayout.gravity = Gravity.CENTER
 							verifyButtonsLinearLayout.layoutParams = verifyButtonsLayoutParams
-							val buttonsLayoutParams = LinearLayout.LayoutParams(400,ViewGroup.LayoutParams.WRAP_CONTENT)
+							val buttonsLayoutParams =
+								LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT)
 							buttonsLayoutParams.setMargins(5, 0, 5, 0)
 							val verifyPin = MaterialButton(this@TicketActivity)
 							val cancelPin = MaterialButton(this@TicketActivity)
-							verifyPin.text = "VERIFY"
+							verifyPin.text = "PAY"
 							verifyPin.textSize = 12F
 							verifyPin.setTextColor(Color.parseColor("#ffffff"))
 							verifyPin.layoutParams = buttonsLayoutParams
@@ -316,12 +325,14 @@ class TicketActivity : AppCompatActivity() {
 							Log.d("order confirmation", "not received")
 						}
 					} else {
+						walletLoaderDialog.dismiss()
 						NotificationHelper().getErrorAlert(
 							this@TicketActivity,
 							helper.getErrorMsg()
 						)
 					}
 				} else {
+					walletLoaderDialog.dismiss()
 					NotificationHelper().getErrorAlert(
 						this@TicketActivity,
 						"Response Error Code " + response.code()
@@ -330,6 +341,7 @@ class TicketActivity : AppCompatActivity() {
 			}
 
 			override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+				walletLoaderDialog.dismiss()
 				NotificationHelper().getErrorAlert(
 					this@TicketActivity,
 					"Server Error. Please try again."
@@ -339,6 +351,8 @@ class TicketActivity : AppCompatActivity() {
 	}
 
 	private fun verifyPin(token: String, orderId: String, pin: String) {
+		walletLoaderDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
+		walletLoaderDialog.titleText = "LOADING.."
 		val client =
 			getInstance().create(
 				Client::class.java
@@ -358,20 +372,28 @@ class TicketActivity : AppCompatActivity() {
 					val helper = ResponseHelper()
 					helper.ResponseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
+						walletLoaderDialog.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())
 						val walletOrderId = obj.get("ORDER_ID").toString()
 						ticket.order_number = walletOrderId
 						ticket.order_status = "SUCCESS"
 						editor.putString("ticket", Gson().toJson(ticket))
 						editor.apply()
-						startActivity(Intent(this@TicketActivity, InAppApprovedActivity::class.java))
+						startActivity(
+							Intent(
+								this@TicketActivity,
+								InAppApprovedActivity::class.java
+							)
+						)
 					} else {
+						walletLoaderDialog.dismissWithAnimation()
 						NotificationHelper().getErrorAlert(
 							this@TicketActivity,
 							helper.getErrorMsg()
 						)
 					}
 				} else {
+					walletLoaderDialog.dismissWithAnimation()
 					NotificationHelper().getErrorAlert(
 						this@TicketActivity,
 						"Response Error Code " + response.code()
@@ -380,6 +402,7 @@ class TicketActivity : AppCompatActivity() {
 			}
 
 			override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+				walletLoaderDialog.dismissWithAnimation()
 				NotificationHelper().getErrorAlert(
 					this@TicketActivity,
 					"Server Error. Please try again."
