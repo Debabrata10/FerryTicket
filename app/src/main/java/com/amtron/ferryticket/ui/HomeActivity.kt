@@ -69,7 +69,11 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 		}
 
 		binding.posSettings.setOnClickListener {
-			//dsvsdvdsvds
+			val bundle = Bundle()
+			bundle.putString("pos_settings", "yes")
+			val i = Intent(this, PosActivity::class.java)
+			i.putExtras(bundle)
+			startActivity(i)
 		}
 
 		binding.recentFerry.ferryCard.setOnClickListener {

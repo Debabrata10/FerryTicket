@@ -154,7 +154,8 @@ class TicketActivity : AppCompatActivity() {
 
 		binding.ticketNo.text = ticket.ticket_no
 		binding.ferryName.text = ticket.ferry.ferry_name
-		binding.price.text = ticket.total_amt.toString()
+		binding.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
+		binding.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
 		binding.ticketDate.text =
 			DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 

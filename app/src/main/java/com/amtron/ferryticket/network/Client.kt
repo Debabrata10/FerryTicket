@@ -80,7 +80,7 @@ interface Client {
 		@Field("other_data") others: String
 	): Call<JsonObject>
 
-	//Generate Wallet Order
+	//GENERATE WALLET ORDER API
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("wallet-order")
@@ -90,7 +90,7 @@ interface Client {
 		@Field("id") bookingId: Int
 	): Call<JsonObject>
 
-	//Confirm Wallet Order
+	//CONFIRM WALLET ORDER API
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("wallet-order-confirm")
@@ -98,5 +98,22 @@ interface Client {
 		@Header("Authorization") bearer: String,
 		@Field("id") orderId: Int,
 		@Field("pin") otp: Int
+	): Call<JsonObject>
+
+	//GET TID API
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("device-tid")
+	fun getTid(
+		@Header("Authorization") bearer: String?,
+		@Field("device_sl_no") serialNumber: Long
+	): Call<JsonObject>
+
+	//GET APP VERSION API
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("app-version")
+	fun getAppVersion(
+		@Field("app_type") type: String
 	): Call<JsonObject>
 }

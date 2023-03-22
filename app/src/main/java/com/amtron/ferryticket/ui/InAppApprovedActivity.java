@@ -198,7 +198,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             canvas.drawText("Service Name: " + serviceName, paint);
             canvas.drawText("Service Timing: " + ferryDepartureTime + " - " + ferryArrivalTime, paint);
             canvas.drawText("Card No: " + card_no, paint);
-            if (rrn==null) {
+            if (rrn == null) {
                 canvas.drawText("RRN/Order No: " + orderNo, paint);
             } else {
                 canvas.drawText("RRN/Order No: " + rrn, paint);

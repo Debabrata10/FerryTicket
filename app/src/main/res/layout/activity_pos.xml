@@ -6,89 +6,121 @@
     android:orientation="vertical"
     tools:ignore="HardCodedText">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/pos_payment_ll"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.4"
-        android:background="@color/aquamarine">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/go_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/roboto"
-            android:text="GO BACK"
-            android:textColor="@color/white"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:background="@color/aquamarine">
 
-        <TextView
-            android:id="@+id/payment_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:text="Payment of"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0" />
+            <TextView
+                android:id="@+id/go_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto"
+                android:text="GO BACK"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/amt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:text="500.00"
-            android:textColor="@color/white"
-            android:textSize="50sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/payment_text"
-            app:layout_constraintVertical_bias="0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/payment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="Payment of"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
+
+            <TextView
+                android:id="@+id/amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="500.00"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_text"
+                app:layout_constraintVertical_bias="0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="50dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="PAY USING:"
+                android:textColor="@color/dark_blue"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:onClick="onClickPayCard"
+                    android:text="CARD"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_bqr_upi"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:onClick="onClickPayByBqrorUpi"
+                    android:text="BQR/UPI"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/pos_settings_ll"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="10dp"
-        android:paddingTop="50dp"
-        android:paddingEnd="10dp">
-
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:onClick="onClickPayCard"
-            android:text="Pay by Card"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/btn_bqr_upi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:onClick="onClickPayByBqrorUpi"
-            android:text="Pay by BQR/UPI"
-            android:textColor="@color/white" />
+        android:padding="10dp"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/btn_config"
@@ -98,7 +130,8 @@
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickAdmin"
             android:text="Configure"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_terminal_activation"
@@ -108,81 +141,73 @@
             android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickTerminalActivation"
             android:text="Terminal Activation"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="horizontal">
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_settlement"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickSettlement"
-            android:text="Settlement" />
+            android:text="Settlement"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_void"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickVoid"
-            android:text="Void" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone">
+            android:text="Void"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_reprint"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickReprint"
-            android:text="Reprint" />
+            android:text="Reprint"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_last_txn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickLastTrasaction"
-            android:text="Last Transaction Status" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone">
+            android:text="Last Transaction Status"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_status"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickQrStatus"
-            android:text="QR Status" />
+            android:text="QR Status"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/btn_last_txn1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:onClick="onClickProvider"
-            android:text="Get Proxy Details" />
-    </LinearLayout>-->
+            android:text="Get Proxy Details"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -95,6 +95,23 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
 
         getSupportLoaderManager().initLoader(1, null, this);
 
+        binding.goBack.setOnClickListener(v -> {
+            startActivity(new Intent(this, TicketActivity.class));
+        });
+
+        try {
+            Bundle bundleString = getIntent().getExtras();
+            String posSettings = bundleString.getString("pos_settings");
+            if (posSettings.equals(("yes"))) {
+                binding.posPaymentLl.setVisibility(View.GONE);
+                binding.posSettingsLl.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Log.d("exception error", "Bundle not found");
+            binding.posPaymentLl.setVisibility(View.VISIBLE);
+            binding.posSettingsLl.setVisibility(View.GONE);
+        }
+
         try {
             String userString = sharedPreference.getString("user", "");
             user = gson.fromJson(userString, User.class);
