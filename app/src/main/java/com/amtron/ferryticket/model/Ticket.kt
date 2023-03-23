@@ -29,5 +29,7 @@ data class Ticket(
 	val passenger: List<PassengerDetails>,
 	val vehicle: List<Vehicle>,
 	val other: List<Others>,
-	val ferry: Ferry
+	val ferry: Ferry,
+	val wallet_service_charge: Int,
+	val qr_string: String
 )

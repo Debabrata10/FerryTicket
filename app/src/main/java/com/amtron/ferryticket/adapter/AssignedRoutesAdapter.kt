@@ -37,7 +37,7 @@ class AssignedRoutesAdapter(
 		holder.srcDest.setOnClickListener {
 			mItemClickListener.onAssignedRoutesItemClickListener(
 				position,
-				Gson().toJson(assignedRoutes)
+				Gson().toJson(assignedRoutesList[position])
 			)
 		}
 	}

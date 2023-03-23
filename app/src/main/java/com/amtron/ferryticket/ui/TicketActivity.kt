@@ -61,6 +61,7 @@ class TicketActivity : AppCompatActivity() {
 	private var passengerWallet: CardDetails? = null
 	private var isUserWalletAvailable: Boolean = false
 	private var isPassengerWalletAvailable: Boolean = false
+	private var totalPosAmt: Double = 0.0
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +75,9 @@ class TicketActivity : AppCompatActivity() {
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
 			ticket = Gson().fromJson(ticketString, object : TypeToken<Ticket>() {}.type)
+			totalPosAmt = if (ticket.wallet_service_charge == 0) ticket.net_amt + ticket.service_amt else ticket.total_amt
+			binding.posPay.text = "POS PAYMENT ₹$totalPosAmt"
+			binding.walletPay.text = "WALLET PAYMENT ₹${ticket.total_amt}"
 		} catch (e: Exception) {
 			Log.d("ticket details", "not found")
 			Toast.makeText(this, "Ticket - Something went wrong!", Toast.LENGTH_SHORT).show()
@@ -230,7 +234,7 @@ class TicketActivity : AppCompatActivity() {
 		binding.posPay.setOnClickListener {
 			val bundle = Bundle()
 			val i = Intent(this, PosActivity::class.java)
-			bundle.putString("price", ticket.total_amt.toString())
+			bundle.putString("price", totalPosAmt.toString())
 			i.putExtras(bundle)
 			startActivity(i)
 		}

@@ -55,6 +55,8 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
     private PrintTask printTask = null;
     private SharedPreferences.Editor editor;
 
+    private Bundle bundleString;
+
     public static byte[] draw2PxPoint(Bitmap bitmap) {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
@@ -100,31 +102,26 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         });
 
         try {
-            Bundle bundleString = getIntent().getExtras();
+            bundleString = getIntent().getExtras();
+        } catch (Exception e) {
+            Log.d("exception error", "Bundle not found");
+            startActivity(new Intent(this, TicketActivity.class));
+        }
+
+        try {
             String posSettings = bundleString.getString("pos_settings");
             if (posSettings.equals(("yes"))) {
                 binding.posPaymentLl.setVisibility(View.GONE);
                 binding.posSettingsLl.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.d("exception error", "Bundle not found");
+            Log.d("exception error", "Pos settings not found");
             binding.posPaymentLl.setVisibility(View.VISIBLE);
             binding.posSettingsLl.setVisibility(View.GONE);
         }
 
         try {
-            String userString = sharedPreference.getString("user", "");
-            user = gson.fromJson(userString, User.class);
-        } catch (Exception e) {
-            Log.d("exception error", "User not found");
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, TicketListActivity.class));
-        }
-
-        try {
-            String ticketString = sharedPreference.getString("ticket", "");
-            ticket = gson.fromJson(ticketString, Ticket.class);
-            amountString = String.valueOf(ticket.getTotal_amt());
+            amountString = bundleString.getString("price");
             if (amountString.isEmpty()) {
                 amount = 0.00;
             } else {
@@ -133,6 +130,15 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
             binding.amt.setText("₹" + amount);
         } catch (Exception e) {
             Log.d("exception error", "Ticket not found");
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, TicketListActivity.class));
+        }
+
+        try {
+            String userString = sharedPreference.getString("user", "");
+            user = gson.fromJson(userString, User.class);
+        } catch (Exception e) {
+            Log.d("exception error", "User not found");
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, TicketListActivity.class));
         }

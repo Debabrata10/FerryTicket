@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private lateinit var adapter: FerryServiceAdapter
 	private lateinit var recyclerView: RecyclerView
 
+	@SuppressLint("NotifyDataSetChanged")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityFerryListBinding.inflate(layoutInflater)
@@ -54,6 +56,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		adapter.setOnItemClickListener(this)
 		recyclerView = binding.ferryListRecyclerView
 		recyclerView.adapter = adapter
+		adapter.notifyDataSetChanged()
 		recyclerView.layoutManager = LinearLayoutManager(this)
 		recyclerView.isNestedScrollingEnabled = false
 

@@ -1,6 +1,7 @@
 package com.amtron.ferryticket.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
 		holder.ticket.setOnClickListener {
-			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticket))
+			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticketList[position]))
 		}
 	}
 

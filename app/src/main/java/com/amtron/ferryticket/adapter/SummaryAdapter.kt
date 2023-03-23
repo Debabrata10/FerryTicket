@@ -74,7 +74,7 @@ class SummaryAdapter(private val summaryList: List<Any>, private val mContext: C
 			holder.phone.text = "QUANTITY: " + (any as Others).quantity
 		}
 		holder.cardDeleteBtn.setOnClickListener {
-			mItemClickListener.onItemClickListener(position, Gson().toJson(any))
+			mItemClickListener.onItemClickListener(position, Gson().toJson(summaryList[position]))
 		}
 	}
 

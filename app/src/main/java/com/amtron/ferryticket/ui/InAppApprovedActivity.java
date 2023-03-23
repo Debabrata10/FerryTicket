@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,14 +26,22 @@ import com.amtron.ferryticket.databinding.ActivityInAppApprovedBinding;
 import com.amtron.ferryticket.helper.DateAndTimeHelper;
 import com.amtron.ferryticket.model.CardDetails;
 import com.amtron.ferryticket.model.FerryService;
+import com.amtron.ferryticket.model.Others;
+import com.amtron.ferryticket.model.PassengerDetails;
 import com.amtron.ferryticket.model.Ticket;
+import com.amtron.ferryticket.model.Vehicle;
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.pos.device.printer.PrintCanvas;
 import com.pos.device.printer.PrintTask;
 import com.pos.device.printer.Printer;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
@@ -50,6 +59,10 @@ public class InAppApprovedActivity extends AppCompatActivity {
     private Ticket ticket;
     private CardDetails cardDetails;
     private FerryService service;
+    private Bitmap qrBitmap;
+    private ArrayList<PassengerDetails> passengerDetailsList;
+    private ArrayList<Vehicle> vehiclesList;
+    private ArrayList<Others> othersList;
 
     public static byte[] draw2PxPoint(Bitmap bitmap) {
         int height = bitmap.getHeight();
@@ -91,6 +104,9 @@ public class InAppApprovedActivity extends AppCompatActivity {
             String ticketString = sharedPreference.getString("ticket", "");
             ticket = new Gson().fromJson(ticketString, Ticket.class);
             ticketNo = ticket.getTicket_no();
+            passengerDetailsList = (ArrayList<PassengerDetails>) ticket.getPassenger();
+            vehiclesList = (ArrayList<Vehicle>) ticket.getVehicle();
+            othersList = (ArrayList<Others>) ticket.getOther();
             ticketDate = new DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.getFerry_date());
             ferryDepartureTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_departure_time());
             ferryArrivalTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_reached_time());
@@ -101,8 +117,28 @@ public class InAppApprovedActivity extends AppCompatActivity {
             binding.time.setText("");
             binding.serviceTime.setText(time);
             binding.netAmount.setText("₹" + ticket.getNet_amt());
-            binding.serviceCharge.setText("₹" + ticket.getService_amt());
+            if (ticket.getWallet_service_charge() == 1) {
+                binding.serviceCharge.setText("₹" + ticket.getService_amt());
+            } else {
+                binding.custServCharge.setVisibility(View.GONE);
+            }
             binding.txtAmount.setText("₹" + ticket.getTotal_amt());
+
+            //generate qr
+            try {
+                QRCodeWriter writer = new QRCodeWriter();
+                BitMatrix bitMatrix = writer.encode(ticket.getQr_string(), BarcodeFormat.QR_CODE, 390, 390);
+                int width = bitMatrix.getWidth();
+                int height = bitMatrix.getHeight();
+                qrBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        qrBitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                    }
+                }
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             Log.d("ticket details", "not found");
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -190,36 +226,68 @@ public class InAppApprovedActivity extends AppCompatActivity {
             setFontStyle(paint, 1, true);
             canvas.drawText("Directorate of Inland Water Transport \n \t \t \t Ulubari, Guwahati 781007\n \t \t \t \t \t \t \t \t \t \t\tAssam", paint);
             canvas.drawText(" ", paint);
-            canvas.drawText(" ", paint);
+            setFontStyle(paint, 2, false);
             canvas.drawText("**************************", paint);
 
+            setFontStyle(paint, 2, false);
+            canvas.drawText("T/No: " + ticket.getTicket_no(), paint);
             canvas.drawText("Date: " + ticketDate, paint);
-            canvas.drawText("Ticket No: " + ticket.getTicket_no(), paint);
-            canvas.drawText("Service Name: " + serviceName, paint);
-            canvas.drawText("Service Timing: " + ferryDepartureTime + " - " + ferryArrivalTime, paint);
+            canvas.drawText("Name: " + serviceName, paint);
+            canvas.drawText("Timing: " + ferryDepartureTime + " - " + ferryArrivalTime, paint);
+            setFontStyle(paint, 1, false);
+            canvas.drawText("Boarding: " + source, paint);
+            canvas.drawText("Dropping: " + destination, paint);
+            if (passengerDetailsList.size() > 0) {
+                canvas.drawText(" ", paint);
+                canvas.drawText("Passengers:", paint);
+                for (int i = 0; i < passengerDetailsList.size(); i++) {
+                    canvas.drawText((i + 1) + ". " + passengerDetailsList.get(i).getPassenger_name(), paint);
+                }
+            }
+            if (vehiclesList.size() > 0) {
+                canvas.drawText(" ", paint);
+                canvas.drawText("Vehicles:", paint);
+                for (int i = 0; i < vehiclesList.size(); i++) {
+                    canvas.drawText((i + 1) + ". " + vehiclesList.get(i).getVehicle_type().getP_name() + " (" + vehiclesList.get(i).getReg_no() + ")", paint);
+                }
+            }
+            if (othersList.size() > 0) {
+                canvas.drawText(" ", paint);
+                canvas.drawText("Others:", paint);
+                for (int i = 0; i < othersList.size(); i++) {
+                    canvas.drawText((i + 1) + ". " + othersList.get(i).getOther_name() + " (" + othersList.get(i).getQuantity() + ")", paint);
+                }
+            }
+            canvas.drawText(" ", paint);
             canvas.drawText("Card No: " + card_no, paint);
             if (rrn == null) {
                 canvas.drawText("RRN/Order No: " + orderNo, paint);
             } else {
                 canvas.drawText("RRN/Order No: " + rrn, paint);
             }
-            canvas.drawText("Boarding: " + source, paint);
-            canvas.drawText("Dropping: " + destination, paint);
             canvas.drawText("-------------------------------------", paint);
             canvas.drawText("Net Amout               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
-            canvas.drawText("Servive Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
+            if (ticket.getWallet_service_charge() == 1) {
+                canvas.drawText("Servive Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
+            }
             setFontStyle(paint, 3, false);
             canvas.drawText(" ", paint);
-            canvas.drawText("\t \t TOTAL - INR " + ticket.getTotal_amt(), paint);
+            if (ticket.getWallet_service_charge() == 1) {
+                canvas.drawText("\t \t TOTAL - INR " + ticket.getNet_amt() + ticket.getService_amt(), paint);
+            } else {
+                canvas.drawText("\t \t TOTAL - INR " + ticket.getTotal_amt(), paint);
+            }
+            canvas.drawBitmap(qrBitmap, paint);
             setFontStyle(paint, 2, false);
             canvas.drawText(" ", paint);
-            canvas.drawText("Please keep this ticket safe.This is a one time copy only", paint);
             canvas.drawText("*****************************", paint);
             canvas.drawText("** \t \tThanks.. Visit Again \t \t**", paint);
             canvas.drawText("*****************************", paint);
             setFontStyle(paint, 1, false);
             canvas.drawText("Designed and developed by AMTRON", paint);
-            canvas.drawText("Powered by Worldline", paint);
+            canvas.drawText("POS powered by Worldline", paint);
+            setFontStyle(paint, 2, false);
+            canvas.drawText("*****************************", paint);
             printData(canvas);
         });
 
@@ -345,6 +413,8 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        editor.remove("ticket");
+        editor.remove("card_details");
         super.onBackPressed();
         Intent intent = new Intent(this, BookActivity.class);
         startActivity(intent);

@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -39,7 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @DelicateCoroutinesApi
-class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener,
+class HomeActivity : AppCompatActivity(),
 	OnAssignedRoutesRecyclerViewItemClickListener {
 	private lateinit var sharedPreferences: SharedPreferences
 	private lateinit var editor: Editor
@@ -356,37 +357,6 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 		}
 	}
 
-	@SuppressLint("SetTextI18n")
-	override fun onRecentTicketsItemClickListener(position: Int, type: String) {
-		val ticket: Ticket = Gson().fromJson(
-			type,
-			object : TypeToken<Ticket>() {}.type
-		)
-		val bundle = Bundle()
-		val i = Intent(this@HomeActivity, TicketActivity::class.java)
-		bundle.putString("ticket", Gson().toJson(ticket))
-		i.putExtras(bundle)
-		startActivity(i)
-
-		/*val printTicketBottomSheet = BottomSheetDialog(this@HomeActivity)
-		printTicketBottomSheet.setCancelable(false)
-		printTicketBottomSheet.setContentView(R.layout.exit_bottom_sheet_layout)
-		val title = printTicketBottomSheet.findViewById<TextView>(R.id.title)
-		val header = printTicketBottomSheet.findViewById<TextView>(R.id.header)
-		val success = printTicketBottomSheet.findViewById<Button>(R.id.success)
-		val cancel = printTicketBottomSheet.findViewById<Button>(R.id.cancel)
-		title?.visibility = View.GONE
-		header?.text = "PRINT TICKET?"
-		success?.text = "PRINT"
-		cancel?.text = "CANCEL"
-		printTicketBottomSheet.show()
-
-		success?.setOnClickListener {
-			finishAffinity()
-		}
-		cancel?.setOnClickListener { printTicketBottomSheet.dismiss() }*/
-	}
-
 	override fun onAssignedRoutesItemClickListener(position: Int, type: String) {
 		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
@@ -418,6 +388,7 @@ class HomeActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickListener
 								helper.getDataAsString(),
 								object : TypeToken<List<FerryService>>() {}.type
 							)
+							Log.d("FerryService", Gson().toJson(ferryServiceList))
 							editor.putString("sourceGhat", ferry.source_ghat_name)
 							editor.putString("destinationGhat", ferry.destination_ghat_name)
 							editor.putString("ferryServices", Gson().toJson(ferryServiceList))

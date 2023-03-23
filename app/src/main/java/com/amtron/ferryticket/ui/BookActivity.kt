@@ -835,7 +835,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		dialog.show()
 		val api = RetrofitHelper.getInstance().create(Client::class.java)
 		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getQR(
+			val call: Call<JsonObject> = api.getCardDetails(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
 				data.toInt()
 			)
@@ -1030,7 +1030,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		alert.show()
 	}
 
-	@Deprecated("Deprecated in Java")
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
 		if (result != null) {

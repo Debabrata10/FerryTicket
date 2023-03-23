@@ -1,6 +1,7 @@
 package com.amtron.ferryticket.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,7 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 		holder.availableHmv.text = ferryService.hmv_capacity.toString()
 		holder.availableGoods.text = ferryService.others_capacity.toString()
 		holder.ferryCard.setOnClickListener {
-			mItemClickListener.onItemClickListener(position, Gson().toJson(ferryService))
+			mItemClickListener.onItemClickListener(position, Gson().toJson(ferryServiceList[position]))
 		}
 	}
 

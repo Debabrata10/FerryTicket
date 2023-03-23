@@ -63,7 +63,7 @@ interface Client {
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("card-details")
-	fun getQR(
+	fun getCardDetails(
 		@Header("Authorization") bearer: String,
 		@Field("card_id") card_id: Int
 	): Call<JsonObject>
