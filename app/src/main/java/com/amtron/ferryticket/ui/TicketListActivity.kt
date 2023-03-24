@@ -49,13 +49,15 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 		editor = sharedPreferences.edit()
 		ticketsList = ArrayList()
 
-		val recentTicketList = sharedPreferences.getString("recent_tickets", "").toString()
-		ticketsList = Gson().fromJson(
-			recentTicketList,
-			object : TypeToken<List<Ticket>>() {}.type
-		)
-		if (ticketsList.isEmpty()) {
+		try {
+			val recentTicketList = sharedPreferences.getString("recent_tickets", "").toString()
+			ticketsList = Gson().fromJson(
+				recentTicketList,
+				object : TypeToken<List<Ticket>>() {}.type
+			)
+		} catch (e: Exception) {
 			NotificationHelper().getErrorAlert(this@TicketListActivity, "No tickets found")
+			startActivity(Intent(this, HomeActivity::class.java))
 		}
 		ticketAdapter = TicketAdapter(ticketsList)
 		ticketAdapter.setOnItemClickListener(this@TicketListActivity)
@@ -63,13 +65,6 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 		ticketsRecyclerView.adapter = ticketAdapter
 		ticketsRecyclerView.layoutManager = LinearLayoutManager(this)
 		ticketsRecyclerView.isNestedScrollingEnabled = false
-
-		binding.recentTicketsBtn.setOnClickListener {
-			getRecentTickets(
-				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
-				"recentTickets"
-			)
-		}
 
 		onBackPressedDispatcher.addCallback(this) {
 			startActivity(
@@ -93,69 +88,5 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 		editor.putString("ticket", Gson().toJson(ticket))
 		editor.apply()
 		startActivity(Intent(this@TicketListActivity, TicketActivity::class.java))
-	}
-
-	private fun getRecentTickets(token: String, ticketsType: String) {
-		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
-		dialog.titleText = "Getting tickets"
-		dialog.setCancelable(false)
-		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
-		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getHomeData(token)
-			call.enqueue(object : Callback<JsonObject> {
-				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
-				override fun onResponse(
-					call: Call<JsonObject>,
-					response: Response<JsonObject>
-				) {
-					if (response.isSuccessful) {
-						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
-						if (helper.isStatusSuccessful()) {
-							val obj = JSONObject(helper.getDataAsString())
-							val latestTicketsJson =
-								if (ticketsType == "recentTickets") obj.get("latest_tickets") as JSONArray else obj.get(
-									"pending_tickets"
-								) as JSONArray
-							val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
-								latestTicketsJson.toString(),
-								object : TypeToken<List<Ticket>>() {}.type
-							)
-							ticketAdapter = TicketAdapter(latestTicketsList)
-							ticketAdapter.setOnItemClickListener(this@TicketListActivity)
-							ticketsRecyclerView = binding.recentTicketsRecyclerView
-							ticketsRecyclerView.adapter = ticketAdapter
-							ticketsRecyclerView.layoutManager =
-								LinearLayoutManager(this@TicketListActivity)
-							ticketsRecyclerView.isNestedScrollingEnabled = false
-
-							dialog.titleText = "All data fetched successfully"
-							dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-							dialog.confirmText = "OK"
-							dialog.setConfirmClickListener { dialog.dismiss() }
-						} else {
-							dialog.dismiss()
-							NotificationHelper().getErrorAlert(
-								this@TicketListActivity,
-								helper.getErrorMsg()
-							)
-						}
-					} else {
-						dialog.dismiss()
-						NotificationHelper().getErrorAlert(
-							this@TicketListActivity,
-							"Response Error Code" + response.message()
-						)
-					}
-				}
-
-				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-					dialog.dismiss()
-					NotificationHelper().getErrorAlert(this@TicketListActivity, "Server Error")
-				}
-			})
-		}
 	}
 }

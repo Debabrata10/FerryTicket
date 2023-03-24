@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.model.FerryService
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 
@@ -34,6 +35,7 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 
 		holder.ferryName.text = ferryService.ferry.ferry_name
 		holder.ferryNumber.text = ferryService.ferry.ferry_no
+		holder.refreshBtn.visibility = View.GONE
 		holder.departureTime.text =
 			DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
@@ -56,6 +58,7 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		val ferryCard: MaterialCardView = itemView.findViewById(R.id.ferry_card)
+		val refreshBtn: MaterialButton = itemView.findViewById(R.id.refresh_btn)
 		val ferryName: TextView = itemView.findViewById(R.id.ferry_name)
 		val ferryNumber: TextView = itemView.findViewById(R.id.ferry_number)
 		val departureTime: TextView = itemView.findViewById(R.id.departure_time)

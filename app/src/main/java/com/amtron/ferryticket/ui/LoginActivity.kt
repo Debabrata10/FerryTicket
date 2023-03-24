@@ -185,7 +185,7 @@ class LoginActivity : AppCompatActivity() {
 		enterTidBottomSheet.show()
 
 		getTidBtn?.setOnClickListener {
-			if (tid!!.text.isEmpty()) {
+			if (tid!!.text.toString().isEmpty()) {
 				Toast.makeText(this@LoginActivity, "Please enter serial number", Toast.LENGTH_SHORT).show()
 			} else {
 				val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)

@@ -7,47 +7,29 @@
     tools:context=".ui.TicketListActivity"
     tools:ignore="HardCodedText">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <TextView
+        android:id="@+id/recent_tickets_tv"
+        android:text="RECENT TICKETS"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textColor="@color/dark_blue"
+        android:textSize="19sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/recent_tickets_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:text="RECENT TICKETS"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pending_tickets_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:text="PENDING TICKETS"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentTicketsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:fadeScrollbars="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/recent_tickets_tv"
         app:layout_constraintVertical_bias="0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

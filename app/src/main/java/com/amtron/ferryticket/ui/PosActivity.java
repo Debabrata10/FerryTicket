@@ -131,7 +131,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         } catch (Exception e) {
             Log.d("exception error", "Ticket not found");
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, TicketListActivity.class));
+//            startActivity(new Intent(this, TicketListActivity.class));
         }
 
         try {
@@ -140,7 +140,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         } catch (Exception e) {
             Log.d("exception error", "User not found");
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, TicketListActivity.class));
+            startActivity(new Intent(this, ProfileActivity.class));
         }
         printer = com.pos.device.printer.Printer.getInstance();
         printTask = new PrintTask();

@@ -13,17 +13,22 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.OnRecyclerViewItemClickListener
 import com.amtron.ferryticket.adapter.SummaryAdapter
 import com.amtron.ferryticket.databinding.ActivityBookBinding
+import com.amtron.ferryticket.helper.DateAndTimeHelper
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
 import com.amtron.ferryticket.model.*
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -81,15 +86,15 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 		qrScanIntegrator = IntentIntegrator(this)
 
-		binding.refresh.setOnClickListener {
-			getUpdatedAvailabilities()
-		}
-
 		binding.scan.setOnClickListener {
 			/*startActivity(
 				Intent(this, ScannerActivity::class.java)
 			)*/
 			performAction()
+		}
+
+		binding.enterCardNo.setOnClickListener {
+			openEnterCardNumberBottomSheet()
 		}
 
 		val vehicleTypeList = ArrayList<VehicleType>()
@@ -238,14 +243,19 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding.ferry.ferryNumber.text = ferryService.ferry.ferry_no
 		binding.ferry.src.text = ferryService.source.ghat_name
 		binding.ferry.dest.text = ferryService.destination.ghat_name
-		binding.ferry.departureTime.text = ferryService.departure_time
-		binding.ferry.arrivalTime.text = ferryService.reached_time
+		binding.ferry.departureTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
+		binding.ferry.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
 		binding.ferry.availablePerson.text = ferryService.passenger_capacity.toString()
 		binding.ferry.availableCycle.text = ferryService.bicycle_capacity.toString()
 		binding.ferry.availableMotorcycle.text = ferryService.two_wheeler_capacity.toString()
 		binding.ferry.availableLmv.text = ferryService.four_wheeler.toString()
 		binding.ferry.availableHmv.text = ferryService.hmv_capacity.toString()
 		binding.ferry.availableGoods.text = ferryService.others_capacity.toString()
+		binding.ferry.refreshBtn.visibility = View.VISIBLE
+
+		binding.ferry.refreshBtn.setOnClickListener {
+			getUpdatedAvailabilities()
+		}
 
 		binding.openAddPassengerCard.setOnClickListener {
 			if (!isAddPassengerCardVisible) {
@@ -671,6 +681,123 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		}
 	}
 
+	private fun openEnterCardNumberBottomSheet() {
+		val enterCardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
+		enterCardDetailsBottomSheet.setCancelable(false)
+		enterCardDetailsBottomSheet.setContentView(R.layout.enter_device_serial_number_layout)
+		val cardCode = enterCardDetailsBottomSheet.findViewById<TextView>(R.id.serial_number)
+		val getDetailsBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_getTid)
+		val cancelBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_cancel)
+		enterCardDetailsBottomSheet.show()
+
+		getDetailsBtn!!.setOnClickListener {
+			val cardCodeString = cardCode!!.text.toString()
+			if (cardCodeString.isEmpty()) {
+				Toast.makeText(this@BookActivity, "Please enter card details", Toast.LENGTH_SHORT).show()
+			} else {
+				val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+				dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+				dialog.titleText = "Getting card details.."
+				dialog.setCancelable(false)
+				dialog.show()
+				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				GlobalScope.launch {
+					val call: Call<JsonObject> = api.getCardDetails(
+						Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+						cardCodeString
+					)
+					call.enqueue(object : Callback<JsonObject> {
+						@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged")
+						override fun onResponse(
+							call: Call<JsonObject>,
+							response: Response<JsonObject>
+						) {
+							if (response.isSuccessful) {
+								val helper = ResponseHelper()
+								helper.ResponseHelper(response.body())
+								if (helper.isStatusSuccessful()) {
+									dialog.titleText = "Card details found.."
+									val obj = JSONObject(helper.getDataAsString())
+									val passengerJSONObject = obj.get("passenger") as JSONObject
+									if (passengerJSONObject.length() > 0) {
+										val passengerDetails: PassengerDetails =
+											Gson().fromJson(
+												passengerJSONObject.toString(),
+												object : TypeToken<PassengerDetails>() {}.type
+											)
+										dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
+										dialog.titleText = "Passengers found. Add them?"
+										dialog.confirmText = "ADD"
+										dialog.cancelText = "CANCEL"
+										dialog.setCancelClickListener {
+											dialog.dismissWithAnimation()
+										}
+										dialog.setConfirmClickListener {
+											addPassenger(passengerDetails)
+											dialog.dismissWithAnimation()
+										}
+									} else {
+										Toast.makeText(
+											this@BookActivity,
+											"No passengers found",
+											Toast.LENGTH_SHORT
+										).show()
+									}
+
+									try {
+										val cardJSONObject = obj.get("card_details") as JSONObject
+										val cardDetails: CardDetails? =
+											Gson().fromJson(
+												cardJSONObject.toString(),
+												object : TypeToken<CardDetails>() {}.type
+											)
+										if (cardDetails == null) {
+											Toast.makeText(
+												this@BookActivity,
+												"Card details not found",
+												Toast.LENGTH_SHORT
+											).show()
+										} else {
+											editor.putString(
+												"card_details",
+												Gson().toJson(cardDetails)
+											)
+											editor.apply()
+										}
+									} catch (e: java.lang.Exception) {
+										Toast.makeText(this@BookActivity, "Card Details not found", Toast.LENGTH_SHORT).show()
+										dialog.dismissWithAnimation()
+									}
+								} else {
+									dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+									dialog.cancelText = "OK"
+									dialog.setOnCancelListener {
+										dialog.dismissWithAnimation()
+									}
+								}
+							} else {
+								dialog.dismissWithAnimation()
+								NotificationHelper().getErrorAlert(
+									this@BookActivity,
+									"Response Error Code" + response.message()
+								)
+							}
+						}
+
+						override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+							dialog.dismissWithAnimation()
+							NotificationHelper().getErrorAlert(this@BookActivity, "Server Error")
+						}
+					})
+				}
+			}
+		}
+
+		cancelBtn!!.setOnClickListener {
+			enterCardDetailsBottomSheet.dismiss()
+		}
+	}
+
 	private fun performAction() {
 		qrScanIntegrator?.initiateScan()
 	}
@@ -877,21 +1004,29 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								).show()
 							}
 
-							val cardJSONObject = obj.get("card_details") as JSONObject
-							val cardDetails: CardDetails? =
-								Gson().fromJson(
-									cardJSONObject.toString(),
-									object : TypeToken<CardDetails>() {}.type
-								)
-							if (cardDetails == null) {
-								Toast.makeText(
-									this@BookActivity,
-									"Card details not found",
-									Toast.LENGTH_SHORT
-								).show()
-							} else {
-								editor.putString("card_details", Gson().toJson(cardDetails))
-								editor.apply()
+							try {
+								val cardJSONObject = obj.get("card_details") as JSONObject
+								val cardDetails: CardDetails? =
+									Gson().fromJson(
+										cardJSONObject.toString(),
+										object : TypeToken<CardDetails>() {}.type
+									)
+								if (cardDetails == null) {
+									Toast.makeText(
+										this@BookActivity,
+										"Card details not found",
+										Toast.LENGTH_SHORT
+									).show()
+								} else {
+									editor.putString(
+										"card_details",
+										Gson().toJson(cardDetails)
+									)
+									editor.apply()
+								}
+							} catch (e: java.lang.Exception) {
+								Toast.makeText(this@BookActivity, "Card Details not found", Toast.LENGTH_SHORT).show()
+								dialog.dismissWithAnimation()
 							}
 						}
 					} else {

@@ -63,6 +63,10 @@ class HomeActivity : AppCompatActivity(),
 
 		getMasterData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
 
+		binding.appLogo.setOnClickListener {
+			startActivity(intent)
+		}
+
 		binding.profileCard.setOnClickListener {
 			startActivity(
 				Intent(this, ProfileActivity::class.java)
@@ -202,19 +206,28 @@ class HomeActivity : AppCompatActivity(),
 							val latestTicketsJson = obj.get("latest_tickets") as JSONArray
 
 							//Start for mobile view code
-							val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
-								latestTicketsJson.toString(),
-								object : TypeToken<List<Ticket>>() {}.type
-							)
-							binding.tickets.setOnClickListener {
-								editor.putString("recent_tickets", Gson().toJson(latestTicketsList))
-								editor.apply()
-								startActivity(
-									Intent(
-										this@HomeActivity,
-										TicketListActivity::class.java
-									)
+							if (latestTicketsJson.length() > 0) {
+								val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
+									latestTicketsJson.toString(),
+									object : TypeToken<List<Ticket>>() {}.type
 								)
+								binding.tickets.setOnClickListener {
+									editor.putString(
+										"recent_tickets",
+										Gson().toJson(latestTicketsList)
+									)
+									editor.apply()
+									startActivity(
+										Intent(
+											this@HomeActivity,
+											TicketListActivity::class.java
+										)
+									)
+								}
+							} else {
+								binding.tickets.setOnClickListener {
+									NotificationHelper().getErrorAlert(this@HomeActivity, "No tickets found")
+								}
 							}
 							//End for mobile view code
 

@@ -1,6 +1,7 @@
 package com.amtron.ferryticket.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,9 +36,11 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		holder.ferryName.text = ticket.ferry.ferry_name
 		holder.ticketNumber.text = ticket.ticket_no
 		holder.date.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
-		holder.price.text = ticket.total_amt.toString()
 		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
+		if (ticket.order_status == "PENDING") {
+			holder.ticket.setBackgroundColor(Color.parseColor("#ffb3b3"))
+		}
 		holder.ticket.setOnClickListener {
 			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticketList[position]))
 		}
@@ -54,6 +57,5 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		val departureTime: TextView = itemView.findViewById(R.id.departure_time)
 		val arrivalTime: TextView = itemView.findViewById(R.id.arrival_time)
 		val ferryName: TextView = itemView.findViewById(R.id.ferry_name)
-		val price: TextView = itemView.findViewById(R.id.price)
 	}
 }

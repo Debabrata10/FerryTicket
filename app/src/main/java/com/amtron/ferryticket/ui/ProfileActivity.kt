@@ -49,7 +49,7 @@ class ProfileActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
-		tidSharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
+		tidSharedPreferences = this.getSharedPreferences("IWT_TID", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
 		tidEditor = tidSharedPreferences.edit()
 
