@@ -17,7 +17,6 @@ import com.amtron.ferryticket.databinding.ActivityProfileBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
-import com.amtron.ferryticket.model.MasterData
 import com.amtron.ferryticket.model.User
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
@@ -130,7 +129,11 @@ class ProfileActivity : AppCompatActivity() {
 		binding.buttonsLl.visibility = View.GONE
 		binding.btnGetTid.setOnClickListener {
 			if (binding.serialNumber.text.isEmpty()) {
-				Toast.makeText(this@ProfileActivity, "Please enter serial number", Toast.LENGTH_SHORT).show()
+				Toast.makeText(
+					this@ProfileActivity,
+					"Please enter serial number",
+					Toast.LENGTH_SHORT
+				).show()
 			} else {
 				val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 				dialog.progressHelper.barColor = Color.parseColor("#2E74A0")

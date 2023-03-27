@@ -98,17 +98,17 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/refresh_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                app:icon="@drawable/ic_baseline_refresh_24"
-                app:iconTint="@color/white"
-                android:text="REFRESH PARTICULARS"
-                android:textSize="12sp"
                 android:fontFamily="@font/roboto_condensed_bold"
+                android:text="REFRESH PARTICULARS"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 android:visibility="gone"
-                android:id="@+id/refresh_btn"/>
+                app:icon="@drawable/ic_baseline_refresh_24"
+                app:iconTint="@color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"

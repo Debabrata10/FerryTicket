@@ -18,7 +18,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.adapter.AssignedRoutesAdapter
 import com.amtron.ferryticket.adapter.OnAssignedRoutesRecyclerViewItemClickListener
-import com.amtron.ferryticket.adapter.OnTicketsRecyclerViewItemClickListener
 import com.amtron.ferryticket.databinding.ActivityHomeBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
@@ -226,7 +225,10 @@ class HomeActivity : AppCompatActivity(),
 								}
 							} else {
 								binding.tickets.setOnClickListener {
-									NotificationHelper().getErrorAlert(this@HomeActivity, "No tickets found")
+									NotificationHelper().getErrorAlert(
+										this@HomeActivity,
+										"No tickets found"
+									)
 								}
 							}
 							//End for mobile view code

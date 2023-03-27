@@ -58,8 +58,8 @@
                     android:backgroundTint="@color/white"
                     android:fontFamily="@font/roboto_condensed_bold"
                     android:text="ENTER CARD NO"
-                    android:textSize="12sp"
                     android:textColor="@color/dark_blue"
+                    android:textSize="12sp"
                     app:icon="@drawable/baseline_mode_edit_24" />
             </LinearLayout>
 

@@ -75,9 +75,14 @@ class TicketActivity : AppCompatActivity() {
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
 			ticket = Gson().fromJson(ticketString, object : TypeToken<Ticket>() {}.type)
-			totalPosAmt = if (ticket.wallet_service_charge == 0) ticket.net_amt + ticket.service_amt else ticket.total_amt
+			totalPosAmt =
+				if (ticket.wallet_service_charge == 0) ticket.net_amt + ticket.service_amt else ticket.total_amt
 			binding.posPay.text = "POS PAYMENT ₹$totalPosAmt"
 			binding.walletPay.text = "WALLET PAYMENT ₹${ticket.total_amt}"
+			if (ticket.order_status == "SUCCESS") {
+				binding.paymentButtons.visibility = View.GONE
+				binding.printBtn.visibility = View.VISIBLE
+			}
 		} catch (e: Exception) {
 			Log.d("ticket details", "not found")
 			Toast.makeText(this, "Ticket - Something went wrong!", Toast.LENGTH_SHORT).show()
@@ -104,6 +109,10 @@ class TicketActivity : AppCompatActivity() {
 			}
 		} catch (e: Exception) {
 			Log.d("card details", "not found")
+		}
+
+		binding.printBtn.setOnClickListener {
+			startActivity(Intent(this, InAppApprovedActivity::class.java))
 		}
 
 		binding.walletPay.setOnClickListener {

@@ -1,8 +1,6 @@
 package com.amtron.ferryticket.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +41,10 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 			holder.notPaidLl.visibility = View.GONE
 		}
 		holder.ticket.setOnClickListener {
-			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticketList[position]))
+			mItemClickListener.onRecentTicketsItemClickListener(
+				position,
+				Gson().toJson(ticketList[position])
+			)
 		}
 	}
 

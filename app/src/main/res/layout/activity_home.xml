@@ -221,19 +221,19 @@
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="ASSIGNED ROUTES"
                 android:textAlignment="center"
-                app:layout_constraintVertical_bias="0"
                 android:textColor="@color/dark_blue"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="15dp"
                 android:id="@+id/srcDestRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
                 android:fadeScrollbars="false"
                 android:padding="10dp"
                 android:scrollbars="vertical"
@@ -275,11 +275,11 @@
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
+        android:id="@+id/recently_selected_ferry_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recently_selected_ferry_ll"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

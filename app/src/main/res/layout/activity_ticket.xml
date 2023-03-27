@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +11,14 @@
     tools:ignore="HardCodedText">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,17 +155,17 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:src="@drawable/vertical_dots"
-                    android:contentDescription="vertical_dots"/>
+                    android:contentDescription="vertical_dots"
+                    android:src="@drawable/vertical_dots" />
 
                 <TextView
                     android:id="@+id/arrival_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
+                    android:layout_marginBottom="5dp"
                     android:fontFamily="@font/roboto_condensed_bold"
                     android:textAlignment="center"
-                    android:layout_marginBottom="5dp"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -169,15 +173,23 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        app:cardCornerRadius="10dp">
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialCardView2"
+        app:layout_constraintVertical_bias="0">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -254,40 +266,64 @@
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <LinearLayout
+            android:id="@+id/payment_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cash_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/dark_blue"
+                android:text="CASH PAYMENT"
+                android:textColor="@color/white"
+                app:icon="@drawable/baseline_currency_rupee_24"
+                app:iconTint="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pos_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/dark_blue"
+                android:text="POS PAYMENT"
+                android:textColor="@color/white"
+                app:icon="@drawable/baseline_book_online_24"
+                app:iconTint="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/dark_blue"
+                android:text="WALLET PAYMENT"
+                android:textColor="@color/white"
+                app:icon="@drawable/baseline_account_balance_wallet_24"
+                app:iconTint="@color/white" />
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/cash_pay"
+            android:id="@+id/print_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/dark_blue"
-            android:text="CASH PAYMENT"
+            android:text="PRINT TICKET"
             android:textColor="@color/white"
-            app:icon="@drawable/baseline_currency_rupee_24"
-            app:iconTint="@color/white" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pos_pay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="POS PAYMENT"
-            android:textColor="@color/white"
-            app:icon="@drawable/baseline_book_online_24"
-            app:iconTint="@color/white" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/wallet_pay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="WALLET PAYMENT"
-            android:textColor="@color/white"
-            app:icon="@drawable/baseline_account_balance_wallet_24"
+            android:visibility="gone"
+            app:icon="@drawable/baseline_local_printshop_24"
             app:iconTint="@color/white" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

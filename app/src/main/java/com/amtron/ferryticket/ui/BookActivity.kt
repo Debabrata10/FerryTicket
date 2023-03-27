@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
@@ -39,7 +38,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -246,8 +244,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding.ferry.ferryNumber.text = ferryService.ferry.ferry_no
 		binding.ferry.src.text = ferryService.source.ghat_name
 		binding.ferry.dest.text = ferryService.destination.ghat_name
-		binding.ferry.departureTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
-		binding.ferry.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
+		binding.ferry.departureTime.text =
+			DateAndTimeHelper().changeTimeFormat(ferryService.departure_time)
+		binding.ferry.arrivalTime.text =
+			DateAndTimeHelper().changeTimeFormat(ferryService.reached_time)
 		binding.ferry.availablePerson.text = ferryService.passenger_capacity.toString()
 		binding.ferry.availableCycle.text = ferryService.bicycle_capacity.toString()
 		binding.ferry.availableMotorcycle.text = ferryService.two_wheeler_capacity.toString()
@@ -690,8 +690,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		enterCardDetailsBottomSheet.setCancelable(false)
 		enterCardDetailsBottomSheet.setContentView(R.layout.enter_device_serial_number_layout)
 		val cardCode = enterCardDetailsBottomSheet.findViewById<TextView>(R.id.serial_number)
-		val getDetailsBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_getTid)
-		val textInputLayout = enterCardDetailsBottomSheet.findViewById<TextInputLayout>(R.id.textInputLayout)
+		val getDetailsBtn =
+			enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_getTid)
+		val textInputLayout =
+			enterCardDetailsBottomSheet.findViewById<TextInputLayout>(R.id.textInputLayout)
 		textInputLayout!!.hint = "Enter Card Code"
 		cardCode!!.inputType = InputType.TYPE_CLASS_TEXT
 		getDetailsBtn!!.text = "SUBMIT"
@@ -702,7 +704,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		getDetailsBtn.setOnClickListener {
 			val cardCodeString = cardCode.text.toString()
 			if (cardCodeString.isEmpty()) {
-				Toast.makeText(this@BookActivity, "Please enter card details", Toast.LENGTH_SHORT).show()
+				Toast.makeText(this@BookActivity, "Please enter card details", Toast.LENGTH_SHORT)
+					.show()
 			} else {
 				val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 				dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
@@ -775,7 +778,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 											editor.apply()
 										}
 									} catch (e: java.lang.Exception) {
-										Toast.makeText(this@BookActivity, "Card Details not found", Toast.LENGTH_SHORT).show()
+										Toast.makeText(
+											this@BookActivity,
+											"Card Details not found",
+											Toast.LENGTH_SHORT
+										).show()
 										dialog.dismissWithAnimation()
 									}
 								} else {
@@ -1035,12 +1042,19 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									editor.apply()
 								}
 							} catch (e: java.lang.Exception) {
-								Toast.makeText(this@BookActivity, "Card Details not found", Toast.LENGTH_SHORT).show()
+								Toast.makeText(
+									this@BookActivity,
+									"Card Details not found",
+									Toast.LENGTH_SHORT
+								).show()
 								dialog.dismissWithAnimation()
 							}
 						} else {
 							dialog.dismissWithAnimation()
-							NotificationHelper().getErrorAlert(this@BookActivity, helper.getErrorMsg())
+							NotificationHelper().getErrorAlert(
+								this@BookActivity,
+								helper.getErrorMsg()
+							)
 						}
 					} else {
 						NotificationHelper().getErrorAlert(

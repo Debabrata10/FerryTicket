@@ -23,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/aquamarine"
                 android:backgroundTint="@color/blue_grotto"
-                android:src="@drawable/ic_baseline_person_pin_24"
                 android:contentDescription="profile_pic"
+                android:src="@drawable/ic_baseline_person_pin_24"
                 app:tint="@color/white" />
 
             <TextView
@@ -40,10 +40,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/profile_info_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/profile_info_ll">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,17 +53,17 @@
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_marginStart="5dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_baseline_person_24"
-                    android:contentDescription="profile_user_icon"/>
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="profile_user_icon"
+                    android:src="@drawable/ic_baseline_person_24" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/blue_grotto"
                     android:textSize="18sp"
@@ -85,11 +85,11 @@
                     android:src="@drawable/baseline_alternate_email_24" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/blue_grotto"
                     android:textSize="18sp"
@@ -104,17 +104,17 @@
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_marginStart="5dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/baseline_local_phone_24"
-                    android:contentDescription="profile_phone_icon"/>
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="profile_phone_icon"
+                    android:src="@drawable/baseline_local_phone_24" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/phone"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/blue_grotto"
                     android:textSize="18sp"
@@ -130,17 +130,17 @@
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_marginStart="5dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/baseline_assistant_photo_24"
-                    android:contentDescription="profile_user_icon"/>
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="profile_user_icon"
+                    android:src="@drawable/baseline_assistant_photo_24" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/role"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/blue_grotto"
                     android:textSize="18sp"
@@ -156,17 +156,17 @@
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_marginStart="5dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/baseline_code_24"
-                    android:contentDescription="profile_tid_icon"/>
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="profile_tid_icon"
+                    android:src="@drawable/baseline_code_24" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/tid"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/blue_grotto"
                     android:textSize="18sp"
@@ -176,21 +176,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+            android:id="@+id/enter_tid_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            android:id="@+id/enter_tid_ll">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:id="@+id/textInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
                 android:hint="Enter device serial number"
                 android:orientation="horizontal"
                 app:endIconMode="clear_text"
@@ -212,8 +212,8 @@
                 android:id="@+id/btn_getTid"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:layout_marginEnd="5dp"
+                android:padding="15dp"
                 android:text="GET TID"
                 android:textColor="@color/white" />
         </LinearLayout>
@@ -222,28 +222,28 @@
             android:id="@+id/buttons_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="10dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_enterTid"
                 android:layout_width="0dp"
-                android:visibility="gone"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:padding="15dp"
                 android:text="GET TID"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_logOut"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:padding="15dp"
                 android:text="LOG OUT"
                 android:textColor="@color/white" />
         </LinearLayout>

@@ -55,6 +55,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     JSONArray posJSONArray;
     private Printer printer = null;
     private PrintTask printTask = null;
+    private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
     private CardDetails cardDetails;
@@ -98,15 +99,19 @@ public class InAppApprovedActivity extends AppCompatActivity {
         ActivityInAppApprovedBinding binding = ActivityInAppApprovedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
         editor = sharedPreference.edit();
         try {
             String ticketString = sharedPreference.getString("ticket", "");
             ticket = new Gson().fromJson(ticketString, Ticket.class);
             ticketNo = ticket.getTicket_no();
+            orderNo = ticket.getOrder_number();
             passengerDetailsList = (ArrayList<PassengerDetails>) ticket.getPassenger();
             vehiclesList = (ArrayList<Vehicle>) ticket.getVehicle();
             othersList = (ArrayList<Others>) ticket.getOther();
+            source = ticket.getFerry().getSource_ghat();
+            destination = ticket.getFerry().getDestination_ghat();
+            serviceName = ticket.getFerry().getFerry_name();
             ticketDate = new DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.getFerry_date());
             ferryDepartureTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_departure_time());
             ferryArrivalTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_reached_time());
@@ -115,6 +120,10 @@ public class InAppApprovedActivity extends AppCompatActivity {
             binding.ticketNo.setText(ticketNo);
             binding.txtDate.setText(ticketDate);
             binding.time.setText("");
+            binding.srcGhat.setText(source);
+            binding.destGhat.setText(destination);
+            binding.serviceName.setText(serviceName);
+            binding.txtRrn.setText(orderNo);
             binding.serviceTime.setText(time);
             binding.netAmount.setText("₹" + ticket.getNet_amt());
             if (ticket.getWallet_service_charge() == 1) {
@@ -145,30 +154,12 @@ public class InAppApprovedActivity extends AppCompatActivity {
             startActivity(new Intent(this, TicketListActivity.class));
         }
         try {
-            String serviceString = sharedPreference.getString("service", "");
-            service = new Gson().fromJson(serviceString, FerryService.class);
-
-            source = service.getSource().getGhat_name();
-            destination = service.getDestination().getGhat_name();
-            serviceName = service.getFerry().getFerry_name();
-
-            binding.srcGhat.setText(source);
-            binding.destGhat.setText(destination);
-            binding.serviceName.setText(serviceName);
-        } catch (Exception e) {
-            Log.d("service details", "not found");
-            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, TicketListActivity.class));
-        }
-        try {
             String cardDetailsString = sharedPreference.getString("card_details", "");
             cardDetails = new Gson().fromJson(cardDetailsString, CardDetails.class);
             Log.d("card details", cardDetails.toString());
 
             card_no = cardDetails.getCard_no();
-            orderNo = ticket.getOrder_number();
             binding.cardNumber.setText(card_no);
-            binding.txtRrn.setText(orderNo);
         } catch (Exception e) {
             Log.d("Scanned card details", "not found");
         }
@@ -413,11 +404,16 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        editor.remove("ticket");
-        editor.remove("card_details");
-        super.onBackPressed();
-        Intent intent = new Intent(this, BookActivity.class);
-        startActivity(intent);
+        if (sharedPreference.getString("activity_from", "").equals("ticketListActivity")) {
+            Intent intent = new Intent(this, TicketListActivity.class);
+            startActivity(intent);
+        } else {
+            editor.remove("ticket");
+            editor.remove("card_details");
+            super.onBackPressed();
+            Intent intent = new Intent(this, BookActivity.class);
+            startActivity(intent);
+        }
     }
 }
 

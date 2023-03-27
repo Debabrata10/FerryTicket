@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import com.google.mlkit.common.sdkinternal.CommonUtils.getAppVersion
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -186,7 +184,8 @@ class LoginActivity : AppCompatActivity() {
 
 		getTidBtn?.setOnClickListener {
 			if (tid!!.text.toString().isEmpty()) {
-				Toast.makeText(this@LoginActivity, "Please enter serial number", Toast.LENGTH_SHORT).show()
+				Toast.makeText(this@LoginActivity, "Please enter serial number", Toast.LENGTH_SHORT)
+					.show()
 			} else {
 				val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 				dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
