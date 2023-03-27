@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -29,6 +30,7 @@ import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -37,6 +39,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -681,17 +684,23 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		}
 	}
 
+	@SuppressLint("SetTextI18n")
 	private fun openEnterCardNumberBottomSheet() {
 		val enterCardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
 		enterCardDetailsBottomSheet.setCancelable(false)
 		enterCardDetailsBottomSheet.setContentView(R.layout.enter_device_serial_number_layout)
 		val cardCode = enterCardDetailsBottomSheet.findViewById<TextView>(R.id.serial_number)
 		val getDetailsBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_getTid)
+		val textInputLayout = enterCardDetailsBottomSheet.findViewById<TextInputLayout>(R.id.textInputLayout)
+		textInputLayout!!.hint = "Enter Card Code"
+		cardCode!!.inputType = InputType.TYPE_CLASS_TEXT
+		getDetailsBtn!!.text = "SUBMIT"
+
 		val cancelBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_cancel)
 		enterCardDetailsBottomSheet.show()
 
-		getDetailsBtn!!.setOnClickListener {
-			val cardCodeString = cardCode!!.text.toString()
+		getDetailsBtn.setOnClickListener {
+			val cardCodeString = cardCode.text.toString()
 			if (cardCodeString.isEmpty()) {
 				Toast.makeText(this@BookActivity, "Please enter card details", Toast.LENGTH_SHORT).show()
 			} else {
@@ -717,6 +726,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								helper.ResponseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									dialog.titleText = "Card details found.."
+									enterCardDetailsBottomSheet.dismiss()
 									val obj = JSONObject(helper.getDataAsString())
 									val passengerJSONObject = obj.get("passenger") as JSONObject
 									if (passengerJSONObject.length() > 0) {
@@ -964,7 +974,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getCardDetails(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
-				data.toInt()
+				data
 			)
 			call.enqueue(object : Callback<JsonObject> {
 				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged")
@@ -1028,6 +1038,9 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								Toast.makeText(this@BookActivity, "Card Details not found", Toast.LENGTH_SHORT).show()
 								dialog.dismissWithAnimation()
 							}
+						} else {
+							dialog.dismissWithAnimation()
+							NotificationHelper().getErrorAlert(this@BookActivity, helper.getErrorMsg())
 						}
 					} else {
 						NotificationHelper().getErrorAlert(

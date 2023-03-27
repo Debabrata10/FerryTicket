@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
@@ -38,8 +39,8 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		holder.date.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
-		if (ticket.order_status == "PENDING") {
-			holder.ticket.setBackgroundColor(Color.parseColor("#ffb3b3"))
+		if (ticket.order_status == "SUCCESS") {
+			holder.notPaidLl.visibility = View.GONE
 		}
 		holder.ticket.setOnClickListener {
 			mItemClickListener.onRecentTicketsItemClickListener(position, Gson().toJson(ticketList[position]))
@@ -52,6 +53,7 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		val ticket: MaterialCardView = itemView.findViewById(R.id.ticket)
+		val notPaidLl: LinearLayout = itemView.findViewById(R.id.not_paid_ll)
 		val ticketNumber: TextView = itemView.findViewById(R.id.ticket_number)
 		val date: TextView = itemView.findViewById(R.id.date)
 		val departureTime: TextView = itemView.findViewById(R.id.departure_time)
