@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException
 import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
-	private const val apiUrl = "https://asiwt.in/api/counter/"
+	private const val apiUrl = "https://asiwt.in/StagingServer/api/counter/"
 	private var mClient: OkHttpClient? = null
 
 	private val client: OkHttpClient

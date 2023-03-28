@@ -63,9 +63,9 @@ interface Client {
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("card-details")
-	fun getCardDetails(
+	fun getCardDetailsByScan(
 		@Header("Authorization") bearer: String,
-		@Field("card_id") card_id: Int
+		@Field("card_id") card_id: String
 	): Call<JsonObject>
 
 	//BOOK TICKET API
@@ -121,7 +121,7 @@ interface Client {
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
 	@POST("card-details-by-code")
-	fun getCardDetails(
+	fun getCardDetailsByInput(
 		@Header("Authorization") bearer: String,
 		@Field("card_code") card_code: String
 	): Call<JsonObject>

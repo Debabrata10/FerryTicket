@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:clickable="true"
+                android:textAllCaps="true"
                 android:gravity="center_vertical"
                 android:inputType="text"
                 android:textSize="14sp"
@@ -170,7 +171,8 @@
                 android:layout_height="50dp"
                 android:clickable="true"
                 android:gravity="center_vertical"
-                android:inputType="text"
+                android:textAllCaps="true"
+                android:inputType="textVisiblePassword"
                 android:textSize="14sp"
                 tools:ignore="KeyboardInaccessibleWidget" />
         </com.google.android.material.textfield.TextInputLayout>

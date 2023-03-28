@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.InputType
 import android.util.Log
 import android.view.MotionEvent
@@ -695,7 +696,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		val textInputLayout =
 			enterCardDetailsBottomSheet.findViewById<TextInputLayout>(R.id.textInputLayout)
 		textInputLayout!!.hint = "Enter Card Code"
-		cardCode!!.inputType = InputType.TYPE_CLASS_TEXT
+		cardCode!!.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+		cardCode.filters = arrayOf<InputFilter>(InputFilter.AllCaps())
 		getDetailsBtn!!.text = "SUBMIT"
 
 		val cancelBtn = enterCardDetailsBottomSheet.findViewById<MaterialButton>(R.id.btn_cancel)
@@ -714,7 +716,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				dialog.show()
 				val api = RetrofitHelper.getInstance().create(Client::class.java)
 				GlobalScope.launch {
-					val call: Call<JsonObject> = api.getCardDetails(
+					val call: Call<JsonObject> = api.getCardDetailsByInput(
 						Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
 						cardCodeString
 					)
@@ -979,7 +981,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		dialog.show()
 		val api = RetrofitHelper.getInstance().create(Client::class.java)
 		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getCardDetails(
+			val call: Call<JsonObject> = api.getCardDetailsByScan(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
 				data
 			)
