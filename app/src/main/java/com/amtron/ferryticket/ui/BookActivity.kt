@@ -42,6 +42,8 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 @DelicateCoroutinesApi
 class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
@@ -374,11 +376,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 												disableBool = 1
 											}
 											passenger = PassengerDetails(
-												binding.passengerLayout.name.text.toString(),
+												binding.passengerLayout.name.text.toString()
+													.uppercase(Locale.getDefault()),
 												binding.passengerLayout.phone.text.toString(),
 												binding.passengerLayout.age.text.toString(),
 												disableBool,
-												binding.passengerLayout.address.text.toString(),
+												binding.passengerLayout.address.text.toString().uppercase(Locale.getDefault()),
 												passengerTypeList[passengerTypeRG.checkedRadioButtonId],
 												genderList[genderRG.checkedRadioButtonId]
 											)
@@ -461,7 +464,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							vehicle =
 								Vehicle(
 									selectedVehicleType!!,
-									binding.vehicleLayout.vehicleNumber.text.toString()
+									binding.vehicleLayout.vehicleNumber.text.toString().uppercase(Locale.getDefault())
 								)
 							Log.d("vehicle", vehicle.toString())
 							addVehicle(vehicle)
@@ -472,7 +475,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								selectedVehicleType!!,
 								"NA"
 							)
-						Log.d("vehicle", vehicle.toString())
 						addVehicle(vehicle)
 					}
 				}
@@ -566,7 +568,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							} else {
 								others = Others(
 									selectedGoodsType!!,
-									binding.otherLayout.goodsName.text.toString(),
+									binding.otherLayout.goodsName.text.toString().uppercase(Locale.getDefault()),
 									binding.otherLayout.goodsQuantity.text.toString().toInt()
 								)
 								addOthers(others)
@@ -1180,11 +1182,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				if (allDataList[position] is Vehicle) {
 					totalVehiclesCount -= 1
 					binding.vehiclesCount.text = totalVehiclesCount.toString()
-					vehicleList.removeAt(position - 1)
+					vehicleList.remove(allDataList[position])
 				} else if (allDataList[position] is Others) {
 					totalGoodsCount -= 1
 					binding.goodsCount.text = totalGoodsCount.toString()
-					othersList.removeAt(position)
+					othersList.remove(allDataList[position])
 				}
 				allDataList.removeAt(position)
 				adapter.notifyDataSetChanged()

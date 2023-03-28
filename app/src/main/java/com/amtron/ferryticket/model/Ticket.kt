@@ -20,7 +20,7 @@ data class Ticket(
 	val service_amt: Double,
 	val total_amt: Double,
 	val mode_of_payment: String,
-	var order_number: String? = "",
+	var rrn: String? = "",
 	var order_status: String,
 	val scanned: Int,
 	val ferry_payment_detail_id: Int? = null,
@@ -31,5 +31,7 @@ data class Ticket(
 	val other: List<Others>,
 	val ferry: Ferry,
 	val wallet_service_charge: Int,
-	val qr_string: String
+	val qr_string: String,
+	var source: Ghat,
+	var destination: Ghat
 )

@@ -51,15 +51,14 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
 public class InAppApprovedActivity extends AppCompatActivity {
 
     //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
-    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName;
+    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode;
     JSONArray posJSONArray;
     private Printer printer = null;
     private PrintTask printTask = null;
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
-    private CardDetails cardDetails;
-    private FerryService service;
+//    private CardDetails cardDetails;
     private Bitmap qrBitmap;
     private ArrayList<PassengerDetails> passengerDetailsList;
     private ArrayList<Vehicle> vehiclesList;
@@ -105,13 +104,14 @@ public class InAppApprovedActivity extends AppCompatActivity {
             String ticketString = sharedPreference.getString("ticket", "");
             ticket = new Gson().fromJson(ticketString, Ticket.class);
             ticketNo = ticket.getTicket_no();
-            orderNo = ticket.getOrder_number();
+            orderNo = ticket.getRrn();
             passengerDetailsList = (ArrayList<PassengerDetails>) ticket.getPassenger();
             vehiclesList = (ArrayList<Vehicle>) ticket.getVehicle();
             othersList = (ArrayList<Others>) ticket.getOther();
-            source = ticket.getFerry().getSource_ghat();
-            destination = ticket.getFerry().getDestination_ghat();
+            source = ticket.getSource().getGhat_name();
+            destination = ticket.getDestination().getGhat_name();
             serviceName = ticket.getFerry().getFerry_name();
+            paymentMode = ticket.getMode_of_payment();
             ticketDate = new DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.getFerry_date());
             ferryDepartureTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_departure_time());
             ferryArrivalTime = new DateAndTimeHelper().changeTimeFormat(ticket.getFs_reached_time());
@@ -122,8 +122,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
             binding.time.setText("");
             binding.srcGhat.setText(source);
             binding.destGhat.setText(destination);
+            binding.paymentMode.setText(paymentMode);
             binding.serviceName.setText(serviceName);
-            binding.txtRrn.setText(orderNo);
+            if (orderNo.isEmpty()) {
+                binding.rrnLl.setVisibility(View.GONE);
+            } else {
+                binding.txtRrn.setText(orderNo);
+            }
             binding.serviceTime.setText(time);
             binding.netAmount.setText("₹" + ticket.getNet_amt());
             if (ticket.getWallet_service_charge() == 1) {
@@ -153,7 +158,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, TicketListActivity.class));
         }
-        try {
+        /*try {
             String cardDetailsString = sharedPreference.getString("card_details", "");
             cardDetails = new Gson().fromJson(cardDetailsString, CardDetails.class);
             Log.d("card details", cardDetails.toString());
@@ -162,7 +167,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             binding.cardNumber.setText(card_no);
         } catch (Exception e) {
             Log.d("Scanned card details", "not found");
-        }
+        }*/
 
         printer = Printer.getInstance();
         printTask = new PrintTask();
@@ -250,12 +255,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 }
             }
             canvas.drawText(" ", paint);
-            canvas.drawText("Card No: " + card_no, paint);
-            if (rrn == null) {
-                canvas.drawText("RRN/Order No: " + orderNo, paint);
-            } else {
+            /*canvas.drawText("Card No: " + card_no, paint);
+            if (rrn != null) {
                 canvas.drawText("RRN/Order No: " + rrn, paint);
             }
+            if (!orderNo.isEmpty()) {
+                canvas.drawText("RRN/Order No: " + rrn, paint);
+            }*/
             canvas.drawText("-------------------------------------", paint);
             canvas.drawText("Net Amout               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
             if (ticket.getWallet_service_charge() == 1) {
@@ -410,6 +416,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
         } else {
             editor.remove("ticket");
             editor.remove("card_details");
+            editor.apply();
             super.onBackPressed();
             Intent intent = new Intent(this, BookActivity.class);
             startActivity(intent);

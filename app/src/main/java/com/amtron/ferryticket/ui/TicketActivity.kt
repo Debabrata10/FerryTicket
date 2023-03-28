@@ -389,7 +389,7 @@ class TicketActivity : AppCompatActivity() {
 						walletLoaderDialog.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())
 						val walletOrderId = obj.get("ORDER_ID").toString()
-						ticket.order_number = walletOrderId
+						ticket.rrn = walletOrderId
 						ticket.order_status = "SUCCESS"
 						editor.putString("ticket", Gson().toJson(ticket))
 						editor.apply()

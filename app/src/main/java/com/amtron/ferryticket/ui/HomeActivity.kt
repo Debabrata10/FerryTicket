@@ -264,8 +264,8 @@ class HomeActivity : AppCompatActivity(),
 								binding.recentFerry.ferryNumber.text = recentFerry.ferry_no
 								binding.recentFerry.departureTime.text = recentFerry.departure
 								binding.recentFerry.arrivalTime.text = recentFerry.arrival
-								binding.recentFerry.src.text = recentFerry.source_ghat
-								binding.recentFerry.dest.text = recentFerry.destination_ghat
+								binding.recentFerry.src.text = recentFerry.source.ghat_name
+								binding.recentFerry.dest.text = recentFerry.destination.ghat_name
 								binding.recentFerry.availablePerson.text =
 									recentFerry.seat_capacity
 								binding.recentFerry.availableCycle.text =
