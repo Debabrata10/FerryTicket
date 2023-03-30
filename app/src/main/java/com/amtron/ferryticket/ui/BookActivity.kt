@@ -30,6 +30,7 @@ import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -43,7 +44,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 @DelicateCoroutinesApi
 class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
@@ -381,7 +381,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 												binding.passengerLayout.phone.text.toString(),
 												binding.passengerLayout.age.text.toString(),
 												disableBool,
-												binding.passengerLayout.address.text.toString().uppercase(Locale.getDefault()),
+												binding.passengerLayout.address.text.toString()
+													.uppercase(Locale.getDefault()),
 												passengerTypeList[passengerTypeRG.checkedRadioButtonId],
 												genderList[genderRG.checkedRadioButtonId]
 											)
@@ -464,7 +465,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							vehicle =
 								Vehicle(
 									selectedVehicleType!!,
-									binding.vehicleLayout.vehicleNumber.text.toString().uppercase(Locale.getDefault())
+									binding.vehicleLayout.vehicleNumber.text.toString()
+										.uppercase(Locale.getDefault())
 								)
 							Log.d("vehicle", vehicle.toString())
 							addVehicle(vehicle)
@@ -568,7 +570,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							} else {
 								others = Others(
 									selectedGoodsType!!,
-									binding.otherLayout.goodsName.text.toString().uppercase(Locale.getDefault()),
+									binding.otherLayout.goodsName.text.toString()
+										.uppercase(Locale.getDefault()),
 									binding.otherLayout.goodsQuantity.text.toString().toInt()
 								)
 								addOthers(others)
@@ -988,7 +991,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				data
 			)
 			call.enqueue(object : Callback<JsonObject> {
-				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged")
+				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
 				override fun onResponse(
 					call: Call<JsonObject>,
 					response: Response<JsonObject>
@@ -997,7 +1000,125 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						val helper = ResponseHelper()
 						helper.ResponseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
-							dialog.titleText = "Card details found.."
+							dialog.dismissWithAnimation()
+							var isPassengerAvailable = false
+							var isCardAvailable = false
+							lateinit var passengerDetails: PassengerDetails
+							lateinit var cardDetails: CardDetails
+							val obj = JSONObject(helper.getDataAsString())
+							val passengerJSONObject = obj.get("passenger") as JSONObject?
+							val cardJSONObject = obj.get("card_details") as JSONObject?
+
+							val cardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
+							cardDetailsBottomSheet.setCancelable(false)
+							cardDetailsBottomSheet.setContentView(R.layout.details_from_card_layout)
+							val cardDetailsCard =
+								cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.card_details_card)
+							val passengerDetailsCard =
+								cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.passenger_details_card)
+							val cancelBtn =
+								cardDetailsBottomSheet.findViewById<ImageView>(R.id.hide_bottom_sheet_image)
+							val addCard = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
+							val addPassenger = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
+							val addBoth = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
+
+							if (passengerJSONObject!!.length() > 0) {
+								try {
+									isPassengerAvailable = true
+									val holderDetails =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.holder_details)
+									val mobileNo =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.mobile_number)
+									val holderType =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.p_type)
+
+									passengerDetails =
+										Gson().fromJson(
+											passengerJSONObject.toString(),
+											object : TypeToken<PassengerDetails>() {}.type
+										)
+
+									holderDetails!!.text =
+										"${passengerDetails.passenger_name} (${passengerDetails.age}, ${passengerDetails.gender.gender_name})"
+									mobileNo!!.text = passengerDetails.mobile_no
+									holderType!!.text = passengerDetails.passenger_type.type
+
+									addPassenger!!.setOnClickListener {  }
+								} catch (e: java.lang.Exception) {
+									Log.e("Passenger Object", "not found")
+									Toast.makeText(
+										this@BookActivity,
+										"Something went wrong. Please scan again",
+										Toast.LENGTH_SHORT
+									).show()
+									cardDetailsBottomSheet.dismiss()
+								}
+							} else {
+								passengerDetailsCard!!.visibility = View.GONE
+								addPassenger!!.visibility = View.GONE
+							}
+
+							if (cardJSONObject!!.length() > 0) {
+								try {
+									isCardAvailable = true
+									val cardNumber =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.card_number)
+									val balance =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.card_balance)
+									val validTo =
+										cardDetailsBottomSheet.findViewById<TextView>(R.id.card_valid_till)
+
+									cardDetails =
+										Gson().fromJson(
+											cardJSONObject.toString(),
+											object : TypeToken<CardDetails>() {}.type
+										)
+
+									val noArr = cardDetails.card_no.toCharArray()
+									val builder = StringBuilder()
+									val visibleSize = noArr.size - 5
+									for (i in noArr.size-1 downTo 0) {
+										if (i > visibleSize) {
+											builder.append(noArr[i])
+										}
+									}
+									val resString = "**** **** **** " + builder.reverse().toString()
+
+									cardNumber!!.text = resString
+
+									balance!!.text = "₹ ${cardDetails.wallet_amount}"
+									validTo!!.text = DateAndTimeHelper().changeDateFormat(
+										"dd MMM, yyyy",
+										cardDetails.valid_upto
+									)
+
+									addCard!!.setOnClickListener {
+
+									}
+								} catch (e: java.lang.Exception) {
+									Log.e("Card Object", "not found")
+									Toast.makeText(
+										this@BookActivity,
+										"Something went wrong. Please scan again",
+										Toast.LENGTH_SHORT
+									).show()
+									cardDetailsBottomSheet.dismiss()
+								}
+							} else {
+								cardDetailsCard!!.visibility = View.GONE
+								addCard!!.visibility = View.GONE
+							}
+
+							if (isCardAvailable && isPassengerAvailable) {
+								addBoth!!.setOnClickListener { }
+							} else {
+								addBoth!!.visibility = View.GONE
+							}
+
+							cancelBtn!!.setOnClickListener { cardDetailsBottomSheet.dismiss() }
+							cardDetailsBottomSheet.show()
+
+							/*dialog.titleText = "Card details found.."
 							val obj = JSONObject(helper.getDataAsString())
 							val passengerJSONObject = obj.get("passenger") as JSONObject
 							if (passengerJSONObject.length() > 0) {
@@ -1052,7 +1173,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									Toast.LENGTH_SHORT
 								).show()
 								dialog.dismissWithAnimation()
-							}
+							}*/
 						} else {
 							dialog.dismissWithAnimation()
 							NotificationHelper().getErrorAlert(

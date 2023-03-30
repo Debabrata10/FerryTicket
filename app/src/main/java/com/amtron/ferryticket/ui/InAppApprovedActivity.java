@@ -24,8 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityInAppApprovedBinding;
 import com.amtron.ferryticket.helper.DateAndTimeHelper;
-import com.amtron.ferryticket.model.CardDetails;
-import com.amtron.ferryticket.model.FerryService;
 import com.amtron.ferryticket.model.Others;
 import com.amtron.ferryticket.model.PassengerDetails;
 import com.amtron.ferryticket.model.Ticket;
@@ -58,7 +56,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     private Ticket ticket;
-//    private CardDetails cardDetails;
+    //    private CardDetails cardDetails;
     private Bitmap qrBitmap;
     private ArrayList<PassengerDetails> passengerDetailsList;
     private ArrayList<Vehicle> vehiclesList;
@@ -290,6 +288,8 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
         binding.goBack.setOnClickListener(v -> {
             editor.remove("ticket");
+            editor.remove("passenger_card_details");
+            editor.apply();
             Intent intent = new Intent(this, BookActivity.class);
             startActivity(intent);
         });
@@ -349,7 +349,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(getApplicationContext(), "Please insert paper roll", Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -415,9 +414,8 @@ public class InAppApprovedActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             editor.remove("ticket");
-            editor.remove("card_details");
+            editor.remove("passenger_card_details");
             editor.apply();
-            super.onBackPressed();
             Intent intent = new Intent(this, BookActivity.class);
             startActivity(intent);
         }

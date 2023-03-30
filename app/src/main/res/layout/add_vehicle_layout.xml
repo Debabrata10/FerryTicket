@@ -48,9 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:textAllCaps="true"
                 android:gravity="center_vertical"
                 android:inputType="textVisiblePassword"
+                android:textAllCaps="true"
                 android:textSize="14sp"
                 tools:ignore="KeyboardInaccessibleWidget" />
         </com.google.android.material.textfield.TextInputLayout>

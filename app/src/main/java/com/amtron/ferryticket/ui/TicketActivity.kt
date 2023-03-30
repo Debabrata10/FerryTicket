@@ -101,14 +101,14 @@ class TicketActivity : AppCompatActivity() {
 		}
 
 		try {
-			val cardString = sharedPreferences.getString("card_details", "").toString()
+			val cardString = sharedPreferences.getString("passenger_card_details", "").toString()
 			if (cardString.isNotEmpty()) {
 				isPassengerWalletAvailable = true
 				passengerWallet =
 					Gson().fromJson(cardString, object : TypeToken<CardDetails>() {}.type)
 			}
 		} catch (e: Exception) {
-			Log.d("card details", "not found")
+			Log.d("passenger card details", "not found")
 		}
 
 		binding.printBtn.setOnClickListener {
@@ -139,10 +139,10 @@ class TicketActivity : AppCompatActivity() {
 					operatorWalletButton.setOnClickListener {
 						payWithWallet(operatorWallet!!.id.toInt(), ticket.id, operatorWallet!!)
 					}
+					walletButtonsLayout!!.addView(operatorWalletButton)
 				} else {
 					operatorWalletButton.visibility = View.GONE
 				}
-				walletButtonsLayout!!.addView(operatorWalletButton)
 				if (isPassengerWalletAvailable) {
 					passengerWalletButton.text =
 						"PASSENGER WALLET ₹${passengerWallet!!.wallet_amount}"
@@ -152,10 +152,10 @@ class TicketActivity : AppCompatActivity() {
 					passengerWalletButton.setOnClickListener {
 						payWithWallet(passengerWallet!!.id.toInt(), ticket.id, passengerWallet!!)
 					}
+					walletButtonsLayout!!.addView(passengerWalletButton)
 				} else {
 					passengerWalletButton.visibility = View.GONE
 				}
-				walletButtonsLayout.addView(passengerWalletButton)
 			}
 			walletPayBottomSheet.show()
 		}
@@ -367,6 +367,7 @@ class TicketActivity : AppCompatActivity() {
 	private fun verifyPin(token: String, orderId: String, pin: String) {
 		walletLoaderDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
 		walletLoaderDialog.titleText = "LOADING.."
+		walletLoaderDialog.show()
 		val client =
 			getInstance().create(
 				Client::class.java
