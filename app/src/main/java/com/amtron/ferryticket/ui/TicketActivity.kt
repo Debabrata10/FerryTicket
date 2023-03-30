@@ -13,7 +13,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -248,11 +250,33 @@ class TicketActivity : AppCompatActivity() {
 			startActivity(i)
 		}
 
-		/*onBackPressedDispatcher.addCallback(this) {
-			startActivity(
-				Intent(this@TicketActivity, TicketListActivity::class.java)
-			)
-		}*/
+		onBackPressedDispatcher.addCallback(this) {
+			if (sharedPreferences.getString("activity_from", "") == "ticketListActivity") {
+				startActivity(Intent(this@TicketActivity, TicketListActivity::class.java))
+			} else {
+				val backToNewBookingBottomSheet = BottomSheetDialog(this@TicketActivity)
+				backToNewBookingBottomSheet.setCancelable(false)
+				backToNewBookingBottomSheet.setContentView(R.layout.exit_bottom_sheet_layout)
+				val title = backToNewBookingBottomSheet.findViewById<TextView>(R.id.title)
+				val header = backToNewBookingBottomSheet.findViewById<TextView>(R.id.header)
+				val success = backToNewBookingBottomSheet.findViewById<Button>(R.id.success)
+				val cancel = backToNewBookingBottomSheet.findViewById<Button>(R.id.cancel)
+				title?.visibility = View.GONE
+				header!!.text = "NEW BOOKING?"
+				success!!.text = "OK"
+				cancel!!.text = "CANCEL"
+				backToNewBookingBottomSheet.show()
+
+				success.setOnClickListener {
+					editor.remove("ticket")
+					editor.remove("passenger_card_details")
+					editor.apply()
+					startActivity(Intent(this@TicketActivity, BookActivity::class.java))
+
+				}
+				cancel.setOnClickListener { backToNewBookingBottomSheet.dismiss() }
+			}
+		}
 	}
 
 	private fun payWithWallet(cardId: Int, ticketId: Int, wallet: CardDetails) {
