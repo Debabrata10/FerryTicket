@@ -1043,7 +1043,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									mobileNo!!.text = passengerDetails.mobile_no
 									holderType!!.text = passengerDetails.passenger_type.type
 
-									addPassenger!!.setOnClickListener {  }
+									addPassenger!!.setOnClickListener {
+										addPassenger(passengerDetails)
+										Toast.makeText(this@BookActivity, "Passenger details added", Toast.LENGTH_SHORT).show()
+										cardDetailsBottomSheet.dismiss()
+									}
 								} catch (e: java.lang.Exception) {
 									Log.e("Passenger Object", "not found")
 									Toast.makeText(
@@ -1093,7 +1097,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									)
 
 									addCard!!.setOnClickListener {
-
+										editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+										editor.apply()
+										Toast.makeText(this@BookActivity, "Card details added", Toast.LENGTH_SHORT).show()
+										cardDetailsBottomSheet.dismiss()
 									}
 								} catch (e: java.lang.Exception) {
 									Log.e("Card Object", "not found")
@@ -1110,7 +1117,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							}
 
 							if (isCardAvailable && isPassengerAvailable) {
-								addBoth!!.setOnClickListener { }
+								addBoth!!.setOnClickListener {
+									addPassenger(passengerDetails)
+									editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+									editor.apply()
+									Toast.makeText(this@BookActivity, "Card and passenger details added", Toast.LENGTH_SHORT).show()
+									cardDetailsBottomSheet.dismiss()
+								}
 							} else {
 								addBoth!!.visibility = View.GONE
 							}
