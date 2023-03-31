@@ -242,14 +242,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/view_booking_summary_btn"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_weight="0.5"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="VIEW SUMMARY"
                 android:textColor="@color/white"
@@ -257,12 +257,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/proceedBtn"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_weight="0.5"
                 android:fontFamily="@font/roboto_condensed_bold"
-                android:text="PROCEED"
+                android:text="MAKE PAYMENT"
                 android:textColor="@color/white"
                 android:textSize="17sp"
                 android:visibility="gone" />

@@ -50,7 +50,6 @@ class TicketActivity : AppCompatActivity() {
 	private lateinit var editor: SharedPreferences.Editor
 	private lateinit var binding: ActivityTicketBinding
 	private lateinit var ticket: Ticket
-	private lateinit var service: FerryService
 	private lateinit var passengerDetailsRecyclerView: RecyclerView
 	private lateinit var vehicleRecyclerView: RecyclerView
 	private lateinit var otherRecyclerView: RecyclerView
@@ -58,12 +57,13 @@ class TicketActivity : AppCompatActivity() {
 	private lateinit var vehicleDetailsTicketViewAdapter: VehicleDetailsTicketViewAdapter
 	private lateinit var otherDetailsTicketViewAdapter: OtherDetailsTicketViewAdapter
 	private lateinit var walletPayBottomSheet: BottomSheetDialog
+	private lateinit var operatorWallet: CardDetails
 	lateinit var walletLoaderDialog: SweetAlertDialog
-	private var operatorWallet: CardDetails? = null
 	private var passengerWallet: CardDetails? = null
 	private var isUserWalletAvailable: Boolean = false
 	private var isPassengerWalletAvailable: Boolean = false
 	private var totalPosAmt: Double = 0.0
+	private var operatorWalletAmount: String = ""
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +97,14 @@ class TicketActivity : AppCompatActivity() {
 			if (user.card_details != null) {
 				isUserWalletAvailable = true
 				operatorWallet = user.card_details
+				updateOperatorWalletBalance(
+					Util().getJwtToken(
+						sharedPreferences.getString(
+							"user",
+							""
+						)
+					)
+				)
 			}
 		} catch (e: Exception) {
 			Log.d("user details", "not found")
@@ -134,12 +142,12 @@ class TicketActivity : AppCompatActivity() {
 			} else {
 				if (isUserWalletAvailable) {
 					operatorWalletButton.text =
-						"OPERATOR WALLET ₹${operatorWallet!!.wallet_amount}"
+						"OPERATOR WALLET ₹${operatorWalletAmount}"
 					operatorWalletButton.textSize = 12F
 					operatorWalletButton.setTextColor(Color.parseColor("#ffffff"))
 					operatorWalletButton.layoutParams = layoutParams
 					operatorWalletButton.setOnClickListener {
-						payWithWallet(operatorWallet!!.id.toInt(), ticket.id, operatorWallet!!)
+						payWithWallet(operatorWallet.id.toInt(), ticket.id, operatorWallet)
 					}
 					walletButtonsLayout!!.addView(operatorWalletButton)
 				} else {
@@ -279,8 +287,61 @@ class TicketActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun updateOperatorWalletBalance(jwtToken: String) {
+		val updateOperatorWalletLoaderDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		updateOperatorWalletLoaderDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+		updateOperatorWalletLoaderDialog.setCancelable(false)
+		updateOperatorWalletLoaderDialog.titleText = "LOADING.."
+		updateOperatorWalletLoaderDialog.show()
+		val client =
+			getInstance().create(
+				Client::class.java
+			)
+		val call = client.getOperatorUpdatedAfterPayment(jwtToken)
+		call.enqueue(object : Callback<JsonObject?> {
+			@SuppressLint("SetTextI18n")
+			override fun onResponse(
+				call: Call<JsonObject?>,
+				response: Response<JsonObject?>
+			) {
+				if (response.isSuccessful) {
+					val helper = ResponseHelper()
+					helper.ResponseHelper(response.body())
+					if (helper.isStatusSuccessful()) {
+						updateOperatorWalletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+						updateOperatorWalletLoaderDialog.titleText = "SUCCESSFUL"
+						updateOperatorWalletLoaderDialog.dismissWithAnimation()
+						val obj = JSONObject(helper.getDataAsString())
+						operatorWalletAmount = obj.get("wallet_amount") as String
+					} else {
+						updateOperatorWalletLoaderDialog.dismiss()
+						NotificationHelper().getErrorAlert(
+							this@TicketActivity,
+							helper.getErrorMsg()
+						)
+					}
+				} else {
+					updateOperatorWalletLoaderDialog.dismiss()
+					NotificationHelper().getErrorAlert(
+						this@TicketActivity,
+						"Response Error Code " + response.code()
+					)
+				}
+			}
+
+			override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+				updateOperatorWalletLoaderDialog.dismiss()
+				NotificationHelper().getErrorAlert(
+					this@TicketActivity,
+					"Server Error. Please try again."
+				)
+			}
+		})
+	}
+
 	private fun payWithWallet(cardId: Int, ticketId: Int, wallet: CardDetails) {
 		walletLoaderDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		walletLoaderDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		walletLoaderDialog.setCancelable(false)
 		walletLoaderDialog.titleText = "LOADING.."
 		walletLoaderDialog.show()
@@ -304,8 +365,6 @@ class TicketActivity : AppCompatActivity() {
 					val helper = ResponseHelper()
 					helper.ResponseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
-						editor.putString("card_details", Gson().toJson(wallet))
-						editor.apply()
 						walletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						walletLoaderDialog.dismiss()
 						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)!!.text
@@ -390,6 +449,7 @@ class TicketActivity : AppCompatActivity() {
 
 	private fun verifyPin(token: String, orderId: String, pin: String) {
 		walletLoaderDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
+		walletLoaderDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		walletLoaderDialog.titleText = "LOADING.."
 		walletLoaderDialog.show()
 		val client =

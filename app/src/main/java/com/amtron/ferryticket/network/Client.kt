@@ -125,4 +125,11 @@ interface Client {
 		@Header("Authorization") bearer: String,
 		@Field("card_code") card_code: String
 	): Call<JsonObject>
+
+	//GET UPDATED BALANCE FOR OPERATOR WALLET AFTER PAYMENT
+	@Headers("Accept: application/json")
+	@POST("operator-card-details")
+	fun getOperatorUpdatedAfterPayment(
+		@Header("Authorization") bearer: String
+	): Call<JsonObject>
 }
