@@ -287,11 +287,16 @@ public class InAppApprovedActivity extends AppCompatActivity {
         });
 
         binding.goBack.setOnClickListener(v -> {
-            editor.remove("ticket");
-            editor.remove("passenger_card_details");
-            editor.apply();
-            Intent intent = new Intent(this, BookActivity.class);
-            startActivity(intent);
+            if (sharedPreference.getString("activity_from", "").equals("ticketListActivity")) {
+                Intent intent = new Intent(this, TicketListActivity.class);
+                startActivity(intent);
+            } else {
+                editor.remove("ticket");
+                editor.remove("passenger_card_details");
+                editor.apply();
+                Intent intent = new Intent(this, BookActivity.class);
+                startActivity(intent);
+            }
         });
 
 
