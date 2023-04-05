@@ -36,9 +36,6 @@
             android:name=".ui.PrintActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.PendingTicketsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.TicketActivity"
             android:exported="false" />
         <activity

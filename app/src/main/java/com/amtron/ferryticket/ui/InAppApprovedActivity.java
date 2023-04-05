@@ -19,16 +19,23 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityInAppApprovedBinding;
 import com.amtron.ferryticket.helper.DateAndTimeHelper;
+import com.amtron.ferryticket.helper.ResponseHelper;
+import com.amtron.ferryticket.helper.Util;
 import com.amtron.ferryticket.model.Others;
 import com.amtron.ferryticket.model.PassengerDetails;
 import com.amtron.ferryticket.model.Ticket;
+import com.amtron.ferryticket.model.User;
 import com.amtron.ferryticket.model.Vehicle;
+import com.amtron.ferryticket.network.Client;
+import com.amtron.ferryticket.network.RetrofitHelper;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -44,12 +51,15 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 import kotlinx.coroutines.DelicateCoroutinesApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @DelicateCoroutinesApi
 public class InAppApprovedActivity extends AppCompatActivity {
 
     //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
-    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode;
+    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid;
     JSONArray posJSONArray;
     private Printer printer = null;
     private PrintTask printTask = null;
@@ -61,6 +71,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     private ArrayList<PassengerDetails> passengerDetailsList;
     private ArrayList<Vehicle> vehiclesList;
     private ArrayList<Others> othersList;
+    private User user;
 
     public static byte[] draw2PxPoint(Bitmap bitmap) {
         int height = bitmap.getHeight();
@@ -97,7 +108,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        SharedPreferences tidSharedPreference = this.getSharedPreferences("IWT_TID", MODE_PRIVATE);
         editor = sharedPreference.edit();
+
+        tid = tidSharedPreference.getString("tid", "");
+        String userString = sharedPreference.getString("user", "");
+        user = new Gson().fromJson(userString, User.class);
+
         try {
             String ticketString = sharedPreference.getString("ticket", "");
             ticket = new Gson().fromJson(ticketString, Ticket.class);
@@ -182,6 +199,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 invoice = getIntent().getStringExtra("invoice");
                 rrn = getIntent().getStringExtra("rrn");
                 card_no = getIntent().getStringExtra("card_no");
+                String cardToBeSend = getIntent().getStringExtra("card_no");
                 card_type = getIntent().getStringExtra("card_type");
                 auth_code = getIntent().getStringExtra("auth_code");
                 if (card_no.isEmpty()) {
@@ -201,8 +219,11 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 binding.cardNumber.setText(card_no);
 //                txt_cardtype.setText(card_type);
 //                txt_authcode.setText(auth_code);
-                String[] posData = {amount, in_app_date, in_app_time, invoice, rrn, card_no, card_type, auth_code};
+                String[] posData = {user.getToken(), amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, String.valueOf(ticket.getId()), tid};
                 posJSONArray = new JSONArray(Arrays.asList(posData));
+                Log.d("data sent", String.valueOf(posJSONArray));
+
+                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
             } else {
                 finish();
             }
@@ -298,9 +319,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-        callServerSideForTicketConfirmation();
     }
 
     private void setFontStyle(Paint paint, int size, boolean isBold) {
@@ -403,8 +421,54 @@ public class InAppApprovedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void callServerSideForTicketConfirmation() {
+    private void callServerSideForTicketConfirmation(
+            String amount,
+            String in_app_date,
+            String in_app_time,
+            String invoice,
+            String rrn,
+            String card_no,
+            String card_type,
+            String auth_code,
+            Integer id,
+            String tid
+    ) {
+        Client client = RetrofitHelper.forJava.Companion.getInstance().create(Client.class);
+        Call<JsonObject> call = client.sendPosDataToServer(
+                "Bearer " + user.getToken(),
+                Double.parseDouble(amount),
+                in_app_date,
+                in_app_time,
+                invoice,
+                rrn,
+                card_no,
+                card_type,
+                auth_code,
+                id,
+                tid
+        );
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    ResponseHelper helper = new ResponseHelper();
+                    helper.ResponseHelper(response.body());
+                    if (helper.isStatusSuccessful()) {
+                        Log.d("response status", "is successful");
+                        Log.d("response ->", helper.getDataAsString());
+                    } else {
+                        Log.d("ERROR!!", helper.getErrorMsg());
+                    }
+                } else {
+                    Log.d("ERROR!!", "Response Error Code " + response.code());
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.d("ERROR!!", "Server Error. Please try again.");
+            }
+        });
     }
 
     @Override

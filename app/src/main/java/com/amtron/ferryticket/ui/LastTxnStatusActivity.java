@@ -4,6 +4,7 @@ package com.amtron.ferryticket.ui;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,12 +34,8 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
         txt_cardno = findViewById(R.id.txt_cardno);
         txt_cardtype = findViewById(R.id.txt_cardtype);
         txt_authcode = findViewById(R.id.txt_authcode);
-
         getSupportLoaderManager().initLoader(1, null, this);
-
-
     }
-
 
     public void onClickBack(View view) {
         finish();
@@ -86,7 +83,7 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                 txt_authcode.setText(auth_code);
             }
         } catch (NullPointerException ne) {
-
+            Log.d("LastTxnStatus", "is null");
         }
     }
 

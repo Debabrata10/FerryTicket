@@ -91,9 +91,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		qrScanIntegrator = IntentIntegrator(this)
 
 		binding.scan.setOnClickListener {
-			/*startActivity(
-				Intent(this, ScannerActivity::class.java)
-			)*/
 			performAction()
 		}
 
@@ -120,8 +117,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		passengerTypeRG = binding.passengerLayout.rgPassengerType
 		//for mobile view end
 
-		genderRG.orientation = RadioGroup.VERTICAL
-		passengerTypeRG.orientation = RadioGroup.VERTICAL
+		genderRG.orientation = RadioGroup.VERTICAL //get the radio group for gender
+		passengerTypeRG.orientation = RadioGroup.VERTICAL //get the radio group for passenger
 
 		try {
 			masterDataString = sharedPreferences.getString("masterData", "").toString()
@@ -130,24 +127,32 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			ferryService =
 				Gson().fromJson(serviceString, object : TypeToken<FerryService>() {}.type)
 
-			genderList = ArrayList()
-			passengerTypeList = ArrayList()
+			genderList = ArrayList() //setting the gender objects inside an Arraylist
+			passengerTypeList = ArrayList() //setting the passenger objects inside an Arraylist
 
-			for (gender in masterData.genders) {
+			for (gender in masterData.genders) { // creating radio button for each gender objects
 				val rb1 = RadioButton(this)
-				rb1.id = genderIdCount
-				rb1.text = gender.gender_name
-				genderRG.addView(rb1)
+				rb1.id = genderIdCount //setting id of RB as the index of the objects
+				rb1.text = gender.gender_name //setting text of RB as the object name
+				genderRG.addView(rb1) //adding RB to the gender radio group
+				//adding gender object to the gender ArrayList because if we select the
+				//radio button we get the id which is the index and later on with the
+				//index reference we get the object from the genderList ArrayList so that
+				//the selected RB object matches with the genderList object
 				genderList.add(gender)
-				genderIdCount += 1
+				genderIdCount += 1 //incrementing by one so that the index aka RB id increases by 1
 			}
-			for (pType in masterData.passengerTypes) {
+			for (pType in masterData.passengerTypes) { // creating radio button for each passenger objects
 				val rb2 = RadioButton(this)
-				rb2.id = passengerTypeIdCount
-				rb2.text = pType.type
-				passengerTypeRG.addView(rb2)
+				rb2.id = passengerTypeIdCount //setting id of RB as the index of the objects
+				rb2.text = pType.type //setting text of RB as the object name
+				passengerTypeRG.addView(rb2) //adding RB to the gender radio group
+				//adding passenger object to the passenger ArrayList because if we select the
+				//radio button we get the id which is the index and later on with the
+				//index reference we get the object from the passengerList ArrayList so that
+				//the selected RB object matches with the passengerList object
 				passengerTypeList.add(pType)
-				passengerTypeIdCount += 1
+				passengerTypeIdCount += 1 //incrementing by one so that the index aka RB id increases by 1
 			}
 			for (vehicle in masterData.vehicleTypes) {
 				vehicleTypeList.add(vehicle)
@@ -158,6 +163,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				androidx.transition.R.layout.support_simple_spinner_dropdown_item,
 				vehicleTypeNameList
 			)
+			//assigning no object to the 0th position because we need validation
+			//and we need no vehicle to be selected at the beginning
 			vehicleTypeNameList.add(0, "SELECT VEHICLE TYPE")
 //			binding.vehicleTypeDropdown.setSelection(0) //for tablet view
 			binding.vehicleLayout.vehicleTypeDropdown.setSelection(0)  //for mobile view
@@ -185,7 +192,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			binding.vehicleLayout.vehicleTypeDropdown.showSoftInputOnFocus = false
 			binding.vehicleLayout.vehicleTypeDropdown.onItemClickListener =
 				AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-					if (vehicleTypeNameList[position] == "Bicycle") {
+					if (vehicleTypeNameList[position] == "Bicycle") { //no regd number for bicycle logic
 						binding.vehicleLayout.textInputLayout6.visibility = View.GONE
 					} else {
 						binding.vehicleLayout.textInputLayout6.visibility = View.VISIBLE
@@ -260,10 +267,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding.ferry.refreshBtn.visibility = View.VISIBLE
 
 		binding.ferry.refreshBtn.setOnClickListener {
+			//update ferry particulars count
 			getUpdatedAvailabilities()
 		}
 
 		binding.openAddPassengerCard.setOnClickListener {
+			//logic to show/hide views when add passenger card is opened
+			//clear all unfinished data from every cards except passenger
 			if (!isAddPassengerCardVisible) {
 				resetVehicle()
 				resetGoods()
@@ -420,6 +430,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		//for mobile view ends
 
 		binding.openAddVehiclesCard.setOnClickListener {
+			//logic to show/hide views when add vehicle card is opened
+			//clear all unfinished data from every cards except vehicle
 			if (!isAddVehicleCardVisible) {
 				resetPassenger()
 				resetGoods()
@@ -506,6 +518,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		//for mobile view ends
 
 		binding.openAddGoodsCard.setOnClickListener {
+			//logic to show/hide views when add other card is opened
+			//clear all unfinished data from every cards except other
 			if (!isAddGoodsCardVisible) {
 				resetPassenger()
 				resetVehicle()
@@ -605,6 +619,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		//for mobile view end
 
 		binding.viewBookingSummaryBtn.setOnClickListener {
+			//logic to show/hide views when view summary card is opened
 			if (isSummaryVisible) {
 				binding.summarySection.visibility = View.GONE
 				isSummaryVisible = false
@@ -660,6 +675,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		}
 
 		onBackPressedDispatcher.addCallback(this) {
+			//if any card is opened except the initial cards than all will close
+			//else if in initial stage it will go back to FerryListActivity.class
 			if (isAddPassengerCardVisible) {
 				resetPassenger()
 				isAddPassengerCardVisible = false
@@ -692,6 +709,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 	@SuppressLint("SetTextI18n")
 	private fun openEnterCardNumberBottomSheet() {
+		//Logic to open bottom sheet to enter card code and get card details
 		val enterCardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
 		enterCardDetailsBottomSheet.setCancelable(false)
 		enterCardDetailsBottomSheet.setContentView(R.layout.enter_device_serial_number_layout)
@@ -737,61 +755,136 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								if (helper.isStatusSuccessful()) {
 									dialog.titleText = "Card details found.."
 									enterCardDetailsBottomSheet.dismiss()
+									dialog.dismissWithAnimation()
+									var isPassengerAvailable = false
+									var isCardAvailable = false
+									lateinit var passengerDetails: PassengerDetails
+									lateinit var cardDetails: CardDetails
 									val obj = JSONObject(helper.getDataAsString())
-									val passengerJSONObject = obj.get("passenger") as JSONObject
-									if (passengerJSONObject.length() > 0) {
-										val passengerDetails: PassengerDetails =
-											Gson().fromJson(
-												passengerJSONObject.toString(),
-												object : TypeToken<PassengerDetails>() {}.type
-											)
-										dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-										dialog.titleText = "Passengers found. Add them?"
-										dialog.confirmText = "ADD"
-										dialog.cancelText = "CANCEL"
-										dialog.setCancelClickListener {
-											dialog.dismissWithAnimation()
-										}
-										dialog.setConfirmClickListener {
-											addPassenger(passengerDetails)
-											dialog.dismissWithAnimation()
-										}
-									} else {
-										Toast.makeText(
-											this@BookActivity,
-											"No passengers found",
-											Toast.LENGTH_SHORT
-										).show()
-									}
+									val passengerJSONObject = obj.get("passenger") as JSONObject?
+									val cardJSONObject = obj.get("card_details") as JSONObject?
 
-									try {
-										val cardJSONObject = obj.get("card_details") as JSONObject
-										val cardDetails: CardDetails? =
-											Gson().fromJson(
-												cardJSONObject.toString(),
-												object : TypeToken<CardDetails>() {}.type
-											)
-										if (cardDetails == null) {
+									val cardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
+									cardDetailsBottomSheet.setCancelable(false)
+									cardDetailsBottomSheet.setContentView(R.layout.details_from_card_layout)
+									val cardDetailsCard =
+										cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.card_details_card)
+									val passengerDetailsCard =
+										cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.passenger_details_card)
+									val cancelBtn =
+										cardDetailsBottomSheet.findViewById<ImageView>(R.id.hide_bottom_sheet_image)
+									val addCard = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
+									val addPassenger = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
+									val addBoth = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
+
+									if (passengerJSONObject!!.length() > 0) { //adding passenger data to views
+										try {
+											isPassengerAvailable = true
+											val holderDetails =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.holder_details)
+											val mobileNo =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.mobile_number)
+											val holderType =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.p_type)
+
+											passengerDetails =
+												Gson().fromJson(
+													passengerJSONObject.toString(),
+													object : TypeToken<PassengerDetails>() {}.type
+												)
+
+											holderDetails!!.text =
+												"${passengerDetails.passenger_name} (${passengerDetails.age}, ${passengerDetails.gender.gender_name})"
+											mobileNo!!.text = passengerDetails.mobile_no
+											holderType!!.text = passengerDetails.passenger_type.type
+
+											addPassenger!!.setOnClickListener {
+												addPassenger(passengerDetails)
+												Toast.makeText(this@BookActivity, "Passenger details added", Toast.LENGTH_SHORT).show()
+												cardDetailsBottomSheet.dismiss()
+											}
+										} catch (e: java.lang.Exception) {
+											Log.e("Passenger Object", "not found")
 											Toast.makeText(
 												this@BookActivity,
-												"Card details not found",
+												"Something went wrong. Please scan again",
 												Toast.LENGTH_SHORT
 											).show()
-										} else {
-											editor.putString(
-												"card_details",
-												Gson().toJson(cardDetails)
-											)
-											editor.apply()
+											cardDetailsBottomSheet.dismiss()
 										}
-									} catch (e: java.lang.Exception) {
-										Toast.makeText(
-											this@BookActivity,
-											"Card Details not found",
-											Toast.LENGTH_SHORT
-										).show()
-										dialog.dismissWithAnimation()
+									} else {
+										passengerDetailsCard!!.visibility = View.GONE
+										addPassenger!!.visibility = View.GONE
 									}
+
+									if (cardJSONObject!!.length() > 0) { //adding card data to views
+										try {
+											isCardAvailable = true
+											val cardNumber =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.card_number)
+											val balance =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.card_balance)
+											val validTo =
+												cardDetailsBottomSheet.findViewById<TextView>(R.id.card_valid_till)
+
+											cardDetails =
+												Gson().fromJson(
+													cardJSONObject.toString(),
+													object : TypeToken<CardDetails>() {}.type
+												)
+
+											val noArr = cardDetails.card_no.toCharArray()
+											val builder = StringBuilder()
+											val visibleSize = noArr.size - 5
+											for (i in noArr.size-1 downTo 0) {
+												if (i > visibleSize) {
+													builder.append(noArr[i])
+												}
+											}
+											val resString = "**** **** **** " + builder.reverse().toString()
+
+											cardNumber!!.text = resString
+
+											balance!!.text = "₹ ${cardDetails.wallet_amount}"
+											validTo!!.text = DateAndTimeHelper().changeDateFormat(
+												"dd MMM, yyyy",
+												cardDetails.valid_upto
+											)
+
+											addCard!!.setOnClickListener {
+												editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+												editor.apply()
+												Toast.makeText(this@BookActivity, "Card details added", Toast.LENGTH_SHORT).show()
+												cardDetailsBottomSheet.dismiss()
+											}
+										} catch (e: java.lang.Exception) {
+											Log.e("Card Object", "not found")
+											Toast.makeText(
+												this@BookActivity,
+												"Something went wrong. Please scan again",
+												Toast.LENGTH_SHORT
+											).show()
+											cardDetailsBottomSheet.dismiss()
+										}
+									} else {
+										cardDetailsCard!!.visibility = View.GONE
+										addCard!!.visibility = View.GONE
+									}
+
+									if (isCardAvailable && isPassengerAvailable) {
+										addBoth!!.setOnClickListener {
+											addPassenger(passengerDetails)
+											editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+											editor.apply()
+											Toast.makeText(this@BookActivity, "Card and passenger details added", Toast.LENGTH_SHORT).show()
+											cardDetailsBottomSheet.dismiss()
+										}
+									} else {
+										addBoth!!.visibility = View.GONE
+									}
+
+									cancelBtn!!.setOnClickListener { cardDetailsBottomSheet.dismiss() }
+									cardDetailsBottomSheet.show()
 								} else {
 									dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
 									dialog.cancelText = "OK"

@@ -26,6 +26,7 @@
             android:id="@+id/serial_number"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:imeOptions="actionDone"
             android:clickable="true"
             android:contentDescription="serial_number"
             android:inputType="number"

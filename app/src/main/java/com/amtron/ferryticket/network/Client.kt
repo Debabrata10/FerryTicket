@@ -132,4 +132,22 @@ interface Client {
 	fun getOperatorUpdatedAfterPayment(
 		@Header("Authorization") bearer: String
 	): Call<JsonObject>
+
+	//TO SEND POS DATA TO SERVER
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("pos-payment")
+	fun sendPosDataToServer(
+		@Header("Authorization") bearer: String,
+		@Field("amount") amount: Double,
+		@Field("in_app_date") inAppDate: String,
+		@Field("in_app_time") inAppTime: String,
+		@Field("invoice") invoice: String,
+		@Field("rrn") rrn: String,
+		@Field("card_no") cardNo: String,
+		@Field("card_type") cardType: String,
+		@Field("auth_code") authCode: String,
+		@Field("booking_id") bookingId: Int,
+		@Field("tid") tid: String
+	): Call<JsonObject>
 }

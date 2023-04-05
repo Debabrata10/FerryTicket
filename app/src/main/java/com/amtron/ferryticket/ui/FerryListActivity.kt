@@ -48,7 +48,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		editor = sharedPreferences.edit()
 		val ferryServicesString = sharedPreferences.getString("ferryServices", "").toString()
 		val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
-			ferryServicesString.toString(),
+			ferryServicesString,
 			object : TypeToken<List<FerryService>>() {}.type
 		)
 		adapter = FerryServiceAdapter(ferryServiceList)

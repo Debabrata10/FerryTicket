@@ -36,4 +36,15 @@ object RetrofitHelper {
 			.client(client)
 			.addConverterFactory(GsonConverterFactory.create()).build()
 	}
+
+	class forJava {
+		companion object {
+			fun getInstance(): Retrofit {
+				return Retrofit.Builder()
+					.baseUrl(apiUrl)
+					.client(client)
+					.addConverterFactory(GsonConverterFactory.create()).build()
+			}
+		}
+	}
 }

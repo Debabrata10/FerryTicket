@@ -62,7 +62,7 @@ class HomeActivity : AppCompatActivity(),
 
 		getMasterData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
 
-		binding.appLogo.setOnClickListener {
+		binding.appLogo.setOnClickListener {// refresh app to get master data and home data
 			startActivity(intent)
 		}
 

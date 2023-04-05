@@ -47,33 +47,33 @@ class LoginActivity : AppCompatActivity() {
 		binding = ActivityLoginBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (!Util().isOnline(this)) {
+		if (!Util().isOnline(this)) { //Check for internet connectivity
 			val noInternetAlert = SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
 			noInternetAlert.setCancelable(false)
 			noInternetAlert.titleText = "No Internet."
 			noInternetAlert.contentText = "Please connect to internet and try again."
 			noInternetAlert.confirmText = "RETRY"
 			noInternetAlert.setConfirmClickListener {
-				intent
+				intent //restart everytime unless connected to internet
 			}
 			noInternetAlert.setCancelClickListener {
 				finishAffinity()
 			}
-		} else {
-			sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
-			tidSharedPreferences = this.getSharedPreferences("IWT_TID", MODE_PRIVATE)
+		} else { //On Internet established
+			sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE) // shared preference file to store all data except tid
+			tidSharedPreferences = this.getSharedPreferences("IWT_TID", MODE_PRIVATE) // shared preference to store only tid
 			editor = sharedPreferences.edit()
 			tidEditor = tidSharedPreferences.edit()
 
-			try {
+			try { //check for tid before anything
 				val tid = tidSharedPreferences.getString("tid", "").toString()
 				if (tid.isEmpty()) {
-					showEnterTidBottomSheet()
+					showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
 				} else {
 					proceedToLogin()
 				}
 			} catch (e: IllegalStateException) {
-				showEnterTidBottomSheet()
+				showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
 			}
 		}
 
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
 
 	@SuppressLint("SetTextI18n")
 	private fun proceedToLogin() {
-		/*try {
+		/*try { //check for app version on startup, if mismatched, redirected to url to update app
 			val appVersion = tidSharedPreferences.getString("version", "").toString().toDouble()
 			if (getAppVersion() == appVersion) {
 				//let proceed
@@ -96,13 +96,13 @@ class LoginActivity : AppCompatActivity() {
 		}*/
 
 		userString = sharedPreferences.getString("user", "").toString()
-		if (userString.isNotEmpty()) {
+		if (userString.isNotEmpty()) { //if user found logged in
 			val intent = Intent(this@LoginActivity, HomeActivity::class.java)
 			startActivity(intent)
 		}
 
 		binding.buttonProceed.setOnClickListener {
-			if (pinOn) {
+			if (pinOn) { //log in
 				login(
 					binding.phoneNumber.text.toString(),
 					binding.password.text.toString()
@@ -110,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
 				/*startActivity(
 					Intent(this@LoginActivity, HomeActivity::class.java)
 				)*/
-			} else {
+			} else { //forgot pin
 				getPin(binding.phoneNumber.text.toString())
 			}
 		}
