@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.model.AssignedRoutes
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 
 class AssignedRoutesAdapter(
@@ -34,10 +34,18 @@ class AssignedRoutesAdapter(
 
 		holder.srcGhat.text = assignedRoutes.source_ghat_name
 		holder.destGhat.text = assignedRoutes.destination_ghat_name
-		holder.srcDest.setOnClickListener {
+		holder.searchFerries.setOnClickListener {
 			mItemClickListener.onAssignedRoutesItemClickListener(
 				position,
-				Gson().toJson(assignedRoutesList[position])
+				Gson().toJson(assignedRoutesList[position]),
+				"getFerries"
+			)
+		}
+		holder.getReport.setOnClickListener {
+			mItemClickListener.onAssignedRoutesItemClickListener(
+				position,
+				Gson().toJson(assignedRoutesList[position]),
+				"getReport"
 			)
 		}
 	}
@@ -47,7 +55,8 @@ class AssignedRoutesAdapter(
 	}
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-		val srcDest: LinearLayout = itemView.findViewById(R.id.src_dest_ll)
+		val searchFerries: MaterialButton = itemView.findViewById(R.id.search_ferries_btn)
+		val getReport: MaterialButton = itemView.findViewById(R.id.get_report_btn)
 		val srcGhat: TextView = itemView.findViewById(R.id.src)
 		val destGhat: TextView = itemView.findViewById(R.id.dest)
 	}

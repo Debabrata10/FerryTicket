@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:ignore="HardCodedText, UseCompoundDrawables">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ferry_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="bottom"
+                        android:text="ROPEX"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="14sp"
+                        tools:ignore="NestedWeights" />
+
+                    <TextView
+                        android:id="@+id/ferry_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:gravity="bottom"
+                        android:text="100"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="15sp"
+                        tools:ignore="NestedWeights" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="GHAT1"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="-->"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:text="GHAT2"
+                    android:textColor="@color/blue_grotto"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refresh_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="REFRESH PARTICULARS"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_baseline_refresh_24"
+                app:iconTint="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_person_icon"
+                        android:src="@drawable/ic_baseline_person_24" />
+
+                    <TextView
+                        android:id="@+id/available_person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_bicycle_icon"
+                        android:src="@drawable/ic_baseline_pedal_bike_24" />
+
+                    <TextView
+                        android:id="@+id/available_cycle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_two_wheeler_icon"
+                        android:src="@drawable/ic_baseline_bike_scooter_24" />
+
+                    <TextView
+                        android:id="@+id/available_motorcycle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_lmv_icon"
+                        android:src="@drawable/ic_baseline_directions_car_24" />
+
+                    <TextView
+                        android:id="@+id/available_lmv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_hmv_icon"
+                        android:src="@drawable/ic_baseline_directions_bus_24" />
+
+                    <TextView
+                        android:id="@+id/available_hmv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="available_goods_icon"
+                        android:src="@drawable/ic_baseline_luggage_24" />
+
+                    <TextView
+                        android:id="@+id/available_goods"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="20"
+                        android:textColor="@color/dark_blue" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@color/blue_grotto"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/departure_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center_vertical"
+                android:text="12:00PM"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="interval"
+                android:src="@drawable/vertical_dots"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:contentDescription="date_icon"
+                android:src="@drawable/ic_baseline_calendar_month_24"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text=" 24 July, 2023"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="interval"
+                android:src="@drawable/vertical_dots"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/arrival_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="center_vertical"
+                android:text="4:00PM"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/blue_grotto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="Contents"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/baseline_list_alt_24" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/ic_baseline_person_24" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/ic_baseline_pedal_bike_24" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/ic_baseline_bike_scooter_24" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/ic_baseline_directions_car_24" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="ticket_icon"
+                android:src="@drawable/ic_baseline_luggage_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="ONLINE"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="COUNTER"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/operator_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="TOTAL"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="MY BOOKINGS"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="PASSENGER CARD"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_pc_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="OPERATOR CARD"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/self_oc_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:text="SCANNED"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_ticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_person"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_bicycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_two_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_four_wheeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/scanned_booked_others_capacity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/roboto"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

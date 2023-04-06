@@ -80,11 +80,11 @@ class HomeActivity : AppCompatActivity(),
 			startActivity(i)
 		}
 
-		binding.recentFerry.ferryCard.setOnClickListener {
+		/*binding.recentFerry.ferryCard.setOnClickListener {
 			//send ferry
 			val i = Intent(this, BookActivity::class.java)
 			startActivity(i)
-		}
+		}*/
 
 		onBackPressedDispatcher.addCallback(this) {
 			val exitBottomSheet = BottomSheetDialog(this@HomeActivity)
@@ -252,7 +252,8 @@ class HomeActivity : AppCompatActivity(),
 							}*/
 							//End for tablet view code
 
-							if (!JSONObject.NULL.equals(obj.get("recent_ferry"))) {
+							//Recent ferry code
+							/*if (!JSONObject.NULL.equals(obj.get("recent_ferry"))) {
 								val recentFerryJson = obj.get("recent_ferry") as JSONObject
 								val recentFerry: Ferry = Gson().fromJson(
 									recentFerryJson.toString(),
@@ -286,7 +287,7 @@ class HomeActivity : AppCompatActivity(),
 							} else {
 								binding.recentFerry.ferryCard.visibility = View.GONE
 								binding.noRecentFerryCard.visibility = View.VISIBLE
-							}
+							}*/
 
 							dialog.titleText = "All data fetched successfully"
 							dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
@@ -372,64 +373,137 @@ class HomeActivity : AppCompatActivity(),
 		}
 	}
 
-	override fun onAssignedRoutesItemClickListener(position: Int, type: String) {
-		dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
-		dialog.titleText = "Getting Services"
-		dialog.setCancelable(false)
-		dialog.show()
-		val ferry: AssignedRoutes = Gson().fromJson(
-			type,
-			object : TypeToken<AssignedRoutes>() {}.type
-		)
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
-		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getFerries(
-				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
-				ferry.route_id
+	override fun onAssignedRoutesItemClickListener(
+		position: Int,
+		type: String,
+		requirement: String
+	) {
+		if (requirement == "getFerries") {
+			dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+			dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+			dialog.titleText = "Getting Services"
+			dialog.setCancelable(false)
+			dialog.show()
+			val ferry: AssignedRoutes = Gson().fromJson(
+				type,
+				object : TypeToken<AssignedRoutes>() {}.type
 			)
-			call.enqueue(object : Callback<JsonObject> {
-				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
-				override fun onResponse(
-					call: Call<JsonObject>,
-					response: Response<JsonObject>
-				) {
-					if (response.isSuccessful) {
-						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
-						if (helper.isStatusSuccessful()) {
-							dialog.dismiss()
-							val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
-								helper.getDataAsString(),
-								object : TypeToken<List<FerryService>>() {}.type
-							)
-							Log.d("FerryService", Gson().toJson(ferryServiceList))
-							editor.putString("sourceGhat", ferry.source_ghat_name)
-							editor.putString("destinationGhat", ferry.destination_ghat_name)
-							editor.putString("ferryServices", Gson().toJson(ferryServiceList))
-							editor.apply()
-							startActivity(Intent(this@HomeActivity, FerryListActivity::class.java))
+			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			GlobalScope.launch {
+				val call: Call<JsonObject> = api.getFerries(
+					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+					ferry.route_id
+				)
+				call.enqueue(object : Callback<JsonObject> {
+					@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
+					override fun onResponse(
+						call: Call<JsonObject>,
+						response: Response<JsonObject>
+					) {
+						if (response.isSuccessful) {
+							val helper = ResponseHelper()
+							helper.ResponseHelper(response.body())
+							if (helper.isStatusSuccessful()) {
+								dialog.dismiss()
+								val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
+									helper.getDataAsString(),
+									object : TypeToken<List<FerryService>>() {}.type
+								)
+								editor.putString("sourceGhat", ferry.source_ghat_name)
+								editor.putString("destinationGhat", ferry.destination_ghat_name)
+								editor.putString("ferryServices", Gson().toJson(ferryServiceList))
+								editor.apply()
+								startActivity(
+									Intent(
+										this@HomeActivity,
+										FerryListActivity::class.java
+									)
+								)
+							} else {
+								dialog.dismiss()
+								NotificationHelper().getErrorAlert(
+									this@HomeActivity,
+									helper.getErrorMsg()
+								)
+							}
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(
 								this@HomeActivity,
-								helper.getErrorMsg()
+								"Response Error Code" + response.message()
 							)
 						}
-					} else {
-						dialog.dismiss()
-						NotificationHelper().getErrorAlert(
-							this@HomeActivity,
-							"Response Error Code" + response.message()
-						)
 					}
-				}
 
-				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-					dialog.dismiss()
-					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
-				}
-			})
+					override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+						dialog.dismiss()
+						NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
+					}
+				})
+			}
+		} else {
+			dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+			dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
+			dialog.titleText = "Getting Report"
+			dialog.setCancelable(false)
+			dialog.show()
+			val ferry: AssignedRoutes = Gson().fromJson(
+				type,
+				object : TypeToken<AssignedRoutes>() {}.type
+			)
+			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			GlobalScope.launch {
+				val call: Call<JsonObject> = api.getReport(
+					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+					ferry.route_id
+				)
+				call.enqueue(object : Callback<JsonObject> {
+					@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
+					override fun onResponse(
+						call: Call<JsonObject>,
+						response: Response<JsonObject>
+					) {
+						if (response.isSuccessful) {
+							val helper = ResponseHelper()
+							helper.ResponseHelper(response.body())
+							if (helper.isStatusSuccessful()) {
+								dialog.dismiss()
+								val reportsList: ArrayList<Report> = Gson().fromJson(
+									helper.getDataAsString(),
+									object : TypeToken<List<Report>>() {}.type
+								)
+								editor.putString("sourceGhat", ferry.source_ghat_name)
+								editor.putString("destinationGhat", ferry.destination_ghat_name)
+								editor.putString("reports", Gson().toJson(reportsList))
+								editor.apply()
+								startActivity(
+									Intent(
+										this@HomeActivity,
+										ReportActivity::class.java
+									)
+								)
+							} else {
+								dialog.dismiss()
+								NotificationHelper().getErrorAlert(
+									this@HomeActivity,
+									helper.getErrorMsg()
+								)
+							}
+						} else {
+							dialog.dismiss()
+							NotificationHelper().getErrorAlert(
+								this@HomeActivity,
+								"Response Error Code" + response.message()
+							)
+						}
+					}
+
+					override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+						dialog.dismiss()
+						NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
+					}
+				})
+			}
 		}
 	}
 }

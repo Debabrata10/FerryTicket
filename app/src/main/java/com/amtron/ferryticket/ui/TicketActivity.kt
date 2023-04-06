@@ -15,7 +15,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -288,7 +287,8 @@ class TicketActivity : AppCompatActivity() {
 	}
 
 	private fun updateOperatorWalletBalance(jwtToken: String) {
-		val updateOperatorWalletLoaderDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		val updateOperatorWalletLoaderDialog =
+			SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 		updateOperatorWalletLoaderDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		updateOperatorWalletLoaderDialog.setCancelable(false)
 		updateOperatorWalletLoaderDialog.titleText = "LOADING.."

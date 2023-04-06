@@ -60,8 +60,14 @@ class LoginActivity : AppCompatActivity() {
 				finishAffinity()
 			}
 		} else { //On Internet established
-			sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE) // shared preference file to store all data except tid
-			tidSharedPreferences = this.getSharedPreferences("IWT_TID", MODE_PRIVATE) // shared preference to store only tid
+			sharedPreferences = this.getSharedPreferences(
+				"IWTCounter",
+				MODE_PRIVATE
+			) // shared preference file to store all data except tid
+			tidSharedPreferences = this.getSharedPreferences(
+				"IWT_TID",
+				MODE_PRIVATE
+			) // shared preference to store only tid
 			editor = sharedPreferences.edit()
 			tidEditor = tidSharedPreferences.edit()
 

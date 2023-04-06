@@ -150,4 +150,13 @@ interface Client {
 		@Field("booking_id") bookingId: Int,
 		@Field("tid") tid: String
 	): Call<JsonObject>
+
+	//GET REPORT
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("report")
+	fun getReport(
+		@Header("Authorization") bearer: String,
+		@Field("route_id") route_id: Int
+	): Call<JsonObject>
 }

@@ -764,7 +764,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									val passengerJSONObject = obj.get("passenger") as JSONObject?
 									val cardJSONObject = obj.get("card_details") as JSONObject?
 
-									val cardDetailsBottomSheet = BottomSheetDialog(this@BookActivity)
+									val cardDetailsBottomSheet =
+										BottomSheetDialog(this@BookActivity)
 									cardDetailsBottomSheet.setCancelable(false)
 									cardDetailsBottomSheet.setContentView(R.layout.details_from_card_layout)
 									val cardDetailsCard =
@@ -773,9 +774,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 										cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.passenger_details_card)
 									val cancelBtn =
 										cardDetailsBottomSheet.findViewById<ImageView>(R.id.hide_bottom_sheet_image)
-									val addCard = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
-									val addPassenger = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
-									val addBoth = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
+									val addCard =
+										cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
+									val addPassenger =
+										cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
+									val addBoth =
+										cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
 
 									if (passengerJSONObject!!.length() > 0) { //adding passenger data to views
 										try {
@@ -800,7 +804,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 											addPassenger!!.setOnClickListener {
 												addPassenger(passengerDetails)
-												Toast.makeText(this@BookActivity, "Passenger details added", Toast.LENGTH_SHORT).show()
+												Toast.makeText(
+													this@BookActivity,
+													"Passenger details added",
+													Toast.LENGTH_SHORT
+												).show()
 												cardDetailsBottomSheet.dismiss()
 											}
 										} catch (e: java.lang.Exception) {
@@ -836,12 +844,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 											val noArr = cardDetails.card_no.toCharArray()
 											val builder = StringBuilder()
 											val visibleSize = noArr.size - 5
-											for (i in noArr.size-1 downTo 0) {
+											for (i in noArr.size - 1 downTo 0) {
 												if (i > visibleSize) {
 													builder.append(noArr[i])
 												}
 											}
-											val resString = "**** **** **** " + builder.reverse().toString()
+											val resString =
+												"**** **** **** " + builder.reverse().toString()
 
 											cardNumber!!.text = resString
 
@@ -852,9 +861,16 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 											)
 
 											addCard!!.setOnClickListener {
-												editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+												editor.putString(
+													"passenger_card_details",
+													Gson().toJson(cardDetails)
+												)
 												editor.apply()
-												Toast.makeText(this@BookActivity, "Card details added", Toast.LENGTH_SHORT).show()
+												Toast.makeText(
+													this@BookActivity,
+													"Card details added",
+													Toast.LENGTH_SHORT
+												).show()
 												cardDetailsBottomSheet.dismiss()
 											}
 										} catch (e: java.lang.Exception) {
@@ -874,9 +890,16 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									if (isCardAvailable && isPassengerAvailable) {
 										addBoth!!.setOnClickListener {
 											addPassenger(passengerDetails)
-											editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+											editor.putString(
+												"passenger_card_details",
+												Gson().toJson(cardDetails)
+											)
 											editor.apply()
-											Toast.makeText(this@BookActivity, "Card and passenger details added", Toast.LENGTH_SHORT).show()
+											Toast.makeText(
+												this@BookActivity,
+												"Card and passenger details added",
+												Toast.LENGTH_SHORT
+											).show()
 											cardDetailsBottomSheet.dismiss()
 										}
 									} else {
@@ -1111,9 +1134,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								cardDetailsBottomSheet.findViewById<MaterialCardView>(R.id.passenger_details_card)
 							val cancelBtn =
 								cardDetailsBottomSheet.findViewById<ImageView>(R.id.hide_bottom_sheet_image)
-							val addCard = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
-							val addPassenger = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
-							val addBoth = cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
+							val addCard =
+								cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card)
+							val addPassenger =
+								cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_passenger)
+							val addBoth =
+								cardDetailsBottomSheet.findViewById<MaterialButton>(R.id.add_card_and_passenger)
 
 							if (passengerJSONObject!!.length() > 0) {
 								try {
@@ -1138,7 +1164,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 									addPassenger!!.setOnClickListener {
 										addPassenger(passengerDetails)
-										Toast.makeText(this@BookActivity, "Passenger details added", Toast.LENGTH_SHORT).show()
+										Toast.makeText(
+											this@BookActivity,
+											"Passenger details added",
+											Toast.LENGTH_SHORT
+										).show()
 										cardDetailsBottomSheet.dismiss()
 									}
 								} catch (e: java.lang.Exception) {
@@ -1174,7 +1204,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									val noArr = cardDetails.card_no.toCharArray()
 									val builder = StringBuilder()
 									val visibleSize = noArr.size - 5
-									for (i in noArr.size-1 downTo 0) {
+									for (i in noArr.size - 1 downTo 0) {
 										if (i > visibleSize) {
 											builder.append(noArr[i])
 										}
@@ -1190,9 +1220,16 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									)
 
 									addCard!!.setOnClickListener {
-										editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+										editor.putString(
+											"passenger_card_details",
+											Gson().toJson(cardDetails)
+										)
 										editor.apply()
-										Toast.makeText(this@BookActivity, "Card details added", Toast.LENGTH_SHORT).show()
+										Toast.makeText(
+											this@BookActivity,
+											"Card details added",
+											Toast.LENGTH_SHORT
+										).show()
 										cardDetailsBottomSheet.dismiss()
 									}
 								} catch (e: java.lang.Exception) {
@@ -1212,9 +1249,16 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 							if (isCardAvailable && isPassengerAvailable) {
 								addBoth!!.setOnClickListener {
 									addPassenger(passengerDetails)
-									editor.putString("passenger_card_details", Gson().toJson(cardDetails))
+									editor.putString(
+										"passenger_card_details",
+										Gson().toJson(cardDetails)
+									)
 									editor.apply()
-									Toast.makeText(this@BookActivity, "Card and passenger details added", Toast.LENGTH_SHORT).show()
+									Toast.makeText(
+										this@BookActivity,
+										"Card and passenger details added",
+										Toast.LENGTH_SHORT
+									).show()
 									cardDetailsBottomSheet.dismiss()
 								}
 							} else {
