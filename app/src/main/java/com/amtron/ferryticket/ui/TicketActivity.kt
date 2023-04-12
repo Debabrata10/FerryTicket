@@ -306,7 +306,7 @@ class TicketActivity : AppCompatActivity() {
 			) {
 				if (response.isSuccessful) {
 					val helper = ResponseHelper()
-					helper.ResponseHelper(response.body())
+					helper.responseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
 						updateOperatorWalletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						updateOperatorWalletLoaderDialog.titleText = "SUCCESSFUL"
@@ -363,7 +363,7 @@ class TicketActivity : AppCompatActivity() {
 			) {
 				if (response.isSuccessful) {
 					val helper = ResponseHelper()
-					helper.ResponseHelper(response.body())
+					helper.responseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
 						walletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						walletLoaderDialog.dismiss()
@@ -469,7 +469,7 @@ class TicketActivity : AppCompatActivity() {
 			) {
 				if (response.isSuccessful) {
 					val helper = ResponseHelper()
-					helper.ResponseHelper(response.body())
+					helper.responseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
 						walletLoaderDialog.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())

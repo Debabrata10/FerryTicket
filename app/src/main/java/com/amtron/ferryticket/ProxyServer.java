@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -27,18 +28,20 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
 
     int proxyPort = 8080;
     String proxyHost = "192.168.153.200"; // Airtel
-    //    String proxyHost = "192.168.99.7"; //Vodafone
+//    String proxyHost = "192.168.99.7"; //Vodafone
+
+    private final ProgressDialog pDialogs;
+
+    public ProxyServer(Activity activity) {
+        pDialogs = new ProgressDialog(activity);
+    }
+
     Authenticator proxyAuthenticator = (route, response) -> {
         String credential = Credentials.basic(username, password);
         return response.request().newBuilder()
                 .header("Proxy-Authorization", credential)
                 .build();
     };
-    private ProgressDialog pDialogs;
-
-    public ProxyServer(Activity activity) {
-        pDialogs = new ProgressDialog(activity);
-    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -50,20 +53,15 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
                     .readTimeout(60, TimeUnit.SECONDS)
                     .proxy(new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)))
                     .proxyAuthenticator(proxyAuthenticator)
-                    .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                    .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                     .build();
 
-            Log.e("URL: ", url);
-
-            RequestBody formBody = new FormBody.Builder()
-                    .build();
+            RequestBody formBody = new FormBody.Builder().build();
 
             Request request = new Request.Builder().url(url).post(formBody).build();
             Response response = client.newCall(request).execute();
             res = Objects.requireNonNull(response.body()).string();
             int rres = response.code();
-            int rsres = response.code();
-
         } catch (Exception e) {
             res = e.toString();
             e.printStackTrace();
@@ -85,14 +83,14 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-//        Log.e("Response is: ", result);
-        try {
+        /*try {
             if (pDialogs != null || pDialogs.isShowing()) {
                 pDialogs.dismiss();
             }
         } catch (Exception e) {
             Log.d("tag", String.valueOf(e));
-        }
+        }*/
+        pDialogs.dismiss();
         Log.d("msg", result);
     }
 }

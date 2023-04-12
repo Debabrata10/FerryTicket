@@ -351,7 +351,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				//for mobile view starts
 				binding.passengerLayout.addPassenger.setOnClickListener {
 					if (passengerTypeRG.checkedRadioButtonId == -1) {
-						Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show()
+						Toast.makeText(this, "Please select passenger type", Toast.LENGTH_SHORT).show()
 					} else {
 						if (binding.passengerLayout.name.text.isEmpty()) {
 							Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show()
@@ -702,6 +702,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.summarySection.visibility = View.GONE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 			} else {
+				try {
+					editor.remove("passenger_card_details")
+					editor.apply()
+				} catch (e: Exception) {
+					Log.d("msg", "No cards available to remove")
+				}
 				startActivity(Intent(this@BookActivity, FerryListActivity::class.java))
 			}
 		}
@@ -751,7 +757,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						) {
 							if (response.isSuccessful) {
 								val helper = ResponseHelper()
-								helper.ResponseHelper(response.body())
+								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									dialog.titleText = "Card details found.."
 									enterCardDetailsBottomSheet.dismiss()
@@ -981,7 +987,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						if (response.isSuccessful) {
 							dialog.dismissWithAnimation()
 							val helper = ResponseHelper()
-							helper.ResponseHelper(response.body())
+							helper.responseHelper(response.body())
 							if (helper.isStatusSuccessful()) {
 								dialog.dismissWithAnimation()
 								val ticket: Ticket = Gson().fromJson(
@@ -1036,7 +1042,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							dialog.dismissWithAnimation()
 							val obj = JSONObject(helper.getDataAsString())
@@ -1114,7 +1120,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							dialog.dismissWithAnimation()
 							var isPassengerAvailable = false

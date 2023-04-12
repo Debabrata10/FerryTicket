@@ -97,7 +97,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							dialog.dismiss()
 							val ferryService: FerryService = Gson().fromJson(

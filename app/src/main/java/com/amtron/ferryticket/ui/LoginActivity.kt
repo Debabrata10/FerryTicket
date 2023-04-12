@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.amtron.ferryticket.Proxy
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.databinding.ActivityLoginBinding
 import com.amtron.ferryticket.helper.NotificationHelper
@@ -59,7 +60,11 @@ class LoginActivity : AppCompatActivity() {
 			noInternetAlert.setCancelClickListener {
 				finishAffinity()
 			}
-		} else { //On Internet established
+		} else {
+			//world line proxy check
+			Proxy().execute();
+
+			//On Internet established
 			sharedPreferences = this.getSharedPreferences(
 				"IWTCounter",
 				MODE_PRIVATE
@@ -151,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
 					if (response.isSuccessful) {
 						binding.progressbar.hide()
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							val obj = JSONObject(helper.getDataAsString())
 							version = obj.get("version") as Double
@@ -212,7 +217,7 @@ class LoginActivity : AppCompatActivity() {
 						) {
 							if (response.isSuccessful) {
 								val helper = ResponseHelper()
-								helper.ResponseHelper(response.body())
+								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									dialog.titleText = "TID Fetched"
 									dialog.dismissWithAnimation()
@@ -274,7 +279,7 @@ class LoginActivity : AppCompatActivity() {
 							if (response.isSuccessful) {
 								binding.progressbar.hide()
 								val helper = ResponseHelper()
-								helper.ResponseHelper(response.body())
+								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									Toast.makeText(
 										this@LoginActivity,
@@ -342,7 +347,7 @@ class LoginActivity : AppCompatActivity() {
 							if (response.isSuccessful) {
 								binding.progressbar.hide()
 								val helper = ResponseHelper()
-								helper.ResponseHelper(response.body())
+								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									val user: User = Gson().fromJson(
 										helper.getDataAsString(),

@@ -144,7 +144,7 @@
             android:textColor="@color/white"
             android:textSize="19sp" />
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_settlement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -208,6 +208,6 @@
             android:onClick="onClickProvider"
             android:text="Get Proxy Details"
             android:textColor="@color/white"
-            android:textSize="19sp" />
+            android:textSize="19sp" />-->
     </LinearLayout>
 </LinearLayout>

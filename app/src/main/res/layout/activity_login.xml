@@ -55,7 +55,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:hint="Enter your password"
+        android:hint="Enter your PIN"
         android:orientation="horizontal"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"

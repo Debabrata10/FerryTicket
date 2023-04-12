@@ -10,7 +10,7 @@ class ResponseHelper {
 	private lateinit var jsonObject: JsonObject
 
 	@SuppressLint("NotConstructor")
-	fun ResponseHelper(jsonObject: JsonObject?) {
+	fun responseHelper(jsonObject: JsonObject?) {
 		this.jsonObject = jsonObject!!
 	}
 

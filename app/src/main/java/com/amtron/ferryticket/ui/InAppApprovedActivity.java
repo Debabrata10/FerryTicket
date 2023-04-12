@@ -432,7 +432,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             Integer id,
             String tid
     ) {
-        Client client = RetrofitHelper.forJava.Companion.getInstance().create(Client.class);
+        Client client = RetrofitHelper.ForJava.Companion.getInstance().create(Client.class);
         Call<JsonObject> call = client.sendPosDataToServer(
                 "Bearer " + user.getToken(),
                 Double.parseDouble(amount),
@@ -451,7 +451,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     ResponseHelper helper = new ResponseHelper();
-                    helper.ResponseHelper(response.body());
+                    helper.responseHelper(response.body());
                     if (helper.isStatusSuccessful()) {
                         Log.d("response status", "is successful");
                         Log.d("response ->", helper.getDataAsString());

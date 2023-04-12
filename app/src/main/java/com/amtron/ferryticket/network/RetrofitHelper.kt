@@ -23,7 +23,7 @@ object RetrofitHelper {
 				httpBuilder
 					.connectTimeout(15, TimeUnit.SECONDS)
 					.readTimeout(20, TimeUnit.SECONDS)
-					.addInterceptor(interceptor)  /// show all JSON in logCat
+					.addInterceptor(interceptor)  // show all JSON in logCat
 				mClient = httpBuilder.build()
 
 			}
@@ -37,7 +37,7 @@ object RetrofitHelper {
 			.addConverterFactory(GsonConverterFactory.create()).build()
 	}
 
-	class forJava {
+	class ForJava {
 		companion object {
 			fun getInstance(): Retrofit {
 				return Retrofit.Builder()

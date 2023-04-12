@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -124,7 +123,7 @@ class HomeActivity : AppCompatActivity(),
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							dialog.titleText = "Master Data Fetched"
 							val masterData: MasterData = Gson().fromJson(
@@ -176,7 +175,7 @@ class HomeActivity : AppCompatActivity(),
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							val obj = JSONObject(helper.getDataAsString())
 							binding.ticketsToday.text = (obj.get("todays_ticket") as Int).toString()
@@ -337,7 +336,7 @@ class HomeActivity : AppCompatActivity(),
 				) {
 					if (response.isSuccessful) {
 						val helper = ResponseHelper()
-						helper.ResponseHelper(response.body())
+						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							dialog.dismiss()
 							val ferryService: FerryService = Gson().fromJson(
@@ -402,7 +401,7 @@ class HomeActivity : AppCompatActivity(),
 					) {
 						if (response.isSuccessful) {
 							val helper = ResponseHelper()
-							helper.ResponseHelper(response.body())
+							helper.responseHelper(response.body())
 							if (helper.isStatusSuccessful()) {
 								dialog.dismiss()
 								val ferryServiceList: ArrayList<FerryService> = Gson().fromJson(
@@ -465,7 +464,7 @@ class HomeActivity : AppCompatActivity(),
 					) {
 						if (response.isSuccessful) {
 							val helper = ResponseHelper()
-							helper.ResponseHelper(response.body())
+							helper.responseHelper(response.body())
 							if (helper.isStatusSuccessful()) {
 								dialog.dismiss()
 								val reportsList: ArrayList<Report> = Gson().fromJson(

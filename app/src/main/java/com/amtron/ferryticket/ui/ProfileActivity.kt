@@ -154,7 +154,7 @@ class ProfileActivity : AppCompatActivity() {
 						) {
 							if (response.isSuccessful) {
 								val helper = ResponseHelper()
-								helper.ResponseHelper(response.body())
+								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
 									dialog.titleText = "TID Fetched"
 									dialog.dismissWithAnimation()
