@@ -242,8 +242,14 @@ class TicketActivity : AppCompatActivity() {
 			cashPaymentBottomSheet.show()
 
 			success?.setOnClickListener {
+				ticket.order_status = "SUCCESS"
+				editor.putString("ticket", Gson().toJson(ticket))
+				editor.apply()
 				startActivity(
-					Intent(this, TicketListActivity::class.java)
+					Intent(
+						this@TicketActivity,
+						InAppApprovedActivity::class.java
+					)
 				)
 			}
 			cancel?.setOnClickListener { cashPaymentBottomSheet.dismiss() }

@@ -219,6 +219,7 @@ class LoginActivity : AppCompatActivity() {
 								val helper = ResponseHelper()
 								helper.responseHelper(response.body())
 								if (helper.isStatusSuccessful()) {
+									enterTidBottomSheet.dismiss()
 									dialog.titleText = "TID Fetched"
 									dialog.dismissWithAnimation()
 									val obj = JSONObject(helper.getDataAsString())
