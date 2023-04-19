@@ -79,6 +79,10 @@ class HomeActivity : AppCompatActivity(),
 			startActivity(i)
 		}
 
+		binding.tickets.setOnClickListener {
+			startActivity(Intent(this, TicketListActivity::class.java))
+		}
+
 		/*binding.recentFerry.ferryCard.setOnClickListener {
 			//send ferry
 			val i = Intent(this, BookActivity::class.java)
@@ -179,6 +183,7 @@ class HomeActivity : AppCompatActivity(),
 						if (helper.isStatusSuccessful()) {
 							val obj = JSONObject(helper.getDataAsString())
 							binding.ticketsToday.text = (obj.get("todays_ticket") as Int).toString()
+
 							val assignedRoutesJson = obj.get("assigned_routes") as JSONArray
 							if (assignedRoutesJson.length() > 0) {
 								val assignedRoutesList: ArrayList<AssignedRoutes> =
@@ -200,56 +205,6 @@ class HomeActivity : AppCompatActivity(),
 								binding.srcDestRecyclerView.visibility = View.GONE
 								binding.noRoutesCard.visibility = View.VISIBLE
 							}
-
-							val latestTicketsJson = obj.get("latest_tickets") as JSONArray
-
-							//Start for mobile view code
-							if (latestTicketsJson.length() > 0) {
-								val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
-									latestTicketsJson.toString(),
-									object : TypeToken<List<Ticket>>() {}.type
-								)
-								binding.tickets.setOnClickListener {
-									editor.putString(
-										"recent_tickets",
-										Gson().toJson(latestTicketsList)
-									)
-									editor.apply()
-									startActivity(
-										Intent(
-											this@HomeActivity,
-											TicketListActivity::class.java
-										)
-									)
-								}
-							} else {
-								binding.tickets.setOnClickListener {
-									NotificationHelper().getErrorAlert(
-										this@HomeActivity,
-										"No tickets found"
-									)
-								}
-							}
-							//End for mobile view code
-
-							//Start for tablet view code
-							/*if (latestTicketsJson.length() > 0) {
-								val latestTicketsList: ArrayList<Ticket> = Gson().fromJson(
-									latestTicketsJson.toString(),
-									object : TypeToken<List<Ticket>>() {}.type
-								)
-								recentTicketAdapter = TicketAdapter(latestTicketsList)
-								recentTicketsRecyclerView = binding.recentTicketsRecyclerView
-								recentTicketsRecyclerView.adapter = recentTicketAdapter
-								recentTicketsRecyclerView.layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-								recentTicketsRecyclerView.isNestedScrollingEnabled = false
-								binding.recentTicketsRecyclerView.visibility = View.VISIBLE
-								binding.noRecentTicketsCard.visibility = View.GONE
-							} else {
-								binding.recentTicketsRecyclerView.visibility = View.GONE
-								binding.noRecentTicketsCard.visibility = View.VISIBLE
-							}*/
-							//End for tablet view code
 
 							//Recent ferry code
 							/*if (!JSONObject.NULL.equals(obj.get("recent_ferry"))) {

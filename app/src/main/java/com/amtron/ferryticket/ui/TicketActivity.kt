@@ -243,6 +243,7 @@ class TicketActivity : AppCompatActivity() {
 
 			success?.setOnClickListener {
 				ticket.order_status = "SUCCESS"
+				ticket.mode_of_payment = "CASH"
 				editor.putString("ticket", Gson().toJson(ticket))
 				editor.apply()
 				startActivity(

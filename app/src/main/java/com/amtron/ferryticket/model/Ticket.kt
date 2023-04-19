@@ -19,7 +19,7 @@ data class Ticket(
 	val net_amt: Double,
 	val service_amt: Double,
 	val total_amt: Double,
-	val mode_of_payment: String,
+	var mode_of_payment: String,
 	var rrn: String? = "",
 	var order_status: String,
 	val scanned: Int,
