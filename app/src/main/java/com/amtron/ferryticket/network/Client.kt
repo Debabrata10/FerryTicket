@@ -111,10 +111,9 @@ interface Client {
 
 	//GET APP VERSION API
 	@Headers("Accept: application/json")
-	@FormUrlEncoded
-	@POST("app-version")
+	@GET("app-version")
 	fun getAppVersion(
-		@Field("app_type") type: String
+		@Query("app_type") type: String
 	): Call<JsonObject>
 
 	//GET CARD DETAILS BY INPUT API

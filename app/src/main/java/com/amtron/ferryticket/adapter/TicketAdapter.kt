@@ -34,6 +34,7 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 
 		holder.ferryName.text = ticket.ferry.ferry_name
 		holder.ticketNumber.text = ticket.ticket_no
+		holder.paymentMode.text = ticket.mode_of_payment
 		holder.date.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
@@ -60,5 +61,6 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 		val departureTime: TextView = itemView.findViewById(R.id.departure_time)
 		val arrivalTime: TextView = itemView.findViewById(R.id.arrival_time)
 		val ferryName: TextView = itemView.findViewById(R.id.ferry_name)
+		val paymentMode: TextView = itemView.findViewById(R.id.payment_mode)
 	}
 }

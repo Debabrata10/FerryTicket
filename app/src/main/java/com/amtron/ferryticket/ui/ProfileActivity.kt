@@ -53,8 +53,18 @@ class ProfileActivity : AppCompatActivity() {
 		tidEditor = tidSharedPreferences.edit()
 
 		val userString = sharedPreferences.getString("user", "").toString()
-		val tid = tidSharedPreferences.getString("tid", "").toString()
-		binding.tid.text = tid
+		user = Gson().fromJson(
+			userString,
+			object : TypeToken<User>() {}.type
+		)
+		binding.name.text = "${user.name} ${user.last_name}"
+		binding.phone.text = user.mobile
+		binding.email.text = user.email
+		binding.role.text = user.role
+
+		binding.tid.text = tidSharedPreferences.getString("tid", "").toString()
+		binding.version.text = sharedPreferences.getString("version", "").toString()
+		binding.buildDate.text = sharedPreferences.getString("build_date", "").toString()
 		//To change tid from inside app
 		/*try {
 			val tid = sharedPreferences.getString("tid", "").toString()
@@ -80,17 +90,6 @@ class ProfileActivity : AppCompatActivity() {
 				getTid()
 			}
 		}*/
-
-		if (userString.isNotEmpty()) {
-			user = Gson().fromJson(
-				userString,
-				object : TypeToken<User>() {}.type
-			)
-			binding.name.text = "${user.name} ${user.last_name}"
-			binding.phone.text = user.mobile
-			binding.email.text = user.email
-			binding.role.text = user.role
-		}
 
 		binding.btnLogOut.setOnClickListener {
 			val logoutBottomSheet = BottomSheetDialog(this)

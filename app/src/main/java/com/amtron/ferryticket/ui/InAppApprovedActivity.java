@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import kotlinx.coroutines.DelicateCoroutinesApi;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,8 +59,9 @@ import retrofit2.Response;
 public class InAppApprovedActivity extends AppCompatActivity {
 
     //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
-    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid;
+    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid, cardToBeSend;
     JSONArray posJSONArray;
+    ActivityInAppApprovedBinding binding;
     private Printer printer = null;
     private PrintTask printTask = null;
     private SharedPreferences sharedPreference;
@@ -103,7 +105,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityInAppApprovedBinding binding = ActivityInAppApprovedBinding.inflate(getLayoutInflater());
+        binding = ActivityInAppApprovedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
@@ -198,7 +200,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 invoice = getIntent().getStringExtra("invoice");
                 rrn = getIntent().getStringExtra("rrn");
                 card_no = getIntent().getStringExtra("card_no");
-                String cardToBeSend = getIntent().getStringExtra("card_no");
+                cardToBeSend = getIntent().getStringExtra("card_no");
                 card_type = getIntent().getStringExtra("card_type");
                 auth_code = getIntent().getStringExtra("auth_code");
                 if (card_no.isEmpty()) {
@@ -420,6 +422,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SetTextI18n")
     private void callServerSideForTicketConfirmation(
             String amount,
             String in_app_date,
@@ -432,6 +435,10 @@ public class InAppApprovedActivity extends AppCompatActivity {
             Integer id,
             String tid
     ) {
+        SweetAlertDialog alert = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        alert.setTitle("VERIFYING");
+        alert.setCancelable(false);
+        alert.show();
         Client client = RetrofitHelper.ForJava.Companion.getInstance().create(Client.class);
         Call<JsonObject> call = client.sendPosDataToServer(
                 "Bearer " + user.getToken(),
@@ -453,18 +460,45 @@ public class InAppApprovedActivity extends AppCompatActivity {
                     ResponseHelper helper = new ResponseHelper();
                     helper.responseHelper(response.body());
                     if (helper.isStatusSuccessful()) {
-                        Log.d("response status", "is successful");
-                        Log.d("response ->", helper.getDataAsString());
+                        alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        alert.dismissWithAnimation();
+                        binding.print.setText("PRINT");
                     } else {
+                        alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        alert.setCancelText("RETRY");
+                        alert.setCancelable(true);
+                        alert.setCancelClickListener(v ->
+                                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                        );
+                        binding.print.setText("VERIFY");
+                        binding.print.setOnClickListener(v ->
+                                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                        );
                         Log.d("ERROR!!", helper.getErrorMsg());
                     }
                 } else {
+                    alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    alert.setCancelText("RETRY");
+                    alert.setCancelable(true);
+                    alert.setCancelClickListener(v ->
+                            callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                    );
+                    binding.print.setText("VERIFY");
+                    binding.print.setOnClickListener(v -> callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid));
                     Log.d("ERROR!!", "Response Error Code " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                alert.setCancelText("RETRY");
+                alert.setCancelable(true);
+                alert.setCancelClickListener(v ->
+                        callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                );
+                binding.print.setText("VERIFY");
+                binding.print.setOnClickListener(v -> callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid));
                 Log.d("ERROR!!", "Server Error. Please try again.");
             }
         });

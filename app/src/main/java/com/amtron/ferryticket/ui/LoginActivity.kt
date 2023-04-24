@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -92,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
 
 	@SuppressLint("SetTextI18n")
 	private fun proceedToLogin() {
+		getAppVersion()
 		/*try { //check for app version on startup, if mismatched, redirected to url to update app
 			val appVersion = tidSharedPreferences.getString("version", "").toString().toDouble()
 			if (getAppVersion() == appVersion) {
@@ -159,7 +161,9 @@ class LoginActivity : AppCompatActivity() {
 						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
 							val obj = JSONObject(helper.getDataAsString())
-							version = obj.get("version") as Double
+							editor.putString("version", obj.getString("version"))
+							editor.putString("build_date", obj.getString("build_date"))
+							editor.apply()
 						} else {
 							NotificationHelper().getErrorAlert(
 								this@LoginActivity,
