@@ -118,6 +118,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/payment_mode_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
@@ -125,7 +126,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="15dp"
                 android:contentDescription="warning_logo"
                 android:src="@drawable/baseline_payments_24"/>
@@ -134,7 +135,9 @@
                 android:id="@+id/payment_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 android:fontFamily="@font/roboto_condensed_bold" />
         </LinearLayout>
 

@@ -275,6 +275,8 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 }
             }
             canvas.drawText(" ", paint);
+            canvas.drawText("Payment Mode: " + paymentMode, paint);
+            canvas.drawText(" ", paint);
             /*canvas.drawText("Card No: " + card_no, paint);
             if (rrn != null) {
                 canvas.drawText("RRN/Order No: " + rrn, paint);

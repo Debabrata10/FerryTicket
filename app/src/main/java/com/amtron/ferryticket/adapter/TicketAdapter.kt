@@ -34,12 +34,14 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 
 		holder.ferryName.text = ticket.ferry.ferry_name
 		holder.ticketNumber.text = ticket.ticket_no
-		holder.paymentMode.text = ticket.mode_of_payment
 		holder.date.text = DateAndTimeHelper().changeDateFormat("dd MMM, yyyy", ticket.ferry_date)
 		holder.departureTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_departure_time)
 		holder.arrivalTime.text = DateAndTimeHelper().changeTimeFormat(ticket.fs_reached_time)
 		if (ticket.order_status == "SUCCESS") {
 			holder.notPaidLl.visibility = View.GONE
+			holder.paymentMode.text = ticket.mode_of_payment
+		} else {
+			holder.paymentModeLl.visibility = View.GONE
 		}
 		holder.ticket.setOnClickListener {
 			mItemClickListener.onRecentTicketsItemClickListener(
@@ -56,6 +58,7 @@ class TicketAdapter(private val ticketList: List<Ticket>) :
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		val ticket: MaterialCardView = itemView.findViewById(R.id.ticket)
 		val notPaidLl: LinearLayout = itemView.findViewById(R.id.not_paid_ll)
+		val paymentModeLl: LinearLayout = itemView.findViewById(R.id.payment_mode_ll)
 		val ticketNumber: TextView = itemView.findViewById(R.id.ticket_number)
 		val date: TextView = itemView.findViewById(R.id.date)
 		val departureTime: TextView = itemView.findViewById(R.id.departure_time)
