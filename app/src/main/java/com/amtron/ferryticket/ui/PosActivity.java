@@ -129,8 +129,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
             }
             binding.amt.setText("₹" + amount);
         } catch (Exception e) {
-            Log.d("exception error", "Ticket not found");
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            Log.d("error", "Activity started without price");
 //            startActivity(new Intent(this, TicketListActivity.class));
         }
 

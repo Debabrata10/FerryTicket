@@ -363,6 +363,7 @@ class HomeActivity : AppCompatActivity(),
 									helper.getDataAsString(),
 									object : TypeToken<List<FerryService>>() {}.type
 								)
+								editor.putString("activity_from", "")
 								editor.putString("sourceGhat", ferry.source_ghat_name)
 								editor.putString("destinationGhat", ferry.destination_ghat_name)
 								editor.putString("ferryServices", Gson().toJson(ferryServiceList))

@@ -129,8 +129,6 @@ class TicketActivity : AppCompatActivity() {
 			walletPayBottomSheet.setContentView(R.layout.wallet_pay_bottomsheet_layout)
 			val walletButtonsLayout =
 				walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
-			val operatorWalletButton = MaterialButton(this@TicketActivity)
-			val passengerWalletButton = MaterialButton(this@TicketActivity)
 			val layoutParams = LinearLayout.LayoutParams(
 				350,
 				ViewGroup.LayoutParams.WRAP_CONTENT
@@ -140,6 +138,7 @@ class TicketActivity : AppCompatActivity() {
 				walletButtonsLayout!!.visibility = View.GONE
 			} else {
 				if (isUserWalletAvailable) {
+					val operatorWalletButton = MaterialButton(this@TicketActivity)
 					operatorWalletButton.text =
 						"OPERATOR WALLET ₹${operatorWalletAmount}"
 					operatorWalletButton.textSize = 12F
@@ -149,10 +148,9 @@ class TicketActivity : AppCompatActivity() {
 						payWithWallet(operatorWallet.id.toInt(), ticket.id, operatorWallet)
 					}
 					walletButtonsLayout!!.addView(operatorWalletButton)
-				} else {
-					operatorWalletButton.visibility = View.GONE
 				}
 				if (isPassengerWalletAvailable) {
+					val passengerWalletButton = MaterialButton(this@TicketActivity)
 					passengerWalletButton.text =
 						"PASSENGER WALLET ₹${passengerWallet!!.wallet_amount}"
 					passengerWalletButton.textSize = 12F
@@ -162,8 +160,6 @@ class TicketActivity : AppCompatActivity() {
 						payWithWallet(passengerWallet!!.id.toInt(), ticket.id, passengerWallet!!)
 					}
 					walletButtonsLayout!!.addView(passengerWalletButton)
-				} else {
-					passengerWalletButton.visibility = View.GONE
 				}
 			}
 			walletPayBottomSheet.show()

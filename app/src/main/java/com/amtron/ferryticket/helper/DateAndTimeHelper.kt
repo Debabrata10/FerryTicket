@@ -9,7 +9,7 @@ class DateAndTimeHelper {
 	fun changeDateFormat(requiredFormat: String?, dateString: String?): String {
 		val result: String
 
-		val formatterOld = SimpleDateFormat("yyyy-mm-dd")
+		val formatterOld = SimpleDateFormat("yyyy-MM-dd")
 		val formatterNew = SimpleDateFormat(requiredFormat, Locale.getDefault())
 		val date: Date = formatterOld.parse(dateString!!) as Date
 		result = formatterNew.format(date)
