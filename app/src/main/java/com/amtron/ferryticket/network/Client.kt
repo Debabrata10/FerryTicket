@@ -103,7 +103,7 @@ interface Client {
 	//CONFIRM CASH PAYMENT API
 	@Headers("Accept: application/json")
 	@FormUrlEncoded
-	@POST("wallet-order-confirm")
+	@POST("cash-payment")
 	fun cashPay(
 		@Header("Authorization") bearer: String,
 		@Field("booking_id") booking_id: Int

@@ -306,6 +306,7 @@ class TicketActivity : AppCompatActivity() {
 					if (helper.isStatusSuccessful()) {
 						cashPayAlert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						cashPayAlert.titleText = "SUCCESSFUL"
+						cashPayAlert.contentText = "Booking successful"
 						cashPayAlert.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())
 						ticket.order_status = obj.get("order_status") as String
