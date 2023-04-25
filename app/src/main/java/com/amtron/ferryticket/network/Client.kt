@@ -100,6 +100,15 @@ interface Client {
 		@Field("pin") otp: Int
 	): Call<JsonObject>
 
+	//CONFIRM CASH PAYMENT API
+	@Headers("Accept: application/json")
+	@FormUrlEncoded
+	@POST("wallet-order-confirm")
+	fun cashPay(
+		@Header("Authorization") bearer: String,
+		@Field("booking_id") booking_id: Int
+	): Call<JsonObject>
+
 	//GET TID API
 	@Headers("Accept: application/json")
 	@FormUrlEncoded

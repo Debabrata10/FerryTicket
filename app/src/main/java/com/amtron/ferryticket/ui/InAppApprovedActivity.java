@@ -468,9 +468,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
                     } else {
                         alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         alert.setCancelText("RETRY");
-                        alert.setCancelable(true);
+                        alert.hideConfirmButton();
+                        alert.setCancelable(false);
                         alert.setCancelClickListener(v ->
-                                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                                {
+                                    alert.dismissWithAnimation();
+                                    callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
+                                }
                         );
                         binding.print.setText("VERIFY");
                         binding.print.setOnClickListener(v ->
@@ -481,9 +485,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 } else {
                     alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     alert.setCancelText("RETRY");
-                    alert.setCancelable(true);
+                    alert.hideConfirmButton();
+                    alert.setCancelable(false);
                     alert.setCancelClickListener(v ->
-                            callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                            {
+                                alert.dismissWithAnimation();
+                                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
+                            }
                     );
                     binding.print.setText("VERIFY");
                     binding.print.setOnClickListener(v -> callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid));
@@ -495,9 +503,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 alert.setCancelText("RETRY");
-                alert.setCancelable(true);
+                alert.hideConfirmButton();
+                alert.setCancelable(false);
                 alert.setCancelClickListener(v ->
-                        callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid)
+                        {
+                            alert.dismissWithAnimation();
+                            callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
+                        }
                 );
                 binding.print.setText("VERIFY");
                 binding.print.setOnClickListener(v -> callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid));
@@ -525,4 +537,3 @@ public class InAppApprovedActivity extends AppCompatActivity {
         }
     }
 }
-

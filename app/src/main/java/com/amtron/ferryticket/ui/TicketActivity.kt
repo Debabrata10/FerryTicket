@@ -238,16 +238,7 @@ class TicketActivity : AppCompatActivity() {
 			cashPaymentBottomSheet.show()
 
 			success?.setOnClickListener {
-				ticket.order_status = "SUCCESS"
-				ticket.mode_of_payment = "CASH"
-				editor.putString("ticket", Gson().toJson(ticket))
-				editor.apply()
-				startActivity(
-					Intent(
-						this@TicketActivity,
-						InAppApprovedActivity::class.java
-					)
-				)
+				cashPay()
 			}
 			cancel?.setOnClickListener { cashPaymentBottomSheet.dismiss() }
 		}
@@ -287,6 +278,70 @@ class TicketActivity : AppCompatActivity() {
 				cancel.setOnClickListener { backToNewBookingBottomSheet.dismiss() }
 			}
 		}
+	}
+
+	private fun cashPay() {
+		val cashPayAlert = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		cashPayAlert.titleText = "CONFIRMING.."
+		cashPayAlert.contentText = "Wait till your order is confirmed"
+		cashPayAlert.setCancelable(false)
+		cashPayAlert.show()
+		val client =
+			getInstance().create(
+				Client::class.java
+			)
+		val call = client.cashPay(
+			Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+			ticket.id
+		)
+		call.enqueue(object : Callback<JsonObject?> {
+			@SuppressLint("SetTextI18n")
+			override fun onResponse(
+				call: Call<JsonObject?>,
+				response: Response<JsonObject?>
+			) {
+				if (response.isSuccessful) {
+					val helper = ResponseHelper()
+					helper.responseHelper(response.body())
+					if (helper.isStatusSuccessful()) {
+						cashPayAlert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+						cashPayAlert.titleText = "SUCCESSFUL"
+						cashPayAlert.dismissWithAnimation()
+						val obj = JSONObject(helper.getDataAsString())
+						ticket.order_status = obj.get("order_status") as String
+						ticket.mode_of_payment = obj.get("mode_of_payment") as String
+						editor.putString("ticket", Gson().toJson(ticket))
+						editor.apply()
+						startActivity(
+							Intent(
+								this@TicketActivity,
+								InAppApprovedActivity::class.java
+							)
+						)
+					} else {
+						cashPayAlert.dismiss()
+						NotificationHelper().getErrorAlert(
+							this@TicketActivity,
+							helper.getErrorMsg()
+						)
+					}
+				} else {
+					cashPayAlert.dismiss()
+					NotificationHelper().getErrorAlert(
+						this@TicketActivity,
+						"Response Error Code " + response.code()
+					)
+				}
+			}
+
+			override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+				cashPayAlert.dismiss()
+				NotificationHelper().getErrorAlert(
+					this@TicketActivity,
+					"Server Error. Please try again."
+				)
+			}
+		})
 	}
 
 	private fun updateOperatorWalletBalance(jwtToken: String) {
