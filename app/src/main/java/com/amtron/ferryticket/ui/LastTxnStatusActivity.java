@@ -1,6 +1,7 @@
 package com.amtron.ferryticket.ui;
 
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
         return cursorLoader;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
         try {

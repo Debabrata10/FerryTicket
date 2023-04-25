@@ -144,6 +144,18 @@
             android:textColor="@color/white"
             android:textSize="19sp" />
 
+
+        <Button
+            android:id="@+id/btn_last_txn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:onClick="onClickLastTrasaction"
+            android:text="Last Transaction Status"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
+
         <!--<Button
             android:id="@+id/btn_settlement"
             android:layout_width="match_parent"
