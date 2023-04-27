@@ -240,14 +240,15 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
             canvas.drawText(" ", paint);
             setFontStyle(paint, 1, true);
-            canvas.drawText("Inland Water Transport Assam", paint);
-            canvas.drawText("**************************", paint);
+            canvas.drawText("\t \t \t Inland Water Transport, Assam", paint);
+            canvas.drawText("**************************************", paint);
 
             setFontStyle(paint, 2, false);
             canvas.drawText("T/No: " + ticket.getTicket_no(), paint);
             setFontStyle(paint, 1, false);
-            canvas.drawText(ticketDate + " " + ferryDepartureTime + "-" + ferryArrivalTime, paint);
-            canvas.drawText("Name: " + serviceName, paint);
+            canvas.drawText("Date: " + ticketDate, paint);
+            canvas.drawText("Timing: " + ferryDepartureTime + "-" + ferryArrivalTime, paint);
+            canvas.drawText("Ferry Name: " + serviceName, paint);
             canvas.drawText("Boarding: " + source, paint);
             canvas.drawText("Dropping: " + destination, paint);
             if (passengerDetailsList.size() > 0) {
@@ -282,24 +283,23 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 canvas.drawText("RRN/Order No: " + rrn, paint);
             }*/
             canvas.drawText("-------------------------------------", paint);
-            canvas.drawText("Net Amout               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
+            canvas.drawText("Net Amount               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
             if (ticket.getWallet_service_charge() == 1) {
-                canvas.drawText("Servive Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
+                canvas.drawText("Service Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
             }
-            setFontStyle(paint, 1, false);
             canvas.drawText(" ", paint);
             if (ticket.getWallet_service_charge() == 1) {
-                canvas.drawText("\t \t TOTAL - INR " + ticket.getNet_amt() + ticket.getService_amt(), paint);
+                canvas.drawText("TOTAL                   :\t \t \t₹" + ticket.getNet_amt() + ticket.getService_amt(), paint);
             } else {
-                canvas.drawText("\t \t TOTAL - INR " + ticket.getTotal_amt(), paint);
+                canvas.drawText("TOTAL                   :\t \t \t₹" + ticket.getTotal_amt(), paint);
             }
             canvas.drawBitmap(qrBitmap, paint);
             canvas.drawText(" ", paint);
-            canvas.drawText("*****************************", paint);
-            canvas.drawText("** \t \tThanks.. Visit Again \t \t**", paint);
-            canvas.drawText("Designed and developed by AMTRON", paint);
-            canvas.drawText("POS powered by Worldline", paint);
-            canvas.drawText("*****************************", paint);
+            canvas.drawText("**************************************", paint);
+            canvas.drawText("\t \t \t \t** \t \tThanks.. Visit Again \t \t**", paint);
+            canvas.drawText("\t \t \tDesigned and developed by AMTRON", paint);
+            canvas.drawText("\t \t \t \t \t \tPOS powered by Worldline", paint);
+            canvas.drawText("**************************************", paint);
             printData(canvas);
         });
 
