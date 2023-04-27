@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity(),
 		dialog.titleText = "Getting Master Data..."
 		dialog.setCancelable(false)
 		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getMasterData(token)
 			call.enqueue(object : Callback<JsonObject> {
@@ -168,7 +168,7 @@ class HomeActivity : AppCompatActivity(),
 
 	private fun getHomeData(token: String) {
 		dialog.titleText = "Getting routes and recents"
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getHomeData(token)
 			call.enqueue(object : Callback<JsonObject> {
@@ -277,7 +277,7 @@ class HomeActivity : AppCompatActivity(),
 		dialog.titleText = "Loading..."
 		dialog.setCancelable(false)
 		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getService(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
@@ -342,7 +342,7 @@ class HomeActivity : AppCompatActivity(),
 				type,
 				object : TypeToken<AssignedRoutes>() {}.type
 			)
-			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 			GlobalScope.launch {
 				val call: Call<JsonObject> = api.getFerries(
 					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
@@ -406,7 +406,7 @@ class HomeActivity : AppCompatActivity(),
 				type,
 				object : TypeToken<AssignedRoutes>() {}.type
 			)
-			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 			GlobalScope.launch {
 				val call: Call<JsonObject> = api.getReport(
 					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),

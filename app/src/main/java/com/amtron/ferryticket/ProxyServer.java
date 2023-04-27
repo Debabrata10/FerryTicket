@@ -22,19 +22,15 @@ import okhttp3.Response;
 
 public class ProxyServer extends AsyncTask<String, Void, String> {
 
-    final String username = "ventureinfotek\\amtron";// replace username in "xxxxxxxx"
-    final String password = "U$er@12345"; //replace password
-    final String url = "https://serviceurl";
-
+    final String username = "ventureinfotek\\amtron";
+    final String password = "U$er@12345";
+    final String url = "http://103.8.249.24/iwtassam/StagingServer/api/counter/app-version";
+//    final String url = "https://www.boredapi.com/api/activity";
     int proxyPort = 8080;
     String proxyHost = "192.168.153.200"; // Airtel
 //    String proxyHost = "192.168.99.7"; //Vodafone
 
-    private final ProgressDialog pDialogs;
-
-    public ProxyServer(Activity activity) {
-        pDialogs = new ProgressDialog(activity);
-    }
+//    private ProgressDialog pDialogs;
 
     Authenticator proxyAuthenticator = (route, response) -> {
         String credential = Credentials.basic(username, password);
@@ -53,15 +49,16 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
                     .readTimeout(60, TimeUnit.SECONDS)
                     .proxy(new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)))
                     .proxyAuthenticator(proxyAuthenticator)
-                    .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                     .build();
+
+            Log.e("URL: ", url);
 
             RequestBody formBody = new FormBody.Builder().build();
 
-            Request request = new Request.Builder().url(url).post(formBody).build();
+            Request request = new Request.Builder().url(url).get().build();
             Response response = client.newCall(request).execute();
             res = Objects.requireNonNull(response.body()).string();
-            int rres = response.code();
+//            int rres = response.code();
         } catch (Exception e) {
             res = e.toString();
             e.printStackTrace();
@@ -76,9 +73,7 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
 //        pDialogs.setMessage("Connecting to Proxy...");
 //        pDialogs.setCancelable(false);
 //        pDialogs.setCanceledOnTouchOutside(false);
-        pDialogs.setMessage("Connecting to Proxy...");
-        pDialogs.show();
-        Log.d("msg", "Connecting to Proxy...");
+        Log.d("onPreExecute", "Connecting to Proxy...");
     }
 
     @Override
@@ -90,7 +85,6 @@ public class ProxyServer extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             Log.d("tag", String.valueOf(e));
         }*/
-        pDialogs.dismiss();
-        Log.d("msg", result);
+        Log.d("onPostExecute", result);
     }
 }

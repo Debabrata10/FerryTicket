@@ -83,7 +83,7 @@ class FerryListActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			type,
 			object : TypeToken<FerryService>() {}.type
 		)
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@FerryListActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getService(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),

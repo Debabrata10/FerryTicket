@@ -743,7 +743,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				dialog.titleText = "Getting card details.."
 				dialog.setCancelable(false)
 				dialog.show()
-				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				val api = RetrofitHelper.getInstance(this@BookActivity)!!.create(Client::class.java)
 				GlobalScope.launch {
 					val call: Call<JsonObject> = api.getCardDetailsByInput(
 						Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
@@ -969,7 +969,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			dialog.titleText = "Booking Ticket..."
 			dialog.setCancelable(false)
 			dialog.show()
-			val api = RetrofitHelper.getInstance().create(Client::class.java)
+			val api = RetrofitHelper.getInstance(this@BookActivity)!!.create(Client::class.java)
 			GlobalScope.launch {
 				val call: Call<JsonObject> = api.bookTicket(
 					Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
@@ -1028,7 +1028,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		dialog.titleText = "Getting Availabilities..."
 		dialog.setCancelable(false)
 		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@BookActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getService(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
@@ -1106,7 +1106,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		dialog.titleText = "Getting card details.."
 		dialog.setCancelable(false)
 		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@BookActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getCardDetailsByScan(
 				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),

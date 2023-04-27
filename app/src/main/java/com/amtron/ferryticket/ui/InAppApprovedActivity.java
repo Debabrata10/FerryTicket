@@ -240,17 +240,14 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
             canvas.drawText(" ", paint);
             setFontStyle(paint, 1, true);
-            canvas.drawText("Directorate of Inland Water Transport \n \t \t \t Ulubari, Guwahati 781007\n \t \t \t \t \t \t \t \t \t \t\tAssam", paint);
-            canvas.drawText(" ", paint);
-            setFontStyle(paint, 2, false);
+            canvas.drawText("Inland Water Transport Assam", paint);
             canvas.drawText("**************************", paint);
 
             setFontStyle(paint, 2, false);
             canvas.drawText("T/No: " + ticket.getTicket_no(), paint);
-            canvas.drawText("Date: " + ticketDate, paint);
-            canvas.drawText("Name: " + serviceName, paint);
-            canvas.drawText("Timing: " + ferryDepartureTime + " - " + ferryArrivalTime, paint);
             setFontStyle(paint, 1, false);
+            canvas.drawText(ticketDate + " " + ferryDepartureTime + "-" + ferryArrivalTime, paint);
+            canvas.drawText("Name: " + serviceName, paint);
             canvas.drawText("Boarding: " + source, paint);
             canvas.drawText("Dropping: " + destination, paint);
             if (passengerDetailsList.size() > 0) {
@@ -289,7 +286,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             if (ticket.getWallet_service_charge() == 1) {
                 canvas.drawText("Servive Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
             }
-            setFontStyle(paint, 3, false);
+            setFontStyle(paint, 1, false);
             canvas.drawText(" ", paint);
             if (ticket.getWallet_service_charge() == 1) {
                 canvas.drawText("\t \t TOTAL - INR " + ticket.getNet_amt() + ticket.getService_amt(), paint);
@@ -297,15 +294,11 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 canvas.drawText("\t \t TOTAL - INR " + ticket.getTotal_amt(), paint);
             }
             canvas.drawBitmap(qrBitmap, paint);
-            setFontStyle(paint, 2, false);
             canvas.drawText(" ", paint);
             canvas.drawText("*****************************", paint);
             canvas.drawText("** \t \tThanks.. Visit Again \t \t**", paint);
-            canvas.drawText("*****************************", paint);
-            setFontStyle(paint, 1, false);
             canvas.drawText("Designed and developed by AMTRON", paint);
             canvas.drawText("POS powered by Worldline", paint);
-            setFontStyle(paint, 2, false);
             canvas.drawText("*****************************", paint);
             printData(canvas);
         });

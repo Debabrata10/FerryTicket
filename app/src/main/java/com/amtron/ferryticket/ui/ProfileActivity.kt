@@ -139,7 +139,7 @@ class ProfileActivity : AppCompatActivity() {
 				dialog.titleText = "Getting TID..."
 				dialog.setCancelable(false)
 				dialog.show()
-				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				val api = RetrofitHelper.getInstance(this@ProfileActivity)!!.create(Client::class.java)
 				GlobalScope.launch {
 					val call: Call<JsonObject> = api.getTid(
 						Util().getJwtToken(sharedPreferences.getString("user", "").toString()),

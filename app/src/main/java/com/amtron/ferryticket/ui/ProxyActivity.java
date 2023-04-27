@@ -24,7 +24,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proxy);
         Objects.requireNonNull(getSupportActionBar()).setTitle("PROXY SETTINGS");
-        new ProxyServer(this).execute();
+        new ProxyServer().execute();
         try {
             txt = findViewById(R.id.proxy);
 
@@ -70,6 +70,4 @@ public class ProxyActivity extends AppCompatActivity {
         } else
             Toast.makeText(getApplicationContext(), "Result Failed", Toast.LENGTH_LONG).show();
     }
-
-
 }

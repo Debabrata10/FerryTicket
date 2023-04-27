@@ -1,6 +1,5 @@
 package com.amtron.ferryticket
 
-import android.app.Activity
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +13,7 @@ class Proxy {
 
 	private val username = "ventureinfotek\\amtron"
 	private val password = "U\$er@12345"
-	private val url = "https://serviceurl"
+	private val url = "https://www.boredapi.com/api/activity"
 
 	private val proxyPort = 8080
 	private val proxyHost = "192.168.153.200" // Airtel
@@ -54,6 +53,7 @@ class Proxy {
 			val response: Response = client.newCall(request).execute()
 			res = response.body?.string().orEmpty()
 			val rres = response.code
+			Log.d("response body: ", res);
 			Log.d("response code: ", rres.toString());
 		} catch (e: Exception) {
 			res = e.toString()
@@ -63,10 +63,10 @@ class Proxy {
 	}
 
 	private fun onPreExecute() {
-		Log.d("msg", "Connecting to Proxy...")
+		Log.d("onPreExecute", "Connecting to Proxy...")
 	}
 
 	private fun onPostExecute(result: String) {
-		Log.d("msg", result)
+		Log.d("onPostExecute", result)
 	}
 }

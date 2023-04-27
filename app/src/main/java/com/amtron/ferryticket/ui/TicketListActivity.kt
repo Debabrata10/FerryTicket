@@ -87,7 +87,7 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 		dialog.titleText = "Getting Recent Tickets..."
 		dialog.setCancelable(false)
 		dialog.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getHomeData(token)
 			call.enqueue(object : Callback<JsonObject> {

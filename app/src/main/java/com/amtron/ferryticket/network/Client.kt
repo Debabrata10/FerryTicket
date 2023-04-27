@@ -167,4 +167,10 @@ interface Client {
 		@Header("Authorization") bearer: String,
 		@Field("route_id") route_id: Int
 	): Call<JsonObject>
+
+
+	//GET REPORT
+	@Headers("Accept: application/json")
+	@GET("activity")
+	fun test(): Call<JsonObject>
 }

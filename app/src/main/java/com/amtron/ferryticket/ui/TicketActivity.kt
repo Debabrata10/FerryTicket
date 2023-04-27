@@ -287,7 +287,7 @@ class TicketActivity : AppCompatActivity() {
 		cashPayAlert.setCancelable(false)
 		cashPayAlert.show()
 		val client =
-			getInstance().create(
+			getInstance(this)!!.create(
 				Client::class.java
 			)
 		val call = client.cashPay(
@@ -353,7 +353,7 @@ class TicketActivity : AppCompatActivity() {
 		updateOperatorWalletLoaderDialog.titleText = "LOADING.."
 		updateOperatorWalletLoaderDialog.show()
 		val client =
-			getInstance().create(
+			getInstance(this)!!.create(
 				Client::class.java
 			)
 		val call = client.getOperatorUpdatedAfterPayment(jwtToken)
@@ -405,7 +405,7 @@ class TicketActivity : AppCompatActivity() {
 		walletLoaderDialog.titleText = "LOADING.."
 		walletLoaderDialog.show()
 		val client =
-			getInstance().create(
+			getInstance(this)!!.create(
 				Client::class.java
 			)
 		val call =
@@ -512,7 +512,7 @@ class TicketActivity : AppCompatActivity() {
 		walletLoaderDialog.titleText = "LOADING.."
 		walletLoaderDialog.show()
 		val client =
-			getInstance().create(
+			getInstance(this)!!.create(
 				Client::class.java
 			)
 		val call =

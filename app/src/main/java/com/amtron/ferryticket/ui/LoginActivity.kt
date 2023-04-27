@@ -5,13 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.amtron.ferryticket.Proxy
 import com.amtron.ferryticket.R
 import com.amtron.ferryticket.databinding.ActivityLoginBinding
 import com.amtron.ferryticket.helper.NotificationHelper
@@ -63,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 			}
 		} else {
 			//world line proxy check
-			Proxy().execute();
+//			ProxyServer().execute();
 
 			//On Internet established
 			sharedPreferences = this.getSharedPreferences(
@@ -146,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
 	private fun getAppVersion(): Double {
 		var version = 1.01
 		binding.progressbar.show()
-		val api = RetrofitHelper.getInstance().create(Client::class.java)
+		val api = RetrofitHelper.getInstance(this@LoginActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getAppVersion("COUNTER")
 			call.enqueue(object : Callback<JsonObject> {
@@ -207,7 +205,7 @@ class LoginActivity : AppCompatActivity() {
 				dialog.titleText = "Getting TID..."
 				dialog.setCancelable(false)
 				dialog.show()
-				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				val api = RetrofitHelper.getInstance(this)!!.create(Client::class.java)
 				GlobalScope.launch {
 					val call: Call<JsonObject> = api.getTid(
 						null,
@@ -272,7 +270,7 @@ class LoginActivity : AppCompatActivity() {
 				}
 			} else {
 				binding.progressbar.show()
-				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				val api = RetrofitHelper.getInstance(this)!!.create(Client::class.java)
 				GlobalScope.launch {
 					val call: Call<JsonObject> = api.getPin(number.toLong())
 					call.enqueue(object : Callback<JsonObject> {
@@ -340,7 +338,7 @@ class LoginActivity : AppCompatActivity() {
 				}
 			} else {
 				binding.progressbar.show()
-				val api = RetrofitHelper.getInstance().create(Client::class.java)
+				val api = RetrofitHelper.getInstance(this)!!.create(Client::class.java)
 				GlobalScope.launch {
 					val call: Call<JsonObject> = api.login(number.toLong(), pin.toInt())
 					call.enqueue(object : Callback<JsonObject> {
