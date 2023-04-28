@@ -171,6 +171,6 @@ interface Client {
 
 	//GET REPORT
 	@Headers("Accept: application/json")
-	@GET("activity")
+	@GET("data")
 	fun test(): Call<JsonObject>
 }

@@ -6,9 +6,13 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputType
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +29,8 @@ import com.amtron.ferryticket.model.*
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -72,11 +78,39 @@ class HomeActivity : AppCompatActivity(),
 		}
 
 		binding.posSettings.setOnClickListener {
-			val bundle = Bundle()
-			bundle.putString("pos_settings", "yes")
-			val i = Intent(this, PosActivity::class.java)
-			i.putExtras(bundle)
-			startActivity(i)
+			val posPasswordBottomSheet = BottomSheetDialog(this@HomeActivity)
+			posPasswordBottomSheet.setCancelable(false)
+			posPasswordBottomSheet.setContentView(R.layout.enter_device_serial_number_layout)
+			val masterPassword = posPasswordBottomSheet.findViewById<TextView>(R.id.serial_number)
+			val verifyBtn =
+				posPasswordBottomSheet.findViewById<MaterialButton>(R.id.btn_getTid)
+			val textInputLayout =
+				posPasswordBottomSheet.findViewById<TextInputLayout>(R.id.textInputLayout)
+			textInputLayout!!.hint = "Enter Master Password"
+			masterPassword!!.inputType = InputType.TYPE_CLASS_NUMBER
+			masterPassword.filters = arrayOf<InputFilter>(InputFilter.AllCaps())
+			masterPassword.imeOptions = EditorInfo.IME_ACTION_DONE
+			verifyBtn!!.text = "VERIFY"
+			val cancelBtn = posPasswordBottomSheet.findViewById<MaterialButton>(R.id.btn_cancel)
+			posPasswordBottomSheet.show()
+
+			verifyBtn.setOnClickListener {
+				if (masterPassword.text.toString() == "123") {
+					posPasswordBottomSheet.dismiss()
+					val bundle = Bundle()
+					bundle.putString("pos_settings", "yes")
+					val i = Intent(this, PosActivity::class.java)
+					i.putExtras(bundle)
+					startActivity(i)
+				} else {
+					masterPassword.text = null
+					Toast.makeText(this, "incorrect password", Toast.LENGTH_SHORT).show()
+				}
+			}
+
+			cancelBtn!!.setOnClickListener {
+				posPasswordBottomSheet.dismiss()
+			}
 		}
 
 		binding.tickets.setOnClickListener {

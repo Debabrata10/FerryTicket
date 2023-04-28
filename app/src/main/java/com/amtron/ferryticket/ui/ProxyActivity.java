@@ -2,6 +2,7 @@ package com.amtron.ferryticket.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,29 +13,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.amtron.ferryticket.BuildConfig;
 import com.amtron.ferryticket.ProxyServer;
 import com.amtron.ferryticket.R;
+import com.amtron.ferryticket.databinding.ActivityProxyBinding;
 
 import java.util.Objects;
 
-public class ProxyActivity extends AppCompatActivity {
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import kotlinx.coroutines.DelicateCoroutinesApi;
 
-    TextView txt;
+@DelicateCoroutinesApi public class ProxyActivity extends AppCompatActivity {
+
+    ActivityProxyBinding binding;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_proxy);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("PROXY SETTINGS");
-        new ProxyServer().execute();
-        try {
-            txt = findViewById(R.id.proxy);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        binding = ActivityProxyBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        sharedPreferences = this.getSharedPreferences(
+                "IWTCounter",
+                MODE_PRIVATE
+        );
+        editor = sharedPreferences.edit();
+        binding.getProxy.setOnClickListener(v -> {
+            getProxy();
+        });
     }
 
-    public void getProxy(View view) {
-        txt.setText("");
+    public void getProxy() {
         String package_name = BuildConfig.APPLICATION_ID;
         String CUSTOM_ACTION = "cn.desert.newpos.payui.master.PROXY_DETAILS";
         Intent i = new Intent();
@@ -53,10 +61,32 @@ public class ProxyActivity extends AppCompatActivity {
                     if (data.hasExtra("result_code")) {
                         boolean datas = data.getBooleanExtra("result_code", false);
                         if (data.getBooleanExtra("result_code", false)) {
+                            binding.proxyLl.setVisibility(View.VISIBLE);
                             String PROXY_IP = data.getStringExtra("PROXY_IP");
                             String PROXY_PORT = data.getStringExtra("PROXY_PORT");
                             String proxy = "PROXY_IP : " + PROXY_IP + "\n" + "PROXY_PORT : " + PROXY_PORT;
-                            txt.setText(proxy);
+                            binding.proxy.setText(proxy);
+
+                            binding.saveProxyBtn.setOnClickListener(v -> {
+                                editor.putString("proxy_ip", PROXY_IP);
+                                editor.putString("proxy_port", PROXY_PORT);
+                                editor.apply();
+                                SweetAlertDialog saveProxySettingsAlert = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+                                saveProxySettingsAlert.setTitle("SUCCESS!!");
+                                saveProxySettingsAlert.setCancelable(false);
+                                saveProxySettingsAlert.setContentText("Proxy settings have been successfully saved");
+                                saveProxySettingsAlert.showCancelButton(false);
+                                saveProxySettingsAlert.setConfirmText("GO BACK");
+                                saveProxySettingsAlert.show();
+                                saveProxySettingsAlert.setConfirmClickListener(c -> {
+                                    saveProxySettingsAlert.dismiss();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("pos_settings", "yes");
+                                    Intent i = new Intent(this, PosActivity.class);
+                                    i.putExtras(bundle);
+                                    startActivity(i);
+                                });
+                            });
                         } else {
                             Toast.makeText(getApplicationContext(), data.getStringExtra("message"), Toast.LENGTH_LONG).show();
                         }

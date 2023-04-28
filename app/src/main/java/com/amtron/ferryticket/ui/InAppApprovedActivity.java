@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -47,6 +48,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -62,6 +64,9 @@ public class InAppApprovedActivity extends AppCompatActivity {
     String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid, cardToBeSend;
     JSONArray posJSONArray;
     ActivityInAppApprovedBinding binding;
+    //need below two values to horizontally center align bitmap
+    static float bitmapWidth;
+    float canvasWidth;
     private Printer printer = null;
     private PrintTask printTask = null;
     private SharedPreferences sharedPreference;
@@ -77,6 +82,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
     public static byte[] draw2PxPoint(Bitmap bitmap) {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
+        bitmapWidth = bitmap.getWidth();
         int square = height * width;
 
         int[] pixels = new int[square];
@@ -157,7 +163,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             //generate qr
             try {
                 QRCodeWriter writer = new QRCodeWriter();
-                BitMatrix bitMatrix = writer.encode(ticket.getQr_string(), BarcodeFormat.QR_CODE, 390, 390);
+                BitMatrix bitMatrix = writer.encode(ticket.getQr_string(), BarcodeFormat.QR_CODE, 390, 390); //qr size
                 int width = bitMatrix.getWidth();
                 int height = bitMatrix.getHeight();
                 qrBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -232,6 +238,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
 
         binding.print.setOnClickListener(v -> {
             PrintCanvas canvas = new PrintCanvas();
+            canvasWidth = canvas.getWidth();
             Paint paint = new Paint();
             Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.rect_awt);
 
@@ -251,6 +258,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             canvas.drawText("Ferry Name: " + serviceName, paint);
             canvas.drawText("Boarding: " + source, paint);
             canvas.drawText("Dropping: " + destination, paint);
+            canvas.drawText("Payment Mode: " + paymentMode, paint);
             if (passengerDetailsList.size() > 0) {
                 canvas.drawText(" ", paint);
                 canvas.drawText("Passengers:", paint);
@@ -273,8 +281,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 }
             }
             canvas.drawText(" ", paint);
-            canvas.drawText("Payment Mode: " + paymentMode, paint);
-            canvas.drawText(" ", paint);
             /*canvas.drawText("Card No: " + card_no, paint);
             if (rrn != null) {
                 canvas.drawText("RRN/Order No: " + rrn, paint);
@@ -289,9 +295,9 @@ public class InAppApprovedActivity extends AppCompatActivity {
             }
             canvas.drawText(" ", paint);
             if (ticket.getWallet_service_charge() == 1) {
-                canvas.drawText("TOTAL                   :\t \t \t₹" + ticket.getNet_amt() + ticket.getService_amt(), paint);
+                canvas.drawText("TOTAL                    :\t \t \t₹" + ticket.getNet_amt() + ticket.getService_amt(), paint);
             } else {
-                canvas.drawText("TOTAL                   :\t \t \t₹" + ticket.getTotal_amt(), paint);
+                canvas.drawText("TOTAL                    :\t \t \t₹" + ticket.getTotal_amt(), paint);
             }
             canvas.drawBitmap(qrBitmap, paint);
             canvas.drawText(" ", paint);
@@ -434,7 +440,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
         alert.setTitle("VERIFYING");
         alert.setCancelable(false);
         alert.show();
-        Client client = RetrofitHelper.ForJava.Companion.getInstance().create(Client.class);
+        Client client = Objects.requireNonNull(RetrofitHelper.ForJava.Companion.getInstance(this)).create(Client.class);
         Call<JsonObject> call = client.sendPosDataToServer(
                 "Bearer " + user.getToken(),
                 Double.parseDouble(amount),
