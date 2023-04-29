@@ -37,6 +37,7 @@ object RetrofitHelper {
 //	private const val apiUrl = "https://tokapoisa.in/payout/api/"
 	private const val apiUrl = "http://103.8.249.24/iwtassam/StagingServer/api/counter/"
 	private var mClient: OkHttpClient? = null
+	private var mClient1: OkHttpClient? = null
 
 	private val proxyAuthenticator = Authenticator { _, response ->
 		val credential = Credentials.basic(username, password)
@@ -68,7 +69,7 @@ object RetrofitHelper {
 	private val clientWithoutProxy: OkHttpClient
 		@Throws(NoSuchAlgorithmException::class, KeyManagementException::class)
 		get() {
-			if (mClient == null) {
+			if (mClient1 == null) {
 				val interceptor = HttpLoggingInterceptor()
 				interceptor.level = HttpLoggingInterceptor.Level.BODY
 				val httpBuilder = OkHttpClient.Builder()
@@ -76,10 +77,10 @@ object RetrofitHelper {
 					.connectTimeout(15, TimeUnit.SECONDS)
 					.readTimeout(20, TimeUnit.SECONDS)
 					.addInterceptor(interceptor)  // show all JSON in logCat
-				mClient = httpBuilder.build()
+				mClient1 = httpBuilder.build()
 
 			}
-			return mClient!!
+			return mClient1!!
 		}
 
 	fun getInstance(context: Context): Retrofit? {
