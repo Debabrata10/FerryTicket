@@ -1,13 +1,18 @@
 package com.amtron.ferryticket.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.R
@@ -30,6 +35,8 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @DelicateCoroutinesApi
 class LoginActivity : AppCompatActivity() {
@@ -60,10 +67,6 @@ class LoginActivity : AppCompatActivity() {
 				finishAffinity()
 			}
 		} else {
-			//world line proxy check
-//			ProxyServer().execute();
-
-			//On Internet established
 			sharedPreferences = this.getSharedPreferences(
 				"IWTCounter",
 				MODE_PRIVATE
@@ -75,18 +78,85 @@ class LoginActivity : AppCompatActivity() {
 			editor = sharedPreferences.edit()
 			tidEditor = tidSharedPreferences.edit()
 
-			try { //check for tid before anything
-				val tid = tidSharedPreferences.getString("tid", "").toString()
-				if (tid.isEmpty()) {
-					showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
-				} else {
-					proceedToLogin()
+			//check if data is from SIM or WIFI
+			val connectivityManager =
+				this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+			val capabilities =
+				connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+			if (capabilities!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+				val proxyPort = sharedPreferences.getString("proxy_port", "").toString();
+				val proxyIp = sharedPreferences.getString("proxy_ip", "").toString();
+				//check if port settings is present
+				try {
+					if (proxyPort.isEmpty() || proxyIp.isEmpty()) {
+						val noProxyAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+						noProxyAlert.setCancelable(false)
+						noProxyAlert.titleText = "WARNING"
+						noProxyAlert.contentText = "Proxy settings not available. Please save them first"
+						noProxyAlert.confirmText = "OK"
+						noProxyAlert.cancelText = "Cancel"
+						noProxyAlert.show()
+						noProxyAlert.setCancelClickListener {
+							noProxyAlert.dismiss()
+							finishAffinity()
+						}
+						noProxyAlert.setConfirmClickListener {
+							val bundle = Bundle()
+							bundle.putString("login", "not found")
+							val i = Intent(this, ProxyActivity::class.java)
+							i.putExtras(bundle)
+							startActivity(i)
+						}
+					} else {
+						try { //check for tid before anything
+							val tid = tidSharedPreferences.getString("tid", "").toString()
+							if (tid.isEmpty()) {
+								showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
+							} else {
+								proceedToLogin()
+							}
+						} catch (e: IllegalStateException) {
+							showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
+						}
+					}
+				} catch (e: Exception) {
+					val noProxyAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+					noProxyAlert.setCancelable(false)
+					noProxyAlert.titleText = "WARNING"
+					noProxyAlert.contentText = "Proxy settings not available. Please save them first"
+					noProxyAlert.confirmText = "OK"
+					noProxyAlert.cancelText = "Cancel"
+					noProxyAlert.show()
+					noProxyAlert.setCancelClickListener {
+						noProxyAlert.dismiss()
+						finishAffinity()
+					}
+					noProxyAlert.setConfirmClickListener {
+						val bundle = Bundle()
+						bundle.putString("login", "not found")
+						val i = Intent(this, ProxyActivity::class.java)
+						i.putExtras(bundle)
+						startActivity(i)
+					}
 				}
-			} catch (e: IllegalStateException) {
-				showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
+			} else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+				//On Internet established
+				try { //check for tid before anything
+					val tid = tidSharedPreferences.getString("tid", "").toString()
+					if (tid.isEmpty()) {
+						showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
+					} else {
+						proceedToLogin()
+					}
+				} catch (e: IllegalStateException) {
+					showEnterTidBottomSheet() //get tid to set tid for the machine and set it permanently
+				}
 			}
 		}
 
+		onBackPressedDispatcher.addCallback(this) {
+			finishAffinity()
+		}
 	}
 
 	@SuppressLint("SetTextI18n")

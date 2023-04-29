@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -64,6 +65,41 @@ class HomeActivity : AppCompatActivity(),
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
+
+		//check if proxy settings is present
+		try {
+			val proxyPort = sharedPreferences.getString("proxy_port", "").toString();
+			val proxyIp = sharedPreferences.getString("proxy_ip", "").toString();
+			if (proxyIp.isEmpty() || proxyPort.isEmpty()) {
+				val noProxySettingsFoundAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+				noProxySettingsFoundAlert.setCancelable(false)
+				noProxySettingsFoundAlert.titleText = "WARNING!"
+				noProxySettingsFoundAlert.contentText = "Please define proxy settings first"
+				noProxySettingsFoundAlert.confirmText = "OK"
+				noProxySettingsFoundAlert.cancelText = "CANCEL"
+				noProxySettingsFoundAlert.show()
+				noProxySettingsFoundAlert.setConfirmClickListener {
+					startActivity(Intent(this, ProxyActivity::class.java))
+				}
+				noProxySettingsFoundAlert.setCancelClickListener {
+					finishAffinity()
+				}
+			}
+		} catch (e: Exception) {
+			val noProxySettingsFoundAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+			noProxySettingsFoundAlert.setCancelable(false)
+			noProxySettingsFoundAlert.titleText = "WARNING!"
+			noProxySettingsFoundAlert.contentText = "Please define proxy settings first"
+			noProxySettingsFoundAlert.confirmText = "OK"
+			noProxySettingsFoundAlert.cancelText = "CANCEL"
+			noProxySettingsFoundAlert.show()
+			noProxySettingsFoundAlert.setConfirmClickListener {
+				startActivity(Intent(this, ProxyActivity::class.java))
+			}
+			noProxySettingsFoundAlert.setCancelClickListener {
+				finishAffinity()
+			}
+		}
 
 		getMasterData(Util().getJwtToken(sharedPreferences.getString("user", "").toString()))
 
@@ -138,6 +174,7 @@ class HomeActivity : AppCompatActivity(),
 			exitBottomSheet.show()
 
 			success?.setOnClickListener {
+				exitBottomSheet.dismiss()
 				finishAffinity()
 			}
 			cancel?.setOnClickListener { exitBottomSheet.dismiss() }

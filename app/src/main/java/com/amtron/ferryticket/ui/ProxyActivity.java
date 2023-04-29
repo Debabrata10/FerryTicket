@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
     ActivityProxyBinding binding;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    boolean toLogin = false;
 
 
     @Override
@@ -32,14 +34,27 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
         super.onCreate(savedInstanceState);
         binding = ActivityProxyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        sharedPreferences = this.getSharedPreferences(
-                "IWTCounter",
-                MODE_PRIVATE
-        );
+        sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String msg = bundle.getString("login", "");
+            if (msg.equals("not found")) {
+                toLogin = true;
+            }
+        }
         binding.getProxy.setOnClickListener(v -> {
             getProxy();
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (toLogin) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            startActivity(new Intent(this, HomeActivity.class));
+        }
     }
 
     public void getProxy() {
@@ -79,12 +94,16 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
                                 saveProxySettingsAlert.setConfirmText("GO BACK");
                                 saveProxySettingsAlert.show();
                                 saveProxySettingsAlert.setConfirmClickListener(c -> {
-                                    saveProxySettingsAlert.dismiss();
-                                    Bundle bundle = new Bundle();
+                                    /*Bundle bundle = new Bundle();
                                     bundle.putString("pos_settings", "yes");
                                     Intent i = new Intent(this, PosActivity.class);
                                     i.putExtras(bundle);
-                                    startActivity(i);
+                                    startActivity(i);*/
+                                    if (toLogin) {
+                                        startActivity(new Intent(this, LoginActivity.class));
+                                    } else {
+                                        startActivity(new Intent(this, HomeActivity.class));
+                                    }
                                 });
                             });
                         } else {
