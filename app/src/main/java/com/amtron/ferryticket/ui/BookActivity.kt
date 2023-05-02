@@ -1095,6 +1095,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private fun addPassenger(passenger: PassengerDetails) {
 		allDataList.add(passenger)
 		totalPassengerCount += 1
+		if (totalPassengerCount > 0) {
+			binding.openAddVehiclesCard.visibility = View.VISIBLE
+			binding.openAddGoodsCard.visibility = View.VISIBLE
+		}
 		passengerList.add(passenger)
 		binding.passengerCount.text = totalPassengerCount.toString()
 		resetPassenger()
@@ -1427,6 +1431,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					alert.contentText =
 						"This is the last passenger. Deleting will delete all data. Delete?"
 					alert.setConfirmClickListener {
+						binding.openAddVehiclesCard.visibility = View.GONE
+						binding.openAddGoodsCard.visibility = View.GONE
 						totalPassengerCount = 0
 						totalVehiclesCount = 0
 						totalGoodsCount = 0
@@ -1449,10 +1455,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				} else {
 					totalPassengerCount -= 1
 					binding.passengerCount.text = totalPassengerCount.toString()
+					if (totalPassengerCount < 1) {
+						binding.openAddVehiclesCard.visibility = View.GONE
+						binding.openAddGoodsCard.visibility = View.GONE
+					}
 					allDataList.removeAt(position)
 					passengerList.removeAt(position)
 					adapter.notifyDataSetChanged()
-					Log.d("size", passengerList.size.toString())
 					alert.dismissWithAnimation()
 				}
 			} else {
