@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2.5dp"
                 android:fontFamily="@font/roboto_condensed_bold"
-                android:text="CANCEL"
+                android:text="BACK"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

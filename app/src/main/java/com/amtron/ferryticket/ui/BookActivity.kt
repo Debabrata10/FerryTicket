@@ -915,11 +915,11 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									cancelBtn!!.setOnClickListener { cardDetailsBottomSheet.dismiss() }
 									cardDetailsBottomSheet.show()
 								} else {
-									dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-									dialog.cancelText = "OK"
-									dialog.setOnCancelListener {
-										dialog.dismissWithAnimation()
-									}
+									dialog.dismissWithAnimation()
+									NotificationHelper().getErrorAlert(
+										this@BookActivity,
+										helper.getErrorMsg()
+									)
 								}
 							} else {
 								dialog.dismissWithAnimation()
@@ -1078,6 +1078,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 	private fun addOthers(others: Others) {
 		allDataList.add(others)
+		Toast.makeText(this@BookActivity,"Goods has been added", Toast.LENGTH_SHORT).show()
 		totalGoodsCount += 1
 		othersList.add(others)
 		binding.goodsCount.text = totalGoodsCount.toString()
@@ -1086,6 +1087,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 	private fun addVehicle(vehicle: Vehicle) {
 		allDataList.add(vehicle)
+		Toast.makeText(this@BookActivity,"Vehicle has been added", Toast.LENGTH_SHORT).show()
 		totalVehiclesCount += 1
 		vehicleList.add(vehicle)
 		binding.vehiclesCount.text = totalVehiclesCount.toString()
@@ -1094,6 +1096,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 	private fun addPassenger(passenger: PassengerDetails) {
 		allDataList.add(passenger)
+		Toast.makeText(this@BookActivity,"Passenger has been added", Toast.LENGTH_SHORT).show()
 		totalPassengerCount += 1
 		if (totalPassengerCount > 0) {
 			binding.openAddVehiclesCard.visibility = View.VISIBLE
@@ -1448,6 +1451,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						binding.proceedBtn.visibility = View.GONE
 						binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 						passengerList.removeAt(position)
+						Toast.makeText(this@BookActivity,"All particulars have been removed", Toast.LENGTH_SHORT).show()
+						isSummaryVisible = false
+						binding.proceedBtn.visibility = View.GONE
+						binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE //for mobile view
+						binding.summarySection.visibility = View.GONE
+						binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 					}
 					alert.setCancelClickListener {
 						alert.dismiss()
@@ -1461,6 +1470,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					}
 					allDataList.removeAt(position)
 					passengerList.removeAt(position)
+					Toast.makeText(this@BookActivity,"Passenger has been removed", Toast.LENGTH_SHORT).show()
 					adapter.notifyDataSetChanged()
 					alert.dismissWithAnimation()
 				}
@@ -1469,10 +1479,12 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					totalVehiclesCount -= 1
 					binding.vehiclesCount.text = totalVehiclesCount.toString()
 					vehicleList.remove(allDataList[position])
+					Toast.makeText(this@BookActivity,"Vehicle has been removed", Toast.LENGTH_SHORT).show()
 				} else if (allDataList[position] is Others) {
 					totalGoodsCount -= 1
 					binding.goodsCount.text = totalGoodsCount.toString()
 					othersList.remove(allDataList[position])
+					Toast.makeText(this@BookActivity,"Goods has been removed", Toast.LENGTH_SHORT).show()
 				}
 				allDataList.removeAt(position)
 				adapter.notifyDataSetChanged()

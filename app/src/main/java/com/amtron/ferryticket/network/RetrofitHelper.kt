@@ -34,7 +34,7 @@ object RetrofitHelper {
 //	private const val proxyHost = "192.168.153.200" // Airtel
 //    String proxyHost = "192.168.99.7"; //Vodafone
 	private lateinit var sharedPreference : SharedPreferences
-//	private const val apiUrl = "https://tokapoisa.in/payout/api/"
+//	private const val apiUrl = "https://asiwt.in/StagingServer/api/counter/"
 	private const val apiUrl = "http://103.8.249.24/iwtassam/StagingServer/api/counter/"
 	private var mClient: OkHttpClient? = null
 	private var mClient1: OkHttpClient? = null
