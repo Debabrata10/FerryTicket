@@ -86,6 +86,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        
+        <service android:name=".ui.LastTxnStatusActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"
