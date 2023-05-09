@@ -3,10 +3,16 @@ package com.amtron.ferryticket.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.Cursor
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -16,6 +22,7 @@ import com.amtron.ferryticket.databinding.ActivityTicketListBinding
 import com.amtron.ferryticket.helper.NotificationHelper
 import com.amtron.ferryticket.helper.ResponseHelper
 import com.amtron.ferryticket.helper.Util
+import com.amtron.ferryticket.model.LastTransaction
 import com.amtron.ferryticket.model.Ticket
 import com.amtron.ferryticket.network.Client
 import com.amtron.ferryticket.network.RetrofitHelper
@@ -159,6 +166,26 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 			type,
 			object : TypeToken<Ticket>() {}.type
 		)
+		try {
+			val lastTransaction : LastTransaction = Gson().fromJson(
+				sharedPreferences.getString("last_transaction", "").toString(),
+				object : TypeToken<LastTransaction>() {}.type
+			)
+			if (ticket.order_status != "SUCCESS") {
+				Log.d("now ticket", ticket.ticket_no)
+				Log.d("last ticket", lastTransaction.ticketNo)
+				/*if (ticket.ticket_no == lastTransaction.ticketNo) {
+					try {
+						val transactionId = LastTxnStatusActivity().transactionId
+						Log.d("tId", transactionId)
+					} catch (e: Exception) {
+						Log.d("error", "tId not found")
+					}
+				}*/
+			}
+		}catch (e: Exception) {
+			Log.d("exception", "null last transaction")
+		}
 		editor.putString("ticket", Gson().toJson(ticket))
 		editor.putString("activity_from", "ticketListActivity")
 		editor.apply()

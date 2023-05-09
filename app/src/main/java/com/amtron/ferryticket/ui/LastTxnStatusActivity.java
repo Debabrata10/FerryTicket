@@ -21,8 +21,8 @@ import com.amtron.ferryticket.R;
 public class LastTxnStatusActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     CursorLoader cursorLoader;
-    TextView txt_amount, txt_date, txt_invoice, txt_rrn, txt_authcode, txt_cardtype, txt_cardno;
-    String amount, invoice, rrn, auth_code, date_time, card_no, transaction_id, card;
+    TextView txt_amount, txt_date, txt_invoice, txt_rrn, txt_authcode, txt_cardtype, txt_cardno, txt_transaction, txt_ticketNo;
+    String amount, invoice, rrn, auth_code, date_time, card_no, transaction_id, card, tId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,9 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
         txt_cardno = findViewById(R.id.txt_cardno);
         txt_cardtype = findViewById(R.id.txt_cardtype);
         txt_authcode = findViewById(R.id.txt_authcode);
+        txt_transaction = findViewById(R.id.transaction_id);
+        txt_ticketNo = findViewById(R.id.ticket_no);
+        getTransactionId();
         getSupportLoaderManager().initLoader(1, null, this);
     }
 
@@ -69,6 +72,7 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                     card_no = cursor.getString(cursor.getColumnIndexOrThrow("card_no"));
                     transaction_id = cursor.getString(cursor.getColumnIndexOrThrow("transaction_id"));
                     card = cursor.getString(cursor.getColumnIndexOrThrow("card"));
+//                    ticketNo = cursor.getString(cursor.getColumnIndexOrThrow("additional_attribute1"));
                     cursor.moveToNext();
                 }
 
@@ -83,10 +87,17 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                 txt_cardno.setText(card_no);
                 txt_cardtype.setText(card);
                 txt_authcode.setText(auth_code);
+                txt_transaction.setText(transaction_id);
+
+                tId = transaction_id;
             }
         } catch (NullPointerException ne) {
             Log.d("LastTxnStatus", "is null");
         }
+    }
+
+    public String getTransactionId() {
+        return tId;
     }
 
     @Override

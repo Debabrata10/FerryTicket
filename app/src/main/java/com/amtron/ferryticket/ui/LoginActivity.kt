@@ -213,6 +213,11 @@ class LoginActivity : AppCompatActivity() {
 
 	private fun getAppVersion(): Double {
 		var version = 1.01
+		try {
+			version = sharedPreferences.getString("version", "").toString().toDouble()
+		} catch (e: Exception) {
+			e.printStackTrace()
+		}
 		binding.progressbar.show()
 		val api = RetrofitHelper.getInstance(this@LoginActivity)!!.create(Client::class.java)
 		GlobalScope.launch {

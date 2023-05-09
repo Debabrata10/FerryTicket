@@ -76,36 +76,40 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
                     if (data.hasExtra("result_code")) {
                         boolean datas = data.getBooleanExtra("result_code", false);
                         if (data.getBooleanExtra("result_code", false)) {
-                            binding.proxyLl.setVisibility(View.VISIBLE);
                             String PROXY_IP = data.getStringExtra("PROXY_IP");
                             String PROXY_PORT = data.getStringExtra("PROXY_PORT");
-                            String proxy = "PROXY_IP : " + PROXY_IP + "\n" + "PROXY_PORT : " + PROXY_PORT;
-                            binding.proxy.setText(proxy);
+                            if (PROXY_IP.isEmpty() || PROXY_PORT.isEmpty()) {
+                                Toast.makeText(this, "No proxy details found", Toast.LENGTH_SHORT).show();
+                            } else {
+                                binding.proxyLl.setVisibility(View.VISIBLE);
+                                String proxy = "PROXY_IP : " + PROXY_IP + "\n" + "PROXY_PORT : " + PROXY_PORT;
+                                binding.proxy.setText(proxy);
 
-                            binding.saveProxyBtn.setOnClickListener(v -> {
-                                editor.putString("proxy_ip", PROXY_IP);
-                                editor.putString("proxy_port", PROXY_PORT);
-                                editor.apply();
-                                SweetAlertDialog saveProxySettingsAlert = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
-                                saveProxySettingsAlert.setTitle("SUCCESS!!");
-                                saveProxySettingsAlert.setCancelable(false);
-                                saveProxySettingsAlert.setContentText("Proxy settings have been successfully saved");
-                                saveProxySettingsAlert.showCancelButton(false);
-                                saveProxySettingsAlert.setConfirmText("GO BACK");
-                                saveProxySettingsAlert.show();
-                                saveProxySettingsAlert.setConfirmClickListener(c -> {
+                                binding.saveProxyBtn.setOnClickListener(v -> {
+                                    editor.putString("proxy_ip", PROXY_IP);
+                                    editor.putString("proxy_port", PROXY_PORT);
+                                    editor.apply();
+                                    SweetAlertDialog saveProxySettingsAlert = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+                                    saveProxySettingsAlert.setTitle("SUCCESS!!");
+                                    saveProxySettingsAlert.setCancelable(false);
+                                    saveProxySettingsAlert.setContentText("Proxy settings have been successfully saved");
+                                    saveProxySettingsAlert.showCancelButton(false);
+                                    saveProxySettingsAlert.setConfirmText("GO BACK");
+                                    saveProxySettingsAlert.show();
+                                    saveProxySettingsAlert.setConfirmClickListener(c -> {
                                     /*Bundle bundle = new Bundle();
                                     bundle.putString("pos_settings", "yes");
                                     Intent i = new Intent(this, PosActivity.class);
                                     i.putExtras(bundle);
                                     startActivity(i);*/
-                                    if (toLogin) {
-                                        startActivity(new Intent(this, LoginActivity.class));
-                                    } else {
-                                        startActivity(new Intent(this, HomeActivity.class));
-                                    }
+                                        if (toLogin) {
+                                            startActivity(new Intent(this, LoginActivity.class));
+                                        } else {
+                                            startActivity(new Intent(this, HomeActivity.class));
+                                        }
+                                    });
                                 });
-                            });
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), data.getStringExtra("message"), Toast.LENGTH_LONG).show();
                         }

@@ -45,6 +45,8 @@ import com.pos.device.printer.PrintTask;
 import com.pos.device.printer.Printer;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +63,7 @@ import retrofit2.Response;
 public class InAppApprovedActivity extends AppCompatActivity {
 
     //    TextView txt_invoice,  txt_authcode, txt_cardtype, txt_cardno;
-    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid, cardToBeSend;
+    String amount, in_app_date, in_app_time, invoice, rrn, orderNo, card_no, card_type, auth_code, transactionId, ferryDepartureTime, ferryArrivalTime, ticketNo, ticketDate, source, destination, serviceName, paymentMode, tid, cardToBeSend;
     JSONArray posJSONArray;
     ActivityInAppApprovedBinding binding;
     //need below two values to horizontally center align bitmap
@@ -153,7 +155,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
             }
             binding.serviceTime.setText(time);
             binding.netAmount.setText("₹" + ticket.getNet_amt());
-            if (ticket.getWallet_service_charge() == 1) {
+            if (ticket.getWallet_service_charge() == 1 || ticket.getMode_of_payment().equals("POS")) {
                 binding.serviceCharge.setText("₹" + ticket.getService_amt());
             } else {
                 binding.custServCharge.setVisibility(View.GONE);
@@ -199,7 +201,6 @@ public class InAppApprovedActivity extends AppCompatActivity {
             String message = getIntent().getStringExtra("message");
             Toast.makeText(getApplicationContext(), getIntent().getStringExtra("message"), Toast.LENGTH_LONG).show();
             if (message.equalsIgnoreCase("Success")) {
-                Log.d("success", "yes");
                 amount = getIntent().getStringExtra("amount");
                 in_app_date = getIntent().getStringExtra("in_app_date");
                 in_app_time = getIntent().getStringExtra("in_app_time");
@@ -209,6 +210,12 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 cardToBeSend = getIntent().getStringExtra("card_no");
                 card_type = getIntent().getStringExtra("card_type");
                 auth_code = getIntent().getStringExtra("auth_code");
+                transactionId = getIntent().getStringExtra("transaction_id");
+                /*try {
+                    Log.d("additional attribute", getIntent().getStringExtra("additional_attribute1"));
+                } catch (Exception e) {
+                    Log.d("additional attribute", "absent");
+                }*/
                 if (card_no.isEmpty()) {
                     card_no = "";
                 } else {
@@ -239,43 +246,43 @@ public class InAppApprovedActivity extends AppCompatActivity {
         binding.print.setOnClickListener(v -> {
             PrintCanvas canvas = new PrintCanvas();
             canvasWidth = canvas.getWidth();
+            /*Typeface plain = Typeface.createFromAsset(assetManager, pathToFont);
+            Typeface bold = Typeface.create(plain, Typeface.DEFAULT_BOLD)*/
             Paint paint = new Paint();
             Bitmap Icon_smc = BitmapFactory.decodeResource(getResources(), R.drawable.rect_awt);
 
             canvas.drawBitmap(Icon_smc, paint);
-            setFontStyle(paint, 1, false);
-
-            canvas.drawText(" ", paint);
+            setFontStyle(paint, 2, true);
+            canvas.drawText("INLAND WATER TRANSPORT, ASSAM", paint);
             setFontStyle(paint, 1, true);
-            canvas.drawText("\t \t \t Inland Water Transport, Assam", paint);
             canvas.drawText("**************************************", paint);
 
             setFontStyle(paint, 2, false);
             canvas.drawText("T/No: " + ticket.getTicket_no(), paint);
             setFontStyle(paint, 1, false);
-            canvas.drawText("Date: " + ticketDate, paint);
-            canvas.drawText("Timing: " + ferryDepartureTime + "-" + ferryArrivalTime, paint);
-            canvas.drawText("Ferry Name: " + serviceName, paint);
-            canvas.drawText("Boarding: " + source, paint);
-            canvas.drawText("Dropping: " + destination, paint);
-            canvas.drawText("Payment Mode: " + paymentMode, paint);
+            canvas.drawText("DATE: " + ticketDate, paint);
+            canvas.drawText("TIMING: " + ferryDepartureTime + "-" + ferryArrivalTime, paint);
+            canvas.drawText("FERRY NAME: " + serviceName, paint);
+            canvas.drawText("BOARDING: " + source, paint);
+            canvas.drawText("DROPPING: " + destination, paint);
+            canvas.drawText("PAYMENT MODE: " + paymentMode, paint);
             if (passengerDetailsList.size() > 0) {
                 canvas.drawText(" ", paint);
-                canvas.drawText("Passengers:", paint);
+                canvas.drawText("PASSENGERS:", paint);
                 for (int i = 0; i < passengerDetailsList.size(); i++) {
                     canvas.drawText((i + 1) + ". " + passengerDetailsList.get(i).getPassenger_name(), paint);
                 }
             }
             if (vehiclesList.size() > 0) {
                 canvas.drawText(" ", paint);
-                canvas.drawText("Vehicles:", paint);
+                canvas.drawText("VEHICLES:", paint);
                 for (int i = 0; i < vehiclesList.size(); i++) {
                     canvas.drawText((i + 1) + ". " + vehiclesList.get(i).getVehicle_type().getP_name() + " (" + vehiclesList.get(i).getReg_no() + ")", paint);
                 }
             }
             if (othersList.size() > 0) {
                 canvas.drawText(" ", paint);
-                canvas.drawText("Others:", paint);
+                canvas.drawText("OTHERS:", paint);
                 for (int i = 0; i < othersList.size(); i++) {
                     canvas.drawText((i + 1) + ". " + othersList.get(i).getOther_name() + " (" + othersList.get(i).getQuantity() + ")", paint);
                 }
@@ -289,13 +296,13 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 canvas.drawText("RRN/Order No: " + rrn, paint);
             }*/
             canvas.drawText("-------------------------------------", paint);
-            canvas.drawText("Net Amount               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
-            if (ticket.getWallet_service_charge() == 1) {
-                canvas.drawText("Service Amount          :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
+            canvas.drawText("NET AMOUNT               :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getNet_amt())), paint);
+            if (ticket.getWallet_service_charge() == 1 || ticket.getMode_of_payment().equals("POS")) {
+                canvas.drawText("SERVICE AMOUNT           :\t \t \t₹" + Double.parseDouble(String.valueOf(ticket.getService_amt())), paint);
             }
             canvas.drawText(" ", paint);
-            if (ticket.getWallet_service_charge() == 1) {
-                canvas.drawText("TOTAL                    :\t \t \t₹" + ticket.getNet_amt() + ticket.getService_amt(), paint);
+            if (ticket.getWallet_service_charge() == 1 || ticket.getMode_of_payment().equals("POS")) {
+                canvas.drawText("TOTAL                    :\t \t \t₹" + (ticket.getNet_amt() + ticket.getService_amt()), paint);
             } else {
                 canvas.drawText("TOTAL                    :\t \t \t₹" + ticket.getTotal_amt(), paint);
             }
@@ -461,9 +468,22 @@ public class InAppApprovedActivity extends AppCompatActivity {
                     ResponseHelper helper = new ResponseHelper();
                     helper.responseHelper(response.body());
                     if (helper.isStatusSuccessful()) {
-                        alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                        alert.dismissWithAnimation();
-                        binding.print.setText("PRINT");
+                        try {
+                            JSONObject obj = new JSONObject(helper.getDataAsString());
+                            ticket.setMode_of_payment(obj.get("mode_of_payment").toString());
+                            ticket.setOrder_status(obj.get("order_status").toString());
+                            editor.putString("ticket", new Gson().toJson(ticket));
+                            editor.apply();
+                            paymentMode = obj.get("mode_of_payment").toString();
+                            binding.paymentMode.setText(paymentMode);
+                            binding.serviceCharge.setText("₹" + ticket.getService_amt());
+                            binding.custServCharge.setVisibility(View.VISIBLE);
+                            alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            alert.dismissWithAnimation();
+                            binding.print.setText("PRINT");
+                        }catch (JSONException err){
+                            Log.d("Error", err.toString());
+                        }
                     } else {
                         alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         alert.setCancelText("RETRY");

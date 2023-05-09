@@ -30,6 +30,7 @@ import androidx.loader.content.Loader;
 import com.amtron.ferryticket.BuildConfig;
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityPosBinding;
+import com.amtron.ferryticket.model.LastTransaction;
 import com.amtron.ferryticket.model.Ticket;
 import com.amtron.ferryticket.model.User;
 import com.google.gson.Gson;
@@ -53,8 +54,6 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
     private String amountString, package_name;
     private Printer printer = null;
     private PrintTask printTask = null;
-    private SharedPreferences.Editor editor;
-
     private Bundle bundleString;
 
     public static byte[] draw2PxPoint(Bitmap bitmap) {
@@ -92,7 +91,12 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         setContentView(binding.getRoot());
 
         SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
-        editor = sharedPreference.edit();
+        try {
+            String ticketString = sharedPreference.getString("ticket", "");
+            ticket = new Gson().fromJson(ticketString, Ticket.class);
+        } catch (Exception e) {
+            Log.d("error", "ticket not found");
+        }
         Gson gson = new Gson();
 
         getSupportLoaderManager().initLoader(1, null, this);
@@ -178,6 +182,11 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         i.putExtra("transaction_id", transaction_id); // Reference Id
         i.putExtra("package", package_name);
         i.putExtra("receipt", receipt);
+        SharedPreferences sp = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor ed = sp.edit();
+        LastTransaction lt = new LastTransaction(ticket.getTicket_no(), amt, transaction_id);
+        ed.putString("last_transaction", new Gson().toJson(lt));
+        ed.apply();
         startActivityForResult(i, 600);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }

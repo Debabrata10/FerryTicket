@@ -238,7 +238,7 @@ class HomeActivity : AppCompatActivity(),
 	}
 
 	private fun getHomeData(token: String) {
-		dialog.titleText = "Getting routes and recents"
+		dialog.titleText = "Loading.."
 		val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
 		GlobalScope.launch {
 			val call: Call<JsonObject> = api.getHomeData(token)

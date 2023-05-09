@@ -46,6 +46,9 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 		holder.availableLmv.text = ferryService.four_wheeler.toString()
 		holder.availableHmv.text = ferryService.hmv_capacity.toString()
 		holder.availableGoods.text = ferryService.others_capacity.toString()
+		if (ferryService.special_booking == 1) {
+			holder.specialFerry.visibility = View.VISIBLE
+		}
 		holder.ferryCard.setOnClickListener {
 			mItemClickListener.onItemClickListener(
 				position,
@@ -73,5 +76,6 @@ class FerryServiceAdapter(private val ferryServiceList: List<FerryService>) :
 		val availableLmv: TextView = itemView.findViewById(R.id.available_lmv)
 		val availableHmv: TextView = itemView.findViewById(R.id.available_hmv)
 		val availableGoods: TextView = itemView.findViewById(R.id.available_goods)
+		val specialFerry: TextView = itemView.findViewById(R.id.special_ferry_txt)
 	}
 }

@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -62,9 +63,10 @@ class TicketActivity : AppCompatActivity() {
 	private var isUserWalletAvailable: Boolean = false
 	private var isPassengerWalletAvailable: Boolean = false
 	private var totalPosAmt: Double = 0.0
+	private var totalWalletAmt: Double = 0.0
 	private var operatorWalletAmount: String = ""
 
-	@SuppressLint("SetTextI18n")
+	@SuppressLint("SetTextI18n", "CommitPrefEdits")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityTicketBinding.inflate(layoutInflater)
@@ -76,10 +78,11 @@ class TicketActivity : AppCompatActivity() {
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
 			ticket = Gson().fromJson(ticketString, object : TypeToken<Ticket>() {}.type)
-			totalPosAmt =
-				if (ticket.wallet_service_charge == 0) ticket.net_amt + ticket.service_amt else ticket.total_amt
+			totalPosAmt = ticket.net_amt + ticket.service_amt
+			totalWalletAmt = if (ticket.wallet_service_charge == 1) ticket.net_amt + ticket.service_amt else ticket.total_amt
+			binding.cashPay.text = "CASH PAYMENT ₹${ticket.net_amt}"
 			binding.posPay.text = "POS PAYMENT ₹$totalPosAmt"
-			binding.walletPay.text = "WALLET PAYMENT ₹${ticket.total_amt}"
+			binding.walletPay.text = "WALLET PAYMENT ₹$totalWalletAmt"
 			if (ticket.order_status == "SUCCESS") {
 				binding.paymentButtons.visibility = View.GONE
 				binding.printBtn.visibility = View.VISIBLE
@@ -244,6 +247,10 @@ class TicketActivity : AppCompatActivity() {
 		}
 
 		binding.posPay.setOnClickListener {
+			val sf = this.getSharedPreferences("IWT_TID",MODE_PRIVATE)
+			val tEditor = sf.edit()
+			tEditor.putString("ticket",Gson().toJson(ticket))
+			tEditor.apply()
 			val bundle = Bundle()
 			val i = Intent(this, PosActivity::class.java)
 			bundle.putString("price", totalPosAmt.toString())
@@ -426,11 +433,12 @@ class TicketActivity : AppCompatActivity() {
 					if (helper.isStatusSuccessful()) {
 						walletLoaderDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						walletLoaderDialog.dismiss()
-						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)!!.text
+						val walletPin = walletPayBottomSheet.findViewById<TextView>(R.id.pin)!!
 						val walletButtonsLayout =
 							walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
 						val verifyWalletPinLayout =
 							walletPayBottomSheet.findViewById<LinearLayout>(R.id.verify_wallet_pin_ll)
+						walletPin.imeOptions = EditorInfo.IME_ACTION_DONE
 						try {
 							val obj = JSONObject(helper.getDataAsString())
 							val orderId = obj.get("ID") as String
@@ -451,7 +459,7 @@ class TicketActivity : AppCompatActivity() {
 							verifyPin.setTextColor(Color.parseColor("#ffffff"))
 							verifyPin.layoutParams = buttonsLayoutParams
 							verifyPin.setOnClickListener {
-								if (walletPin.toString().isEmpty()) {
+								if (walletPin.text.toString().isEmpty()) {
 									Toast.makeText(
 										this@TicketActivity,
 										"Please enter pin to continue",
@@ -461,7 +469,7 @@ class TicketActivity : AppCompatActivity() {
 									verifyPin(
 										Util().getJwtToken(sharedPreferences.getString("user", "")),
 										orderId,
-										walletPin.toString()
+										walletPin.text.toString()
 									)
 								}
 							}
@@ -532,8 +540,8 @@ class TicketActivity : AppCompatActivity() {
 					if (helper.isStatusSuccessful()) {
 						walletLoaderDialog.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())
-						val walletOrderId = obj.get("ORDER_ID").toString()
-						ticket.rrn = walletOrderId
+						ticket.rrn = obj.get("ORDER_ID").toString()
+						ticket.mode_of_payment = obj.get("mode_of_payment").toString()
 						ticket.order_status = "SUCCESS"
 						editor.putString("ticket", Gson().toJson(ticket))
 						editor.apply()

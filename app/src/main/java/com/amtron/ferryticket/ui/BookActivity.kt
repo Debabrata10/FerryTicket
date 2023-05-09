@@ -265,6 +265,9 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding.ferry.availableHmv.text = ferryService.hmv_capacity.toString()
 		binding.ferry.availableGoods.text = ferryService.others_capacity.toString()
 		binding.ferry.refreshBtn.visibility = View.VISIBLE
+		if (ferryService.special_booking == 1) {
+			binding.ferry.specialFerryTxt.visibility = View.VISIBLE
+		}
 
 		binding.ferry.refreshBtn.setOnClickListener {
 			//update ferry particulars count
