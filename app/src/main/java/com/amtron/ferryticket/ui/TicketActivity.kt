@@ -438,7 +438,6 @@ class TicketActivity : AppCompatActivity() {
 							walletPayBottomSheet.findViewById<LinearLayout>(R.id.wallet_buttons_layout)
 						val verifyWalletPinLayout =
 							walletPayBottomSheet.findViewById<LinearLayout>(R.id.verify_wallet_pin_ll)
-						walletPin.imeOptions = EditorInfo.IME_ACTION_DONE
 						try {
 							val obj = JSONObject(helper.getDataAsString())
 							val orderId = obj.get("ID") as String
@@ -515,7 +514,7 @@ class TicketActivity : AppCompatActivity() {
 	}
 
 	private fun verifyPin(token: String, orderId: String, pin: String) {
-		walletLoaderDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
+		val walletLoaderDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 		walletLoaderDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		walletLoaderDialog.titleText = "LOADING.."
 		walletLoaderDialog.show()

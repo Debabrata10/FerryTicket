@@ -237,7 +237,7 @@ public class InAppApprovedActivity extends AppCompatActivity {
                 posJSONArray = new JSONArray(Arrays.asList(posData));
                 Log.d("data sent", String.valueOf(posJSONArray));
 
-                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
+//                callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
             } else {
                 finish();
             }

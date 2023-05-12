@@ -45,6 +45,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
 
 @DelicateCoroutinesApi
 public class PosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    SharedPreferences.Editor editor;
     public static String param_status = "false";
     public static String sim_status = "false";
     CursorLoader cursorLoader;
@@ -91,6 +92,7 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         setContentView(binding.getRoot());
 
         SharedPreferences sharedPreference = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        editor = sharedPreference.edit();
         try {
             String ticketString = sharedPreference.getString("ticket", "");
             ticket = new Gson().fromJson(ticketString, Ticket.class);
@@ -182,11 +184,11 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         i.putExtra("transaction_id", transaction_id); // Reference Id
         i.putExtra("package", package_name);
         i.putExtra("receipt", receipt);
-        SharedPreferences sp = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
-        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor ed = sp.edit();
         LastTransaction lt = new LastTransaction(ticket.getTicket_no(), amt, transaction_id);
-        ed.putString("last_transaction", new Gson().toJson(lt));
-        ed.apply();
+        ticket.setMode_of_payment("POS");
+        editor.putString("last_transaction", new Gson().toJson(lt));
+        editor.putString("ticket", new Gson().toJson(ticket));
+        editor.apply();
         startActivityForResult(i, 600);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
@@ -220,6 +222,11 @@ public class PosActivity extends AppCompatActivity implements LoaderManager.Load
         i.putExtra("receipt", receipt);
 //        startActivity(i);
         startActivityForResult(i, 601);
+        /*SharedPreferences sp = this.getSharedPreferences("IWTCounter", MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor ed = sp.edit();
+        LastTransaction lt = new LastTransaction(ticket.getTicket_no(), amt, transaction_id);
+        ed.putString("last_transaction", new Gson().toJson(lt));
+        ed.apply();*/
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 

@@ -69,6 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:clickable="true"
+                android:imeOptions="actionDone"
+                android:maxLength="4"
                 android:contentDescription="password"
                 android:inputType="numberPassword"
                 tools:ignore="KeyboardInaccessibleWidget" />

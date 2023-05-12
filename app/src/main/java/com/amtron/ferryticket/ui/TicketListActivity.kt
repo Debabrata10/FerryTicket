@@ -72,8 +72,6 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 			)
 		)
 
-
-
 		onBackPressedDispatcher.addCallback(this) {
 			startActivity(
 				Intent(
@@ -172,23 +170,29 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 				object : TypeToken<LastTransaction>() {}.type
 			)
 			if (ticket.order_status != "SUCCESS") {
-				Log.d("now ticket", ticket.ticket_no)
-				Log.d("last ticket", lastTransaction.ticketNo)
-				/*if (ticket.ticket_no == lastTransaction.ticketNo) {
-					try {
-						val transactionId = LastTxnStatusActivity().transactionId
-						Log.d("tId", transactionId)
-					} catch (e: Exception) {
-						Log.d("error", "tId not found")
-					}
-				}*/
+				if (ticket.ticket_no == lastTransaction.ticketNo) {
+					val bundle = Bundle()
+					bundle.putString("last_txn", lastTransaction.transactionId)
+					val i = Intent(this, LastTxnStatusActivity::class.java)
+					i.putExtras(bundle)
+					editor.putString("ticket", Gson().toJson(ticket))
+					editor.putString("activity_from", "ticketListActivity")
+					editor.apply()
+					startActivity(i)
+				} else {
+					editor.putString("ticket", Gson().toJson(ticket))
+					editor.putString("activity_from", "ticketListActivity")
+					editor.apply()
+					startActivity(Intent(this@TicketListActivity, TicketActivity::class.java))
+				}
+			} else {
+				editor.putString("ticket", Gson().toJson(ticket))
+				editor.putString("activity_from", "ticketListActivity")
+				editor.apply()
+				startActivity(Intent(this@TicketListActivity, TicketActivity::class.java))
 			}
 		}catch (e: Exception) {
 			Log.d("exception", "null last transaction")
 		}
-		editor.putString("ticket", Gson().toJson(ticket))
-		editor.putString("activity_from", "ticketListActivity")
-		editor.apply()
-		startActivity(Intent(this@TicketListActivity, TicketActivity::class.java))
 	}
 }
