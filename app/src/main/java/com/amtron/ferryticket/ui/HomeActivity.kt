@@ -113,6 +113,10 @@ class HomeActivity : AppCompatActivity(),
 			)
 		}
 
+		binding.todayStats.setOnClickListener {
+			startActivity(Intent(this, CurrentDateStatisticsActivity::class.java))
+		}
+
 		binding.posSettings.setOnClickListener {
 			val posPasswordBottomSheet = BottomSheetDialog(this@HomeActivity)
 			posPasswordBottomSheet.setCancelable(false)

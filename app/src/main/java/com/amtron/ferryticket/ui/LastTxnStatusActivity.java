@@ -145,30 +145,35 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                 txt_transaction.setText(transaction_id);
 
                 if (checkForTransaction) {
-                    char[] tempTransactionArray = transaction_id.toCharArray();
-                    StringBuilder sb = new StringBuilder();
-                    for (char c : tempTransactionArray) {
-                        if (Character.isDigit(c)) {
-                            sb.append(c);
+                    if (txnIdString.equals(transaction_id)) {
+                        char[] tempTransactionArray = transaction_id.toCharArray();
+                        StringBuilder sb = new StringBuilder();
+                        for (char c : tempTransactionArray) {
+                            if (Character.isDigit(c)) {
+                                sb.append(c);
+                            }
                         }
-                    }
-                    if (txnIdString.equals(sb.toString())) {
-                        String[] arrString = date_time.split(" ");
-                        String date = arrString[0];
-                        String time = arrString[1];
+                        if (txnIdString.equals(sb.toString())) {
+                            String[] arrString = date_time.split(" ");
+                            String date = arrString[0];
+                            String time = arrString[1];
 
-                        callServerSideForTicketConfirmation(
-                                Double.parseDouble(amount),
-                                date,
-                                time,
-                                invoice,
-                                rrn,
-                                card_no,
-                                card,
-                                auth_code,
-                                ticket.getId(),
-                                sb.toString()
-                        );
+                            callServerSideForTicketConfirmation(
+                                    Double.parseDouble(amount),
+                                    date,
+                                    time,
+                                    invoice,
+                                    rrn,
+                                    card_no,
+                                    card,
+                                    auth_code,
+                                    ticket.getId(),
+                                    sb.toString()
+                            );
+                        }
+                    } else {
+                        Toast.makeText(this, "Previous payment failed. Please book again", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, TicketListActivity.class));
                     }
                 }
             }

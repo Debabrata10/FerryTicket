@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
+    android:padding="10dp"
+    tools:context=".ui.CurrentDateStatisticsActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_calendar_month_24"
+            android:contentDescription="calender_icon"/>
+
+        <TextView
+            android:id="@+id/current_date"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/total_cash_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL CASH COLLECTED"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/blue_grotto"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ticket_svg"
+                        android:contentDescription="ticket_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_tickets_by_hand"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_currency_rupee_24"
+                        android:contentDescription="cash_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_cash_by_hand"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/total_card_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_cash_cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL CASH PAID WITH CARD"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/blue_grotto"/>
+
+            <TextView
+                android:id="@+id/operator_card_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAID WITH OPERATOR CARD"
+                android:textSize="15sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/operator_card_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ticket_svg"
+                        android:contentDescription="ticket_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_card_o_tickets"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_currency_rupee_24"
+                        android:contentDescription="cash_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_cash_by_card_o"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/passenger_card_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAID WITH PASSENGER CARD"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/passenger_card_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ticket_svg"
+                        android:contentDescription="ticket_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_card_p_tickets"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_currency_rupee_24"
+                        android:contentDescription="cash_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_cash_by_card_p"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/total_pos_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_card_cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL CASH PAID ONLINE"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/blue_grotto"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ticket_svg"
+                        android:contentDescription="ticket_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_tickets_online"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_currency_rupee_24"
+                        android:contentDescription="cash_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_cash_by_online"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/total_collection_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_pos_cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL COLLECTION TODAY"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/blue_grotto"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ticket_svg"
+                        android:contentDescription="ticket_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_tickets_collected"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_currency_rupee_24"
+                        android:contentDescription="cash_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:id="@+id/total_payment_received"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/blue_grotto"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

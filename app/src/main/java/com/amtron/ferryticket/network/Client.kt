@@ -168,6 +168,13 @@ interface Client {
 		@Field("route_id") route_id: Int
 	): Call<JsonObject>
 
+	//GET TODAY'S STATISTICS
+	@Headers("Accept: application/json")
+	@GET("booking/overview")
+	fun getTodayStatistics(
+		@Header("Authorization") bearer: String
+	): Call<JsonObject>
+
 
 	//GET REPORT
 	@Headers("Accept: application/json")

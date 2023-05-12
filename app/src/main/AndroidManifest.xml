@@ -21,6 +21,9 @@
         android:theme="@style/Theme.FerryTicket"
         tools:targetApi="31">
         <activity
+            android:name=".ui.CurrentDateStatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.LastTxnStatusActivity"
             android:exported="false" />
         <activity
@@ -86,8 +89,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        
-        <service android:name=".ui.LastTxnStatusActivity"/>
+
+        <service android:name=".ui.LastTxnStatusActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
