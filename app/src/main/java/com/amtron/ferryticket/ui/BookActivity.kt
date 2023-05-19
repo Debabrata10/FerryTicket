@@ -1504,7 +1504,9 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (result.contents == null) {
 				Toast.makeText(this, "Result not found", Toast.LENGTH_LONG).show()
 			} else {
+//				println(result.contents)
 				getDataFromQr(result.contents)
+//				getDataFromQr("036000291452")
 			}
 		} else {
 			super.onActivityResult(requestCode, resultCode, data)

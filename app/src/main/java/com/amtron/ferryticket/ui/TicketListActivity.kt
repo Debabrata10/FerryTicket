@@ -193,6 +193,10 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 			}
 		}catch (e: Exception) {
 			Log.d("exception", "null last transaction")
+			editor.putString("ticket", Gson().toJson(ticket))
+			editor.putString("activity_from", "ticketListActivity")
+			editor.apply()
+			startActivity(Intent(this@TicketListActivity, TicketActivity::class.java))
 		}
 	}
 }

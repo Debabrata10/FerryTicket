@@ -1,9 +1,11 @@
 package com.amtron.ferryticket.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences.Editor
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.amtron.ferryticket.databinding.ActivityCurrentDateStatisticsBinding
@@ -88,6 +90,8 @@ class CurrentDateStatisticsActivity : AppCompatActivity() {
 								todayOverview.total_data.amounts.toString()
 							binding.totalTicketsCollected.text =
 								todayOverview.total_data.tickets.toString()
+							binding.ticketsForTotalCashCollected.text = todayOverview.cash_data.tickets.toString()
+							binding.amountForTotalCashCollected.text = todayOverview.cash_data.amounts.toString()
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(
@@ -112,6 +116,10 @@ class CurrentDateStatisticsActivity : AppCompatActivity() {
 					dialog.dismiss()
 				}
 			})
+		}
+
+		onBackPressedDispatcher.addCallback {
+			startActivity(Intent(this@CurrentDateStatisticsActivity, HomeActivity::class.java))
 		}
 	}
 }

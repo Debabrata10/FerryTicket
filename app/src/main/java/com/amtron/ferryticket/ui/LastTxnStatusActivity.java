@@ -145,14 +145,17 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                 txt_transaction.setText(transaction_id);
 
                 if (checkForTransaction) {
-                    if (txnIdString.equals(transaction_id)) {
-                        char[] tempTransactionArray = transaction_id.toCharArray();
-                        StringBuilder sb = new StringBuilder();
-                        for (char c : tempTransactionArray) {
-                            if (Character.isDigit(c)) {
-                                sb.append(c);
-                            }
+                    char[] tempTransactionArray = transaction_id.toCharArray();
+                    StringBuilder sb = new StringBuilder();
+                    for (char c : tempTransactionArray) {
+                        if (Character.isDigit(c)) {
+                            sb.append(c);
                         }
+                    }
+                    String trans_id = sb.toString();
+                    if (txnIdString.equals(trans_id)) {
+                        System.out.println(txnIdString);
+                        System.out.println(trans_id);
                         if (txnIdString.equals(sb.toString())) {
                             String[] arrString = date_time.split(" ");
                             String date = arrString[0];
@@ -168,11 +171,13 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                                     card,
                                     auth_code,
                                     ticket.getId(),
-                                    sb.toString()
+                                    trans_id
                             );
                         }
                     } else {
                         Toast.makeText(this, "Previous payment failed. Please book again", Toast.LENGTH_SHORT).show();
+                        System.out.println(txnIdString);
+                        System.out.println(trans_id);
                         startActivity(new Intent(this, TicketListActivity.class));
                     }
                 }
