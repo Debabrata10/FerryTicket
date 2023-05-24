@@ -74,6 +74,7 @@ class TicketActivity : AppCompatActivity() {
 
 		sharedPreferences = this.getSharedPreferences("IWTCounter", MODE_PRIVATE)
 		editor = sharedPreferences.edit()
+		val bundle = intent.extras
 
 		try {
 			val ticketString = sharedPreferences.getString("ticket", "").toString()
@@ -121,6 +122,23 @@ class TicketActivity : AppCompatActivity() {
 			}
 		} catch (e: Exception) {
 			Log.d("passenger card details", "not found")
+		}
+
+		//code to check for card status if paid through operator/passenger card
+		if (bundle != null) {
+			try {
+				if (bundle.getString("info", "").toString() == "check_status" ) {
+					binding.checkCardStatus.visibility = View.VISIBLE
+					binding.checkCardStatus.setOnClickListener {
+						checkPaymentStatusByCard(
+							Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
+							ticket.ticket_no
+						)
+					}
+				}
+			} catch (e : Exception) {
+				println("Bundle is null")
+			}
 		}
 
 		binding.printBtn.setOnClickListener {
@@ -287,6 +305,62 @@ class TicketActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun checkPaymentStatusByCard(jwtToken: String, ticketNo: String) {
+		val checkStatusDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+		checkStatusDialog.titleText = "PROCESSING.."
+		checkStatusDialog.contentText = "Checking previous card payment status"
+		checkStatusDialog.setCancelable(false)
+		checkStatusDialog.show()
+		val client =
+			getInstance(this)!!.create(
+				Client::class.java
+			)
+		val call = client.checkCardStatus(
+			jwtToken,
+			ticketNo
+		)
+		call.enqueue(object : Callback<JsonObject?> {
+			@SuppressLint("SetTextI18n")
+			override fun onResponse(
+				call: Call<JsonObject?>,
+				response: Response<JsonObject?>
+			) {
+				if (response.isSuccessful) {
+					val helper = ResponseHelper()
+					helper.responseHelper(response.body())
+					if (helper.isStatusSuccessful()) {
+						checkStatusDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+						checkStatusDialog.titleText = "SUCCESSFUL"
+						checkStatusDialog.contentText = "STATUS RECEIVED"
+						checkStatusDialog.dismissWithAnimation()
+						val obj = JSONObject(helper.getDataAsString())
+
+					} else {
+						checkStatusDialog.dismiss()
+						NotificationHelper().getErrorAlert(
+							this@TicketActivity,
+							helper.getErrorMsg()
+						)
+					}
+				} else {
+					checkStatusDialog.dismiss()
+					NotificationHelper().getErrorAlert(
+						this@TicketActivity,
+						"Response Error Code " + response.code()
+					)
+				}
+			}
+
+			override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+				checkStatusDialog.dismiss()
+				NotificationHelper().getErrorAlert(
+					this@TicketActivity,
+					"Server Error. Please try again."
+				)
+			}
+		})
+	}
+
 	private fun cashPay() {
 		val cashPayAlert = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 		cashPayAlert.titleText = "CONFIRMING.."
@@ -387,11 +461,12 @@ class TicketActivity : AppCompatActivity() {
 						)
 					}
 				} else {
-					updateOperatorWalletLoaderDialog.dismiss()
+					/*updateOperatorWalletLoaderDialog.dismiss()
 					NotificationHelper().getErrorAlert(
 						this@TicketActivity,
 						"Response Error Code " + response.code()
-					)
+					)*/
+					updateOperatorWalletBalance(jwtToken)
 				}
 			}
 

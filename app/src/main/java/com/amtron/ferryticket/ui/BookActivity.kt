@@ -44,6 +44,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 @DelicateCoroutinesApi
 class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
@@ -65,6 +66,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	private lateinit var passengerTypeList: ArrayList<PassengerType>
 	private lateinit var allDataList: ArrayList<Any>
 	private lateinit var adapter: SummaryAdapter
+	private lateinit var savedPhoneNumbersList: ArrayList<String>
 	private var selectedVehicleType: VehicleType? = null
 	private var selectedGoodsType: OtherType? = null
 	private var masterDataString: String = ""
@@ -98,6 +100,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			openEnterCardNumberBottomSheet()
 		}
 
+		savedPhoneNumbersList = ArrayList()
 		val vehicleTypeList = ArrayList<VehicleType>()
 		val vehicleTypeNameList = ArrayList<String>()
 		val goodsTypeList = ArrayList<OtherType>()
@@ -1179,13 +1182,19 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									holderType!!.text = passengerDetails.passenger_type.type
 
 									addPassenger!!.setOnClickListener {
-										addPassenger(passengerDetails)
-										Toast.makeText(
-											this@BookActivity,
-											"Passenger details added",
-											Toast.LENGTH_SHORT
-										).show()
-										cardDetailsBottomSheet.dismiss()
+										if (savedPhoneNumbersList.contains(mobileNo.text.toString())) {
+											Toast.makeText(this@BookActivity, "Passenger already exists", Toast.LENGTH_SHORT).show()
+											cardDetailsBottomSheet.dismiss()
+										} else {
+											savedPhoneNumbersList.add(mobileNo.text.toString())
+											addPassenger(passengerDetails)
+											Toast.makeText(
+												this@BookActivity,
+												"Passenger details added",
+												Toast.LENGTH_SHORT
+											).show()
+											cardDetailsBottomSheet.dismiss()
+										}
 									}
 								} catch (e: java.lang.Exception) {
 									Log.e("Passenger Object", "not found")
@@ -1236,6 +1245,15 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									)
 
 									addCard!!.setOnClickListener {
+										/*var card: String? = null
+										try {
+											card = sharedPreferences.getString("passenger_card_details", "").toString()
+										} catch (e : Exception) {
+											e.printStackTrace()
+										}
+										if (card != null || card != "") {
+
+										}*/
 										editor.putString(
 											"passenger_card_details",
 											Gson().toJson(cardDetails)
@@ -1506,7 +1524,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			} else {
 //				println(result.contents)
 				getDataFromQr(result.contents)
-//				getDataFromQr("036000291452")
 			}
 		} else {
 			super.onActivityResult(requestCode, resultCode, data)

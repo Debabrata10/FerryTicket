@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -174,6 +175,15 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 					val bundle = Bundle()
 					bundle.putString("last_txn", lastTransaction.transactionId)
 					val i = Intent(this, LastTxnStatusActivity::class.java)
+					i.putExtras(bundle)
+					editor.putString("ticket", Gson().toJson(ticket))
+					editor.putString("activity_from", "ticketListActivity")
+					editor.apply()
+					startActivity(i)
+				} else if (ticket.mode_of_payment == "CARD-P" || ticket.mode_of_payment == "CARD-O") {
+					val bundle = Bundle()
+					bundle.putString("info", "check_status")
+					val i = Intent(this, TicketActivity::class.java)
 					i.putExtras(bundle)
 					editor.putString("ticket", Gson().toJson(ticket))
 					editor.putString("activity_from", "ticketListActivity")

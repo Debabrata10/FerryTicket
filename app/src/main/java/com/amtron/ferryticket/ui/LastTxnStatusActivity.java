@@ -232,7 +232,6 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                     } else {
                         alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         alert.setCancelText("RETRY");
-                        alert.hideConfirmButton();
                         alert.setCancelable(false);
                         alert.setCancelClickListener(v ->
                                 {
@@ -240,12 +239,14 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                                     callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
                                 }
                         );
+                        alert.setConfirmClickListener(v -> {
+                            startActivity(new Intent(LastTxnStatusActivity.this, TicketListActivity.class));
+                        });
                         Log.d("ERROR!!", helper.getErrorMsg());
                     }
                 } else {
                     alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     alert.setCancelText("RETRY");
-                    alert.hideConfirmButton();
                     alert.setCancelable(false);
                     alert.setCancelClickListener(v ->
                             {
@@ -253,6 +254,9 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                                 callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
                             }
                     );
+                    alert.setConfirmClickListener(v -> {
+                        startActivity(new Intent(LastTxnStatusActivity.this, TicketListActivity.class));
+                    });
                     Log.d("ERROR!!", "Response Error Code " + response.code());
                 }
             }
@@ -261,7 +265,6 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 alert.setCancelText("RETRY");
-                alert.hideConfirmButton();
                 alert.setCancelable(false);
                 alert.setCancelClickListener(v ->
                         {
@@ -269,6 +272,9 @@ public class LastTxnStatusActivity extends AppCompatActivity implements LoaderMa
                             callServerSideForTicketConfirmation(amount, in_app_date, in_app_time, invoice, rrn, cardToBeSend, card_type, auth_code, ticket.getId(), tid);
                         }
                 );
+                alert.setConfirmClickListener(v -> {
+                    startActivity(new Intent(LastTxnStatusActivity.this, TicketListActivity.class));
+                });
                 Log.d("ERROR!!", "Server Error. Please try again.");
             }
         });

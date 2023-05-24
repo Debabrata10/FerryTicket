@@ -4,24 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amtron.ferryticket.BuildConfig;
-import com.amtron.ferryticket.ProxyServer;
 import com.amtron.ferryticket.R;
 import com.amtron.ferryticket.databinding.ActivityProxyBinding;
-
-import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import kotlinx.coroutines.DelicateCoroutinesApi;
 
-@DelicateCoroutinesApi public class ProxyActivity extends AppCompatActivity {
+@DelicateCoroutinesApi
+public class ProxyActivity extends AppCompatActivity {
 
     ActivityProxyBinding binding;
     SharedPreferences sharedPreferences;
@@ -79,7 +75,36 @@ import kotlinx.coroutines.DelicateCoroutinesApi;
                             String PROXY_IP = data.getStringExtra("PROXY_IP");
                             String PROXY_PORT = data.getStringExtra("PROXY_PORT");
                             if (PROXY_IP.isEmpty() || PROXY_PORT.isEmpty()) {
-                                Toast.makeText(this, "No proxy details found", Toast.LENGTH_SHORT).show();
+                                //Due to empty proxy details we set default proxy details as vodafone proxy details
+                                System.out.println("Proxy details not found. Using static VODAFONE data");
+                                binding.proxyLl.setVisibility(View.VISIBLE);
+                                String proxy = "PROXY_IP : 192.168.99.7" + "\n" + "PROXY_PORT : 8080";
+                                binding.proxy.setText(proxy);
+
+                                binding.saveProxyBtn.setOnClickListener(v -> {
+                                    editor.putString("proxy_ip", "192.168.99.7");
+                                    editor.putString("proxy_port", "8080");
+                                    editor.apply();
+                                    SweetAlertDialog saveProxySettingsAlert = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+                                    saveProxySettingsAlert.setTitle("SUCCESS!!");
+                                    saveProxySettingsAlert.setCancelable(false);
+                                    saveProxySettingsAlert.setContentText("Proxy settings have been successfully saved");
+                                    saveProxySettingsAlert.showCancelButton(false);
+                                    saveProxySettingsAlert.setConfirmText("GO BACK");
+                                    saveProxySettingsAlert.show();
+                                    saveProxySettingsAlert.setConfirmClickListener(c -> {
+                                    /*Bundle bundle = new Bundle();
+                                    bundle.putString("pos_settings", "yes");
+                                    Intent i = new Intent(this, PosActivity.class);
+                                    i.putExtras(bundle);
+                                    startActivity(i);*/
+                                        if (toLogin) {
+                                            startActivity(new Intent(this, LoginActivity.class));
+                                        } else {
+                                            startActivity(new Intent(this, HomeActivity.class));
+                                        }
+                                    });
+                                });
                             } else {
                                 binding.proxyLl.setVisibility(View.VISIBLE);
                                 String proxy = "PROXY_IP : " + PROXY_IP + "\n" + "PROXY_PORT : " + PROXY_PORT;

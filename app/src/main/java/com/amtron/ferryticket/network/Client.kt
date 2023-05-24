@@ -180,4 +180,12 @@ interface Client {
 	@Headers("Accept: application/json")
 	@GET("data")
 	fun test(): Call<JsonObject>
+
+	//GET OPERATOR/USER CARD PAYMENT STATUS
+	@Headers("Accept: application/json")
+	@POST("card-ticket-status")
+	fun checkCardStatus(
+		@Header("Authorization") bearer: String,
+		@Field("ticket_no") ticketNo: String
+	): Call<JsonObject>
 }
