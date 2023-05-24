@@ -307,7 +307,7 @@ class TicketActivity : AppCompatActivity() {
 
 	private fun checkPaymentStatusByCard(jwtToken: String, ticketNo: String) {
 		val checkStatusDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		checkStatusDialog.titleText = "PROCESSING.."
+		checkStatusDialog.progressHelper.barColor = Color.parseColor("#2E74A0")
 		checkStatusDialog.contentText = "Checking previous card payment status"
 		checkStatusDialog.setCancelable(false)
 		checkStatusDialog.show()
@@ -329,12 +329,27 @@ class TicketActivity : AppCompatActivity() {
 					val helper = ResponseHelper()
 					helper.responseHelper(response.body())
 					if (helper.isStatusSuccessful()) {
-						checkStatusDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-						checkStatusDialog.titleText = "SUCCESSFUL"
-						checkStatusDialog.contentText = "STATUS RECEIVED"
-						checkStatusDialog.dismissWithAnimation()
 						val obj = JSONObject(helper.getDataAsString())
-
+						val statusVal = obj.get("status") as Int
+						if (statusVal == 1) {
+							checkStatusDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+							checkStatusDialog.contentText = helper.getSuccessMsg()
+							checkStatusDialog.setConfirmClickListener {
+								checkStatusDialog.dismissWithAnimation()
+							}
+							binding.paymentButtons.visibility = View.GONE
+							binding.printBtn.visibility = View.VISIBLE
+							binding.printBtn.setOnClickListener {
+								startActivity(Intent(this@TicketActivity, InAppApprovedActivity::class.java))
+							}
+						} else {
+							checkStatusDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+							checkStatusDialog.contentText = helper.getSuccessMsg()
+							checkStatusDialog.setConfirmClickListener {
+								checkStatusDialog.dismissWithAnimation()
+							}
+							binding.checkCardStatus.visibility = View.GONE
+						}
 					} else {
 						checkStatusDialog.dismiss()
 						NotificationHelper().getErrorAlert(

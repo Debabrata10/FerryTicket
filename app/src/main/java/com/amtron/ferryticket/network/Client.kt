@@ -183,6 +183,7 @@ interface Client {
 
 	//GET OPERATOR/USER CARD PAYMENT STATUS
 	@Headers("Accept: application/json")
+	@FormUrlEncoded
 	@POST("card-ticket-status")
 	fun checkCardStatus(
 		@Header("Authorization") bearer: String,

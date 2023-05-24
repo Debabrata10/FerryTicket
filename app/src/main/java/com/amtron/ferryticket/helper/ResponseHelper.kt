@@ -27,6 +27,10 @@ class ResponseHelper {
 		return gson.fromJson(jsonObject.toString(), ResponseData::class.java)
 	}
 
+	fun getSuccessMsg(): String {
+		return jsonObject["msg"].toString()
+	}
+
 	fun getErrorMsg(): String {
 		return jsonObject["msg"].toString()
 			.substring(1, jsonObject["msg"].toString().length - 1)

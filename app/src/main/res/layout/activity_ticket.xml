@@ -288,8 +288,8 @@
                 android:id="@+id/check_card_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/dark_blue"
-                android:text="CHECK PREVIOUS PAYMENT STATUS"
+                android:backgroundTint="@color/red_btn_bg_color"
+                android:text="CHECK CARD PAYMENT STATUS"
                 android:textColor="@color/white"
                 android:visibility="gone"
                 app:iconTint="@color/white" />
