@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -54,6 +55,8 @@ class LoginActivity : AppCompatActivity() {
 		binding = ActivityLoginBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		println("LoginActivity start")
+
 		if (!Util().isOnline(this)) { //Check for internet connectivity
 			val noInternetAlert = SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
 			noInternetAlert.setCancelable(false)
@@ -89,6 +92,8 @@ class LoginActivity : AppCompatActivity() {
 				//check if port settings is present
 				try {
 					if (proxyPort.isEmpty() || proxyIp.isEmpty()) {
+						Log.d("PROXY IP ", proxyIp)
+						Log.d("PROXY port " ,proxyPort)
 						val noProxyAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
 						noProxyAlert.setCancelable(false)
 						noProxyAlert.titleText = "WARNING"
@@ -120,6 +125,8 @@ class LoginActivity : AppCompatActivity() {
 						}
 					}
 				} catch (e: Exception) {
+					Log.d("PROXY IP ", proxyIp)
+					Log.d("PROXY port " ,proxyPort)
 					val noProxyAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
 					noProxyAlert.setCancelable(false)
 					noProxyAlert.titleText = "WARNING"

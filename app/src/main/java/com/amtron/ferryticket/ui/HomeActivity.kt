@@ -320,64 +320,7 @@ class HomeActivity : AppCompatActivity(),
 
 							dialog.titleText = "All data fetched successfully"
 							dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-							dialog.confirmText = "OK"
-							dialog.setConfirmClickListener { dialog.dismiss() }
-						} else {
-							dialog.dismiss()
-							NotificationHelper().getErrorAlert(
-								this@HomeActivity,
-								helper.getErrorMsg()
-							)
-						}
-					} else {
-						dialog.dismiss()
-						NotificationHelper().getErrorAlert(
-							this@HomeActivity,
-							"Response Error Code" + response.message()
-						)
-					}
-				}
-
-				override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-					dialog.dismiss()
-					NotificationHelper().getErrorAlert(this@HomeActivity, "Server Error")
-				}
-			})
-		}
-	}
-
-	private fun getFerryService(id: Int) {
-		val dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-		dialog.progressHelper.barColor = Color.parseColor("#2E74A0")
-		dialog.titleText = "Loading..."
-		dialog.setCancelable(false)
-		dialog.show()
-		val api = RetrofitHelper.getInstance(this@HomeActivity)!!.create(Client::class.java)
-		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getService(
-				Util().getJwtToken(sharedPreferences.getString("user", "").toString()),
-				id
-			)
-			call.enqueue(object : Callback<JsonObject> {
-				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
-				override fun onResponse(
-					call: Call<JsonObject>,
-					response: Response<JsonObject>
-				) {
-					if (response.isSuccessful) {
-						val helper = ResponseHelper()
-						helper.responseHelper(response.body())
-						if (helper.isStatusSuccessful()) {
-							dialog.dismiss()
-							val ferryService: FerryService = Gson().fromJson(
-								helper.getDataAsString(),
-								object : TypeToken<FerryService>() {}.type
-							)
-							editor.putString("service", Gson().toJson(ferryService))
-							editor.apply()
-							startActivity(
-								Intent(this@HomeActivity, BookActivity::class.java)
-							)
+							dialog.dismissWithAnimation()
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(

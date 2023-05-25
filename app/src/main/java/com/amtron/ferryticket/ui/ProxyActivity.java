@@ -99,8 +99,10 @@ public class ProxyActivity extends AppCompatActivity {
                                     i.putExtras(bundle);
                                     startActivity(i);*/
                                         if (toLogin) {
+                                            saveProxySettingsAlert.dismiss();
                                             startActivity(new Intent(this, LoginActivity.class));
                                         } else {
+                                            saveProxySettingsAlert.dismiss();
                                             startActivity(new Intent(this, HomeActivity.class));
                                         }
                                     });
@@ -128,8 +130,10 @@ public class ProxyActivity extends AppCompatActivity {
                                     i.putExtras(bundle);
                                     startActivity(i);*/
                                         if (toLogin) {
+                                            saveProxySettingsAlert.dismiss();
                                             startActivity(new Intent(this, LoginActivity.class));
                                         } else {
+                                            saveProxySettingsAlert.dismiss();
                                             startActivity(new Intent(this, HomeActivity.class));
                                         }
                                     });
