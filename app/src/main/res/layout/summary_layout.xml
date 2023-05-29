@@ -69,6 +69,7 @@
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:visibility="gone"
                 android:text="Phone"
                 android:textColor="@color/dark_blue"
                 android:textSize="17sp" />

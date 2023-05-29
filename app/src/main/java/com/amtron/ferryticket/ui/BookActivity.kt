@@ -44,7 +44,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 @DelicateCoroutinesApi
 class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
@@ -362,12 +361,52 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						if (binding.passengerLayout.name.text.isEmpty()) {
 							Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show()
 						} else {
-							if (binding.passengerLayout.phone.text.isEmpty()) {
-								Toast.makeText(
-									this,
-									"Please enter phone number",
-									Toast.LENGTH_SHORT
-								).show()
+							if (savedPhoneNumbersList.isEmpty()) {
+								if (binding.passengerLayout.phone.text.isEmpty()) {
+									Toast.makeText(
+										this,
+										"Please enter phone number",
+										Toast.LENGTH_SHORT
+									).show()
+								} else {
+									if (binding.passengerLayout.age.text.isEmpty()) {
+										Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT)
+											.show()
+									} else {
+										if (genderRG.checkedRadioButtonId == -1) {
+											Toast.makeText(
+												this,
+												"Please select gender",
+												Toast.LENGTH_SHORT
+											).show()
+										} else {
+											if (binding.passengerLayout.address.text.isEmpty()) {
+												Toast.makeText(
+													this,
+													"Please enter age",
+													Toast.LENGTH_SHORT
+												).show()
+											} else {
+												var disableBool = 0
+												if (binding.passengerLayout.disableCheckBox.isChecked) {
+													disableBool = 1
+												}
+												passenger = PassengerDetails(
+													binding.passengerLayout.name.text.toString()
+														.uppercase(Locale.getDefault()),
+													binding.passengerLayout.phone.text.toString(),
+													binding.passengerLayout.age.text.toString(),
+													disableBool,
+													binding.passengerLayout.address.text.toString()
+														.uppercase(Locale.getDefault()),
+													passengerTypeList[passengerTypeRG.checkedRadioButtonId],
+													genderList[genderRG.checkedRadioButtonId]
+												)
+												addPassenger(passenger)
+											}
+										}
+									}
+								}
 							} else {
 								if (binding.passengerLayout.age.text.isEmpty()) {
 									Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT)
@@ -651,7 +690,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					binding.otherLayout.addGoodsCard.visibility = View.GONE // for mobile view
 					binding.bookingBaseLayoutWithoutSummary.visibility = View.GONE //for mobile view
 					binding.proceedBtn.visibility = View.VISIBLE
-					adapter = SummaryAdapter(allDataList, this)
+					adapter = SummaryAdapter(allDataList)
 					adapter.setOnItemClickListener(this)
 					binding.summarySection.visibility = View.VISIBLE
 					isSummaryVisible = true
@@ -816,14 +855,9 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 											addPassenger!!.setOnClickListener {
 												addPassenger(passengerDetails)
-												Toast.makeText(
-													this@BookActivity,
-													"Passenger details added",
-													Toast.LENGTH_SHORT
-												).show()
 												cardDetailsBottomSheet.dismiss()
 											}
-										} catch (e: java.lang.Exception) {
+										} catch (e: Exception) {
 											Log.e("Passenger Object", "not found")
 											Toast.makeText(
 												this@BookActivity,
@@ -1101,16 +1135,21 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	}
 
 	private fun addPassenger(passenger: PassengerDetails) {
-		allDataList.add(passenger)
-		Toast.makeText(this@BookActivity,"Passenger has been added", Toast.LENGTH_SHORT).show()
-		totalPassengerCount += 1
-		if (totalPassengerCount > 0) {
-			binding.openAddVehiclesCard.visibility = View.VISIBLE
-			binding.openAddGoodsCard.visibility = View.VISIBLE
+		if (savedPhoneNumbersList.contains(passenger.mobile_no) && passenger.mobile_no!="") {
+			Toast.makeText(this@BookActivity, "Passenger already exists", Toast.LENGTH_SHORT).show()
+		} else {
+			savedPhoneNumbersList.add(passenger.mobile_no)
+			allDataList.add(passenger)
+			Toast.makeText(this@BookActivity, "Passenger has been added", Toast.LENGTH_SHORT).show()
+			totalPassengerCount += 1
+			if (totalPassengerCount > 0) {
+				binding.openAddVehiclesCard.visibility = View.VISIBLE
+				binding.openAddGoodsCard.visibility = View.VISIBLE
+			}
+			passengerList.add(passenger)
+			binding.passengerCount.text = totalPassengerCount.toString()
+			resetPassenger()
 		}
-		passengerList.add(passenger)
-		binding.passengerCount.text = totalPassengerCount.toString()
-		resetPassenger()
 	}
 
 	private fun getDataFromQr(data: String) {
@@ -1182,21 +1221,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									holderType!!.text = passengerDetails.passenger_type.type
 
 									addPassenger!!.setOnClickListener {
-										if (savedPhoneNumbersList.contains(mobileNo.text.toString())) {
-											Toast.makeText(this@BookActivity, "Passenger already exists", Toast.LENGTH_SHORT).show()
-											cardDetailsBottomSheet.dismiss()
-										} else {
-											savedPhoneNumbersList.add(mobileNo.text.toString())
-											addPassenger(passengerDetails)
-											Toast.makeText(
-												this@BookActivity,
-												"Passenger details added",
-												Toast.LENGTH_SHORT
-											).show()
-											cardDetailsBottomSheet.dismiss()
-										}
+										addPassenger(passengerDetails)
+										cardDetailsBottomSheet.dismiss()
 									}
-								} catch (e: java.lang.Exception) {
+								} catch (e: Exception) {
 									Log.e("Passenger Object", "not found")
 									Toast.makeText(
 										this@BookActivity,
@@ -1290,7 +1318,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									editor.apply()
 									Toast.makeText(
 										this@BookActivity,
-										"Card and passenger details added",
+										"Card details added",
 										Toast.LENGTH_SHORT
 									).show()
 									cardDetailsBottomSheet.dismiss()
@@ -1450,10 +1478,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		alert.setCancelClickListener { alert.dismiss() }
 		alert.setConfirmClickListener {
 			if (allDataList[position] is PassengerDetails) {
-				if (totalPassengerCount == 1) {
+				if (totalPassengerCount == 1 || position == 0) {
 					alert.titleText = "WARNING"
 					alert.contentText =
-						"This is the last passenger. Deleting will delete all data. Delete?"
+						"This is the primary passenger and deleting it will remove all data. Delete?"
 					alert.setConfirmClickListener {
 						binding.openAddVehiclesCard.visibility = View.GONE
 						binding.openAddGoodsCard.visibility = View.GONE
@@ -1465,6 +1493,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						binding.goodsCount.text = totalPassengerCount.toString()
 						alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						allDataList.clear()
+						savedPhoneNumbersList.clear()
 						Log.d("size", passengerList.size.toString())
 						adapter.notifyDataSetChanged()
 						alert.dismissWithAnimation()
@@ -1491,6 +1520,15 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					}
 					allDataList.removeAt(position)
 					passengerList.removeAt(position)
+					var phNo = ""
+					try {
+						phNo = passengerList[position].mobile_no
+					} catch (e: java.lang.Exception) {
+						e.printStackTrace()
+					}
+					if (savedPhoneNumbersList.contains(phNo)) {
+						savedPhoneNumbersList.remove(phNo)
+					}
 					Toast.makeText(this@BookActivity,"Passenger has been removed", Toast.LENGTH_SHORT).show()
 					adapter.notifyDataSetChanged()
 					alert.dismissWithAnimation()

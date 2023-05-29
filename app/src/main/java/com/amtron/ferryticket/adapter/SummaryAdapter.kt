@@ -1,7 +1,6 @@
 package com.amtron.ferryticket.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.amtron.ferryticket.model.PassengerDetails
 import com.amtron.ferryticket.model.Vehicle
 import com.google.gson.Gson
 
-class SummaryAdapter(private val summaryList: List<Any>, private val mContext: Context) :
+class SummaryAdapter(private val summaryList: List<Any>) :
 	RecyclerView.Adapter<SummaryAdapter.ViewHolder>() {
 	private lateinit var mItemClickListener: OnRecyclerViewItemClickListener
 	private lateinit var any: Any
@@ -47,7 +46,10 @@ class SummaryAdapter(private val summaryList: List<Any>, private val mContext: C
 			holder.name.text =
 				"NAME: ${(any as PassengerDetails).passenger_name} (${(any as PassengerDetails).gender.gender_name}, ${(any as PassengerDetails).age})"
 			holder.type.text = "PASSENGER TYPE: ${(any as PassengerDetails).passenger_type.type}"
-			holder.phone.text = "PHONE NUMBER: ${(any as PassengerDetails).mobile_no}"
+			if ((any as PassengerDetails).mobile_no.isNotEmpty()) {
+				holder.phone.visibility = View.VISIBLE
+				holder.phone.text = "PHONE NUMBER: ${(any as PassengerDetails).mobile_no}"
+			}
 			holder.address.text = "ADDRESS: ${(any as PassengerDetails).address}"
 		} else if (any is Vehicle) {
 			holder.imageLayout.setBackgroundColor(Color.parseColor(("#09509A")))
