@@ -1493,14 +1493,16 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						binding.goodsCount.text = totalPassengerCount.toString()
 						alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 						allDataList.clear()
+						passengerList.clear()
+						vehicleList.clear()
+						othersList.clear()
 						savedPhoneNumbersList.clear()
-						Log.d("size", passengerList.size.toString())
 						adapter.notifyDataSetChanged()
 						alert.dismissWithAnimation()
 						binding.summarySection.visibility = View.GONE
 						binding.proceedBtn.visibility = View.GONE
 						binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
-						passengerList.removeAt(position)
+//						passengerList.removeAt(position)
 						Toast.makeText(this@BookActivity,"All particulars have been removed", Toast.LENGTH_SHORT).show()
 						isSummaryVisible = false
 						binding.proceedBtn.visibility = View.GONE
@@ -1523,7 +1525,7 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					var phNo = ""
 					try {
 						phNo = passengerList[position].mobile_no
-					} catch (e: java.lang.Exception) {
+					} catch (e: Exception) {
 						e.printStackTrace()
 					}
 					if (savedPhoneNumbersList.contains(phNo)) {
