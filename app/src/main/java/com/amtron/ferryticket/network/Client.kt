@@ -36,6 +36,13 @@ interface Client {
 		@Header("Authorization") bearer: String
 	): Call<JsonObject>
 
+	//GET LATEST TICKETS API
+	@Headers("Accept: application/json")
+	@GET("get-latest-ticket")
+	fun getLatestTickets(
+		@Header("Authorization") bearer: String
+	): Call<JsonObject>
+
 	//PRICE API
 	@Headers("Accept: application/json")
 	@GET("get-ticket-item-rates")

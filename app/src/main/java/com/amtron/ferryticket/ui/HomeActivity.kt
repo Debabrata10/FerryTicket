@@ -281,43 +281,6 @@ class HomeActivity : AppCompatActivity(),
 								binding.noRoutesCard.visibility = View.VISIBLE
 							}
 
-							//Recent ferry code
-							/*if (!JSONObject.NULL.equals(obj.get("recent_ferry"))) {
-								val recentFerryJson = obj.get("recent_ferry") as JSONObject
-								val recentFerry: Ferry = Gson().fromJson(
-									recentFerryJson.toString(),
-									object : TypeToken<Ferry>() {}.type
-								)
-								binding.recentFerry.ferryCard.visibility = View.VISIBLE
-								binding.noRecentFerryCard.visibility = View.GONE
-								binding.recentFerry.ferryName.text = recentFerry.ferry_name
-								binding.recentFerry.ferryNumber.text = recentFerry.ferry_no
-								binding.recentFerry.departureTime.text = recentFerry.departure
-								binding.recentFerry.arrivalTime.text = recentFerry.arrival
-								binding.recentFerry.src.text = recentFerry.source.ghat_name
-								binding.recentFerry.dest.text = recentFerry.destination.ghat_name
-								binding.recentFerry.availablePerson.text =
-									recentFerry.seat_capacity
-								binding.recentFerry.availableCycle.text =
-									recentFerry.bicycle_capacity
-								binding.recentFerry.availableMotorcycle.text =
-									recentFerry.bicycle_capacity
-								binding.recentFerry.availableLmv.text =
-									recentFerry.four_wheeler_lmv_capacity
-								binding.recentFerry.availableHmv.text =
-									recentFerry.four_wheeler_hmv_capacity
-								binding.recentFerry.availableGoods.text =
-									recentFerry.others_capacity.toString()
-								binding.recentFerry.ferryCard.setOnClickListener {
-									getFerryService(recentFerry.id)
-								}
-								binding.recentFerry.ferryCard.visibility = View.VISIBLE
-								binding.noRecentFerryCard.visibility = View.GONE
-							} else {
-								binding.recentFerry.ferryCard.visibility = View.GONE
-								binding.noRecentFerryCard.visibility = View.VISIBLE
-							}*/
-
 							dialog.titleText = "All data fetched successfully"
 							dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 							dialog.dismissWithAnimation()

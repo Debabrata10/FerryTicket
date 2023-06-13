@@ -95,7 +95,7 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 		dialog.show()
 		val api = RetrofitHelper.getInstance(this)!!.create(Client::class.java)
 		GlobalScope.launch {
-			val call: Call<JsonObject> = api.getHomeData(token)
+			val call: Call<JsonObject> = api.getLatestTickets(token)
 			call.enqueue(object : Callback<JsonObject> {
 				@SuppressLint("CommitPrefEdits", "NotifyDataSetChanged", "SetTextI18n")
 				override fun onResponse(
@@ -106,36 +106,17 @@ class TicketListActivity : AppCompatActivity(), OnTicketsRecyclerViewItemClickLi
 						val helper = ResponseHelper()
 						helper.responseHelper(response.body())
 						if (helper.isStatusSuccessful()) {
-							val obj = JSONObject(helper.getDataAsString())
-							val latestTicketsJson = obj.get("latest_tickets") as JSONArray
-
-							//Start for mobile view code
-							if (latestTicketsJson.length() > 0) {
-								dialog.dismissWithAnimation()
-								ticketsList = Gson().fromJson(
-									latestTicketsJson.toString(),
-									object : TypeToken<List<Ticket>>() {}.type
-								)
-								ticketAdapter = TicketAdapter(ticketsList)
-								ticketAdapter.setOnItemClickListener(this@TicketListActivity)
-								ticketsRecyclerView = binding.recentTicketsRecyclerView
-								ticketsRecyclerView.adapter = ticketAdapter
-								ticketsRecyclerView.layoutManager = LinearLayoutManager(this@TicketListActivity)
-								ticketsRecyclerView.isNestedScrollingEnabled = false
-							} else {
-								dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-								dialog.cancelText = "GO BACK"
-								dialog.setOnCancelListener {
-									dialog.dismiss()
-									startActivity(
-										Intent(
-											this@TicketListActivity,
-											HomeActivity::class.java
-										)
-									)
-								}
-							}
-							dialog.dismiss()
+							dialog.dismissWithAnimation()
+							ticketsList = Gson().fromJson(
+								helper.getDataAsString(),
+								object : TypeToken<List<Ticket>>() {}.type
+							)
+							ticketAdapter = TicketAdapter(ticketsList)
+							ticketAdapter.setOnItemClickListener(this@TicketListActivity)
+							ticketsRecyclerView = binding.recentTicketsRecyclerView
+							ticketsRecyclerView.adapter = ticketAdapter
+							ticketsRecyclerView.layoutManager = LinearLayoutManager(this@TicketListActivity)
+							ticketsRecyclerView.isNestedScrollingEnabled = false
 						} else {
 							dialog.dismiss()
 							NotificationHelper().getErrorAlert(

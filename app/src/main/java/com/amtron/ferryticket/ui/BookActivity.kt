@@ -109,15 +109,8 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		othersList = ArrayList()
 		allDataList = ArrayList()
 
-		//for tablet view start
-		/*genderRG = binding.rgGender
-		passengerTypeRG = binding.rgPassengerType*/
-		//for tablet view end
-
-		//for mobile view start
 		genderRG = binding.passengerLayout.rgGender
 		passengerTypeRG = binding.passengerLayout.rgPassengerType
-		//for mobile view end
 
 		genderRG.orientation = RadioGroup.VERTICAL //get the radio group for gender
 		passengerTypeRG.orientation = RadioGroup.VERTICAL //get the radio group for passenger
@@ -168,29 +161,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			//assigning no object to the 0th position because we need validation
 			//and we need no vehicle to be selected at the beginning
 			vehicleTypeNameList.add(0, "SELECT VEHICLE TYPE")
-//			binding.vehicleTypeDropdown.setSelection(0) //for tablet view
-			binding.vehicleLayout.vehicleTypeDropdown.setSelection(0)  //for mobile view
-//			binding.vehicleTypeDropdown.setAdapter(vehicleAdapter) //for tablet view
-			binding.vehicleLayout.vehicleTypeDropdown.setAdapter(vehicleAdapter)  //for mobile view
+			binding.vehicleLayout.vehicleTypeDropdown.setSelection(0)
+			binding.vehicleLayout.vehicleTypeDropdown.setAdapter(vehicleAdapter)
 			vehicleAdapter.notifyDataSetChanged()
-			//for tablet view starts
-			/*binding.vehicleTypeDropdown.showSoftInputOnFocus = false
-			binding.vehicleTypeDropdown.onItemClickListener =
-				AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-					if (vehicleTypeNameList[position] == "Bicycle") {
-						binding.textInputLayout6.visibility = View.GONE
-					} else {
-						binding.textInputLayout6.visibility = View.VISIBLE
-					}
-					selectedVehicleType = if (position > 0) {
-						vehicleTypeList[position - 1]
-					} else {
-						null
-					}
-				}*/
-			//for tablet view ends
 
-			//for mobile view starts
 			binding.vehicleLayout.vehicleTypeDropdown.showSoftInputOnFocus = false
 			binding.vehicleLayout.vehicleTypeDropdown.onItemClickListener =
 				AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
@@ -217,24 +191,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				goodsTypeNameList
 			)
 			goodsTypeNameList.add(0, "SELECT GOODS TYPE")
-//			binding.othersTypeDropdown.setSelection(0) //for tablet view
-			binding.otherLayout.othersTypeDropdown.setSelection(0) //for mobile view
-//			binding.othersTypeDropdown.setAdapter(goodsAdapter) //for tablet view
-			binding.otherLayout.othersTypeDropdown.setAdapter(goodsAdapter) //for mobile view
+			binding.otherLayout.othersTypeDropdown.setSelection(0)
+			binding.otherLayout.othersTypeDropdown.setAdapter(goodsAdapter)
 			goodsAdapter.notifyDataSetChanged()
-			//for tablet view starts
-			/*binding.othersTypeDropdown.showSoftInputOnFocus = false
-			binding.othersTypeDropdown.onItemClickListener =
-				AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-					selectedGoodsType = if (position > 0) {
-						goodsTypeList[position - 1]
-					} else {
-						null
-					}
-				}*/
-			//for table view ends
 
-			//for mobile view starts
 			binding.otherLayout.othersTypeDropdown.showSoftInputOnFocus = false
 			binding.otherLayout.othersTypeDropdown.onItemClickListener =
 				AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
@@ -244,7 +204,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						null
 					}
 				}
-			//for mobile view ends
 		} catch (e: Exception) {
 			Toast.makeText(this, "No master data found", Toast.LENGTH_SHORT).show()
 		}
@@ -282,78 +241,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (!isAddPassengerCardVisible) {
 				resetVehicle()
 				resetGoods()
-				binding.bookingBaseLayout.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.GONE
 				isAddGoodsCardVisible = false
-//				binding.addGoodsCard.visibility = View.GONE //for tablet view
-				binding.otherLayout.addGoodsCard.visibility = View.GONE //for mobile view
+				binding.otherLayout.addGoodsCard.visibility = View.GONE
 				isAddVehicleCardVisible = false
-//				binding.addVehicleCard.visibility = View.GONE //for tablet view
-				binding.vehicleLayout.addVehicleCard.visibility = View.GONE //for mobile view
+				binding.vehicleLayout.addVehicleCard.visibility = View.GONE
 				isSummaryVisible = false
 				binding.summarySection.visibility = View.GONE
 				binding.proceedBtn.visibility = View.GONE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddPassengerCardVisible = true
-//				binding.addPassengerCard.visibility = View.VISIBLE //for tablet view
-				binding.passengerLayout.addPassengerCard.visibility = View.VISIBLE //for mobile view
+				binding.passengerLayout.addPassengerCard.visibility = View.VISIBLE
 
-				//for tablet view starts
-				/*binding.addPassenger.setOnClickListener {
-					if (passengerTypeRG.checkedRadioButtonId == -1) {
-						Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show()
-					} else {
-						if (binding.name.text.isEmpty()) {
-							Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show()
-						} else {
-							if (binding.phone.text.isEmpty()) {
-								Toast.makeText(
-									this,
-									"Please enter phone number",
-									Toast.LENGTH_SHORT
-								).show()
-							} else {
-								if (binding.age.text.isEmpty()) {
-									Toast.makeText(this, "Please enter age", Toast.LENGTH_SHORT)
-										.show()
-								} else {
-									if (genderRG.checkedRadioButtonId == -1) {
-										Toast.makeText(
-											this,
-											"Please select gender",
-											Toast.LENGTH_SHORT
-										).show()
-									} else {
-										if (binding.address.text.isEmpty()) {
-											Toast.makeText(
-												this,
-												"Please enter age",
-												Toast.LENGTH_SHORT
-											).show()
-										} else {
-											var disableBool = 0
-											if (binding.disableCheckBox.isChecked) {
-												disableBool = 1
-											}
-											passenger = PassengerDetails(
-												binding.name.text.toString(),
-												binding.phone.text.toString(),
-												binding.age.text.toString(),
-												disableBool,
-												binding.address.text.toString(),
-												passengerTypeList[passengerTypeRG.checkedRadioButtonId],
-												genderList[genderRG.checkedRadioButtonId]
-											)
-											addPassenger(passenger)
-										}
-									}
-								}
-							}
-						}
-					}
-				}*/
-				//for tablet view ends
-
-				//for mobile view starts
 				binding.passengerLayout.addPassenger.setOnClickListener {
 					if (passengerTypeRG.checkedRadioButtonId == -1) {
 						Toast.makeText(this, "Please select passenger type", Toast.LENGTH_SHORT).show()
@@ -442,6 +341,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 												genderList[genderRG.checkedRadioButtonId]
 											)
 											addPassenger(passenger)
+											//After adding passengers automatically close add passenger view
+											if (isAddPassengerCardVisible) {
+												resetPassenger()
+												isAddPassengerCardVisible = false
+												binding.bookingBaseLayout.visibility = View.VISIBLE
+												binding.passengerLayout.addPassengerCard.visibility = View.GONE
+											}
 										}
 									}
 								}
@@ -449,21 +355,9 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 						}
 					}
 				}
-				//for mobile view ends
 			}
 		}
 
-		//for tablet view starts
-		/*binding.closeAddPassengerCard.setOnClickListener {
-			if (isAddPassengerCardVisible) {
-				resetPassenger()
-				isAddPassengerCardVisible = false
-				binding.addPassengerCard.visibility = View.GONE
-			}
-		}*/
-		//for tablet view ends
-
-		//for mobile view starts
 		binding.passengerLayout.closeAddPassengerCard.setOnClickListener {
 			if (isAddPassengerCardVisible) {
 				resetPassenger()
@@ -472,7 +366,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.passengerLayout.addPassengerCard.visibility = View.GONE
 			}
 		}
-		//for mobile view ends
 
 		binding.openAddVehiclesCard.setOnClickListener {
 			//logic to show/hide views when add vehicle card is opened
@@ -480,36 +373,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (!isAddVehicleCardVisible) {
 				resetPassenger()
 				resetGoods()
-				binding.bookingBaseLayout.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.GONE
 				isAddPassengerCardVisible = false
-//				binding.addPassengerCard.visibility = View.GONE //for tablet view
-				binding.passengerLayout.addPassengerCard.visibility = View.GONE //for mobile view
+				binding.passengerLayout.addPassengerCard.visibility = View.GONE
 				isAddGoodsCardVisible = false
-//				binding.addGoodsCard.visibility = View.GONE //for tablet view
-				binding.otherLayout.addGoodsCard.visibility = View.GONE //for mobile view
+				binding.otherLayout.addGoodsCard.visibility = View.GONE
 				isSummaryVisible = false
 				binding.summarySection.visibility = View.GONE
 				binding.proceedBtn.visibility = View.GONE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddVehicleCardVisible = true
-//				binding.addVehicleCard.visibility = View.VISIBLE //for tablet view
-				binding.vehicleLayout.addVehicleCard.visibility = View.VISIBLE //for mobile view
+				binding.vehicleLayout.addVehicleCard.visibility = View.VISIBLE
 
-				//for tablet view starts
-				/*binding.addVehicle.setOnClickListener {
-					if (selectedVehicleType == null) {
-						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT)
-							.show()
-					} else {
-						vehicle =
-							Vehicle(selectedVehicleType!!, binding.vehicleNumber.text.toString())
-						Log.d("vehicle", vehicle.toString())
-						addVehicle(vehicle)
-					}
-				}*/
-				//for tablet view ends
-
-				//for mobile view starts
 				binding.vehicleLayout.addVehicle.setOnClickListener {
 					if (selectedVehicleType == null) {
 						Toast.makeText(this, "Please select vehicle type", Toast.LENGTH_SHORT)
@@ -535,23 +410,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 								"NA"
 							)
 						addVehicle(vehicle)
+						//After adding vehicle automatically close add vehicle view
+						if (isAddVehicleCardVisible) {
+							resetVehicle()
+							isAddVehicleCardVisible = false
+							binding.bookingBaseLayout.visibility = View.VISIBLE
+							binding.vehicleLayout.addVehicleCard.visibility = View.GONE
+						}
 					}
 				}
-				//for mobile view ends
 			}
 		}
 
-		//for tablet view starts
-		/*binding.closeAddVehicleCard.setOnClickListener {
-			if (isAddVehicleCardVisible) {
-				resetVehicle()
-				isAddVehicleCardVisible = false
-				binding.addVehicleCard.visibility = View.GONE
-			}
-		}*/
-		//for tablet view ends
-
-		//for mobile view starts
 		binding.vehicleLayout.closeAddVehicleCard.setOnClickListener {
 			if (isAddVehicleCardVisible) {
 				resetVehicle()
@@ -560,7 +430,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.vehicleLayout.addVehicleCard.visibility = View.GONE
 			}
 		}
-		//for mobile view ends
 
 		binding.openAddGoodsCard.setOnClickListener {
 			//logic to show/hide views when add other card is opened
@@ -568,50 +437,18 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (!isAddGoodsCardVisible) {
 				resetPassenger()
 				resetVehicle()
-				binding.bookingBaseLayout.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.GONE
 				isAddPassengerCardVisible = false
-//				binding.addPassengerCard.visibility = View.GONE //for tablet view
-				binding.passengerLayout.addPassengerCard.visibility = View.GONE //for mobile view
+				binding.passengerLayout.addPassengerCard.visibility = View.GONE
 				isAddVehicleCardVisible = false
-//				binding.addVehicleCard.visibility = View.GONE //for tablet view
-				binding.vehicleLayout.addVehicleCard.visibility = View.GONE //for mobile view
+				binding.vehicleLayout.addVehicleCard.visibility = View.GONE
 				isSummaryVisible = false
 				binding.summarySection.visibility = View.GONE
 				binding.proceedBtn.visibility = View.GONE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 				isAddGoodsCardVisible = true
-//				binding.addGoodsCard.visibility = View.VISIBLE //for tablet view
-				binding.otherLayout.addGoodsCard.visibility = View.VISIBLE //for mobile view
+				binding.otherLayout.addGoodsCard.visibility = View.VISIBLE
 
-				//for tablet view starts
-				/*binding.addGoods.setOnClickListener {
-					if (selectedGoodsType == null) {
-						Toast.makeText(this, "Please select goods type", Toast.LENGTH_SHORT).show()
-					} else {
-						if (binding.goodsName.text.isEmpty()) {
-							Toast.makeText(this, "Please enter goods name", Toast.LENGTH_SHORT)
-								.show()
-						} else {
-							if (binding.goodsQuantity.text.isEmpty()) {
-								Toast.makeText(
-									this,
-									"Please enter goods quantity",
-									Toast.LENGTH_SHORT
-								).show()
-							} else {
-								others = Others(
-									selectedGoodsType!!,
-									binding.goodsName.text.toString(),
-									binding.goodsQuantity.text.toString().toInt()
-								)
-								addOthers(others)
-							}
-						}
-					}
-				}*/
-				//for tablet view ends
-
-				//for mobile view starts
 				binding.otherLayout.addGoods.setOnClickListener {
 					if (selectedGoodsType == null) {
 						Toast.makeText(this, "Please select goods type", Toast.LENGTH_SHORT).show()
@@ -634,25 +471,20 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 									binding.otherLayout.goodsQuantity.text.toString().toInt()
 								)
 								addOthers(others)
+								// After adding others automatically close add others view
+								if (isAddGoodsCardVisible) {
+									resetGoods()
+									isAddGoodsCardVisible = false
+									binding.bookingBaseLayout.visibility = View.VISIBLE
+									binding.otherLayout.addGoodsCard.visibility = View.GONE
+								}
 							}
 						}
 					}
 				}
-				//for mobile view ends
 			}
 		}
 
-		//for tablet view starts
-		/*binding.closeAddGoodsCard.setOnClickListener {
-			if (isAddGoodsCardVisible) {
-				resetGoods()
-				isAddGoodsCardVisible = false
-				binding.addGoodsCard.visibility = View.GONE
-			}
-		}*/
-		//for tablet view end
-
-		//for mobile view starts
 		binding.otherLayout.closeAddGoodsCard.setOnClickListener {
 			if (isAddGoodsCardVisible) {
 				resetGoods()
@@ -661,15 +493,13 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 				binding.otherLayout.addGoodsCard.visibility = View.GONE
 			}
 		}
-		//for mobile view end
 
 		binding.viewBookingSummaryBtn.setOnClickListener {
-			//logic to show/hide views when view summary card is opened
 			if (isSummaryVisible) {
 				binding.summarySection.visibility = View.GONE
 				isSummaryVisible = false
 				binding.proceedBtn.visibility = View.GONE
-				binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE //for mobile view
+				binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 			} else {
 				if (allDataList.isEmpty()) {
@@ -681,14 +511,10 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 					resetPassenger()
 					resetGoods()
 					resetVehicle()
-//					binding.addPassengerCard.visibility = View.GONE // for tablet view
-					binding.passengerLayout.addPassengerCard.visibility =
-						View.GONE // for mobile view
-//					binding.addVehicleCard.visibility = View.GONE // for tablet view
-					binding.vehicleLayout.addVehicleCard.visibility = View.GONE // for mobile view
-//					binding.addGoodsCard.visibility = View.GONE // for tablet view
-					binding.otherLayout.addGoodsCard.visibility = View.GONE // for mobile view
-					binding.bookingBaseLayoutWithoutSummary.visibility = View.GONE //for mobile view
+					binding.passengerLayout.addPassengerCard.visibility = View.GONE
+					binding.vehicleLayout.addVehicleCard.visibility = View.GONE
+					binding.otherLayout.addGoodsCard.visibility = View.GONE
+					binding.bookingBaseLayoutWithoutSummary.visibility = View.GONE
 					binding.proceedBtn.visibility = View.VISIBLE
 					adapter = SummaryAdapter(allDataList)
 					adapter.setOnItemClickListener(this)
@@ -725,25 +551,22 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 			if (isAddPassengerCardVisible) {
 				resetPassenger()
 				isAddPassengerCardVisible = false
-				binding.bookingBaseLayout.visibility = View.VISIBLE //for mobile view
-//				binding.addPassengerCard.visibility = View.GONE //for tablet view
-				binding.passengerLayout.addPassengerCard.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.VISIBLE
+				binding.passengerLayout.addPassengerCard.visibility = View.GONE
 			} else if (isAddVehicleCardVisible) {
 				resetVehicle()
 				isAddVehicleCardVisible = false
-				binding.bookingBaseLayout.visibility = View.VISIBLE //for mobile view
-//				binding.addVehicleCard.visibility = View.GONE //for tablet view
-				binding.vehicleLayout.addVehicleCard.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.VISIBLE
+				binding.vehicleLayout.addVehicleCard.visibility = View.GONE
 			} else if (isAddGoodsCardVisible) {
 				resetGoods()
 				isAddGoodsCardVisible = false
-				binding.bookingBaseLayout.visibility = View.VISIBLE //for mobile view
-//				binding.addGoodsCard.visibility = View.GONE //for tablet view
-				binding.otherLayout.addGoodsCard.visibility = View.GONE //for mobile view
+				binding.bookingBaseLayout.visibility = View.VISIBLE
+				binding.otherLayout.addGoodsCard.visibility = View.GONE
 			} else if (isSummaryVisible) {
 				isSummaryVisible = false
 				binding.proceedBtn.visibility = View.GONE
-				binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE //for mobile view
+				binding.bookingBaseLayoutWithoutSummary.visibility = View.VISIBLE
 				binding.summarySection.visibility = View.GONE
 				binding.viewBookingSummaryBtn.text = "VIEW SUMMARY"
 			} else {
@@ -1329,63 +1152,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 
 							cancelBtn!!.setOnClickListener { cardDetailsBottomSheet.dismiss() }
 							cardDetailsBottomSheet.show()
-
-							/*dialog.titleText = "Card details found.."
-							val obj = JSONObject(helper.getDataAsString())
-							val passengerJSONObject = obj.get("passenger") as JSONObject
-							if (passengerJSONObject.length() > 0) {
-								val passengerDetails: PassengerDetails =
-									Gson().fromJson(
-										passengerJSONObject.toString(),
-										object : TypeToken<PassengerDetails>() {}.type
-									)
-								dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-								dialog.titleText = "Passengers found. Add them?"
-								dialog.confirmText = "ADD"
-								dialog.cancelText = "CANCEL"
-								dialog.setCancelClickListener {
-									dialog.dismissWithAnimation()
-								}
-								dialog.setConfirmClickListener {
-									addPassenger(passengerDetails)
-									dialog.dismissWithAnimation()
-								}
-							} else {
-								Toast.makeText(
-									this@BookActivity,
-									"No passengers found",
-									Toast.LENGTH_SHORT
-								).show()
-							}
-
-							try {
-								val cardJSONObject = obj.get("card_details") as JSONObject
-								val cardDetails: CardDetails? =
-									Gson().fromJson(
-										cardJSONObject.toString(),
-										object : TypeToken<CardDetails>() {}.type
-									)
-								if (cardDetails == null) {
-									Toast.makeText(
-										this@BookActivity,
-										"Card details not found",
-										Toast.LENGTH_SHORT
-									).show()
-								} else {
-									editor.putString(
-										"card_details",
-										Gson().toJson(cardDetails)
-									)
-									editor.apply()
-								}
-							} catch (e: java.lang.Exception) {
-								Toast.makeText(
-									this@BookActivity,
-									"Card Details not found",
-									Toast.LENGTH_SHORT
-								).show()
-								dialog.dismissWithAnimation()
-							}*/
 						} else {
 							dialog.dismissWithAnimation()
 							NotificationHelper().getErrorAlert(
@@ -1409,17 +1175,6 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 	}
 
 	private fun resetPassenger() {
-		//for tablet view starts
-		/*binding.name.setText("")
-		binding.phone.setText("")
-		binding.age.setText("")
-		binding.address.setText("")
-		binding.rgPassengerType.clearCheck()
-		binding.rgGender.clearCheck()
-		binding.disableCheckBox.isChecked = false*/
-		//for tablet view ends
-
-		//for mobile view starts
 		binding.passengerLayout.name.setText("")
 		binding.passengerLayout.phone.setText("")
 		binding.passengerLayout.age.setText("")
@@ -1427,44 +1182,24 @@ class BookActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
 		binding.passengerLayout.rgPassengerType.clearCheck()
 		binding.passengerLayout.rgGender.clearCheck()
 		binding.passengerLayout.disableCheckBox.isChecked = false
-		//for mobile view ends
 	}
 
 	private fun resetVehicle() {
-		//for tablet view starts
-		/*binding.vehicleNumber.setText("")
-		binding.vehicleTypeDropdown.setText(
-			binding.vehicleTypeDropdown.adapter.getItem(0).toString(), false
-		)*/
-		//for tablet view ends
-
-		//for mobile view starts
 		binding.vehicleLayout.vehicleNumber.visibility = View.VISIBLE
 		binding.vehicleLayout.vehicleNumber.setText("")
 		selectedVehicleType = null
 		binding.vehicleLayout.vehicleTypeDropdown.setText(
 			binding.vehicleLayout.vehicleTypeDropdown.adapter.getItem(0).toString(), false
 		)
-		//for mobile view ends
 	}
 
 	private fun resetGoods() {
-		//for tablet view starts
-		/*binding.goodsName.setText("")
-		binding.goodsQuantity.setText("")
-		binding.othersTypeDropdown.setText(
-			binding.othersTypeDropdown.adapter.getItem(0).toString(), false
-		)*/
-		//for tablet view ends
-
-		//for mobile view starts
 		binding.otherLayout.goodsName.setText("")
 		binding.otherLayout.goodsQuantity.setText("")
 		selectedGoodsType = null
 		binding.otherLayout.othersTypeDropdown.setText(
 			binding.otherLayout.othersTypeDropdown.adapter.getItem(0).toString(), false
 		)
-		//for mobile view ends
 	}
 
 	@SuppressLint("NotifyDataSetChanged", "SetTextI18n")
